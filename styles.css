@@ -1,0 +1,34 @@
+::-moz-focus-inner {
+	border: 0;
+}
+::-moz-focus-outer {
+	border: 0;
+}
+html, body {
+	height: auto;
+	margin: 0px;
+	padding: 10px;
+	font-family: Google Sans,Roboto,Helvetica Neue, 'Roboto Mono', monospace,sans-serif;
+	background-color: white;
+}
+button {
+	text-decoration: none;
+	outline: none;
+	border: none;
+}
+button::-moz-focus-inner {
+  border: 0;
+}
+input {
+	outline: none;
+}
+.container {
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.flex {
+	display: flex;
+	justify-content: center;
+}
