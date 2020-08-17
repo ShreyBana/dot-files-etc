@@ -74,5 +74,29 @@
 	"create an unordered set": {
 		"prefix": "uset",
 		"body": "unordered_set<$1> $0;"
+	},
+	"single if statement": {
+		"prefix": "ifcontd",
+		"body": "if ($1) {$0}"
+	},
+	"if else statement": {
+		"prefix": "ifel",
+		"body": "if ($1) {$0} else {}"
+	},
+	"else if statement": {
+		"prefix": "elif",
+		"body": "else if ($1) {$0}"
+	},
+	"continue statement": {
+		"prefix": "cont",
+		"body": "continue;"
+	},
+	"break statement": {
+		"prefix": "brk",
+		"body": "break;"
+	},
+	"return statement":  {
+		"prefix": "rtrn",
+		"body": "return $0;"
 	}
 }
