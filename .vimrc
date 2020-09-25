@@ -30,10 +30,11 @@ Plug 'tomasr/molokai'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'Mizux/vim-colorschemes'
 Plug 'dylnmc/novum.vim'
+Plug 'ycm-core/YouCompleteMe'
 call plug#end()
 set t_Co=256
 set background=dark
-colorscheme novum
+colorscheme jummidark
 let g:airline_theme='dracula'
 highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
