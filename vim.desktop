@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Vim
+GenericName=Text Editor
+Comment=Edit text files
+Icon=vim
+TryExec=vim
+Exec=gnome-terminal -e "vim %F"
+NoDisplay=false
+Categories=TextEditor;Utility;
+MimeType=text/plain;
+StartupNotify=false
+Terminal=false
