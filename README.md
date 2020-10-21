@@ -1,2 +1,2 @@
-# Util
-Just things which make life easier
+# Notes
+- Paste `vim.desktop` in `/usr/share/applications`
