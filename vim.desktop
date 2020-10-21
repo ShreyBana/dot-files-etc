@@ -12,4 +12,3 @@ Categories=TextEditor;Utility;
 MimeType=text/plain;
 StartupNotify=false
 Terminal=false
-# add to /usr/share/applications/
