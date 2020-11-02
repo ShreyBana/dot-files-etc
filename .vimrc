@@ -11,7 +11,7 @@ set autoindent
 filetype indent off
 set cindent
 set nowrap
-set relativenumber
+set relativenumber # causes lagg
 set smartcase
 set noswapfile
 set nobackup
@@ -23,7 +23,6 @@ autocmd filetype cpp nnoremap <F8> :w <bar> exec '!g++ -std=c++17 -Wall '.shelle
 
 call plug#begin('~/.vim/plugged')
 Plug 'jcherven/jummidark.vim'
-Plug 'romkatv/powerlevel10k'
 Plug 'preservim/nerdtree'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'bfrg/vim-cpp-modern'
