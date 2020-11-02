@@ -11,7 +11,7 @@ set autoindent
 filetype indent off
 set cindent
 set nowrap
-set relativenumber # causes lagg
+set relativenumber " causes lag
 set smartcase
 set noswapfile
 set nobackup
