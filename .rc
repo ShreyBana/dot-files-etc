@@ -1,5 +1,5 @@
 alias cls='clear'
 alias catpaste="clippaste | cat "
-export maincpp='/home/shrey_bana/Templates/main.cpp'
+export maincpp='/home/shreybana/Templates/main.cpp'
 alias maincat='cat < $maincpp | cat'
 alias segtreecat='cat <  ~/Templates/segtree.cpp | cat'
