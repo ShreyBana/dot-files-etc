@@ -16,8 +16,6 @@
   - `sudo dnf install zsh`
   - `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
   - `sudo dnf install guake`
-  - `curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
   
 ### Install Nvidia Non-free drivers
   `sudo dnf install akmod-nvidia`
