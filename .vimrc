@@ -1,7 +1,9 @@
 syntax on
 
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48:2;%lu;%lu;%lum"
 set termguicolors
-set noerrorbells
+set term=xterm-256color
 set tabstop=2 softtabstop=2
 set shiftwidth=2
 set expandtab
@@ -11,35 +13,28 @@ set autoindent
 filetype indent off
 set cindent
 set nowrap
-set relativenumber " causes lag
 set smartcase
 set noswapfile
 set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
+set rnu
 map <C-t> :NERDTreeToggle<CR>
 autocmd filetype cpp nnoremap <F8> :w <bar> exec '!g++ -std=c++17 -Wall '.shellescape('%').' -o '.shellescape('%:r')<CR>
 
 call plug#begin('~/.vim/plugged')
-Plug 'jcherven/jummidark.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'morhetz/gruvbox'
 Plug 'preservim/nerdtree'
 Plug 'skywind3000/asyncrun.vim'
-Plug 'bfrg/vim-cpp-modern'
-Plug 'vim-python/python-syntax'
 Plug 'ycm-core/YouCompleteMe'
+Plug 'vim-python/python-syntax'
 call plug#end()
+colorscheme gruvbox
 set background=dark
-colorscheme jummidark
-" Enable highlighting of C++ attributes
-let g:cpp_attributes_highlight = 1
-
-" Highlight struct/class member variables (affects both C and C++ files)
-let g:cpp_member_highlight = 1
-
-" Put all standard C and C++ keywords under Vim's highlight group 'Statement'
-" (affects both C and C++ files)
-let g:cpp_simple_highlight = 1
+let g:airline_theme='gruvbox'
 
 " python syntax highlights
 let g:python_highlight_func_calls = 1
