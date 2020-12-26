@@ -60,11 +60,11 @@
   - `systemctl enable NetworkManager`
   
 ### Install Yay
-  `pacman -S --needed git base-devel
-   git clone https://aur.archlinux.org/yay.git
-   cd yay
-   makepkg -si`
+  - `pacman -S --needed git base-devel`
+  - `git clone https://aur.archlinux.org/yay.git`
+  - `cd yay`
+  - `makepkg -si`
 
 ### Setting Up i3wm
   - `sudo pacman -S nvidia i3 lightdm nitrogen`
-  - `
+  - 
