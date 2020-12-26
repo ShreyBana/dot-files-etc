@@ -53,4 +53,7 @@
   - `passwd {username}` set password 
   - `groupadd sudo`
   -  edit `/etc/sudoers` and uncomment the `%sudo` line 
-  -  
+  - `usermod -a -G sudo {username}`
+  - `pacman -S grub efibootmgr`
+  - `grub-install`
+  - `grub-mkconfig -o /boot/grub/grub.cfg`
