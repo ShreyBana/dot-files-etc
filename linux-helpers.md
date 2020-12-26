@@ -25,3 +25,7 @@
   
 ### Remove & Limit Kernel installations
   `sudo dnf remove $(dnf repoquery --installonly --latest-limit=-2 -q)`
+
+# Arch
+### Installation steps
+  - `cfdisk` create root, swap & efi in ssd then make home in hdd
