@@ -28,4 +28,29 @@
 
 # Arch
 ### Installation steps
+  - `iwctl` to enter the netwrok manager icli
+  - `station {devicename} connect SSID` connect to the network
+  - `station {devicename} show` to check
   - `cfdisk` create root, swap & efi in ssd then make home in hdd
+  - `mkfs.ext4 /dev/sdxY` for root & home
+  - `mkfs.fat -F32 /dev/sdxY` for efi 
+  - `mkswap /dev/sdxY` & `swapon /dev/sdxY` for swap
+  - `mount /dev/sdxY /mnt` mount the root partition
+  - `mkdir /mnt/boot; mkdir /mnt/boot/efi` create efi dir
+  - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion
+  - `mkdir /mnt/home` create home dir 
+  - `mount /dev/sdxY /mnt/home` mount linux home
+  - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty NetworkManager`
+  - `genfstab -U /mnt >> /mnt/etc/fstab`
+  - `arch-chroot /mnt`
+  - `ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime`
+  - `hwclock --systohc`
+  -  Edit `/etc/locale.gen` and uncomment `en_US.UTF-8` then run `locale-gen`
+  - `cat > /etc/hostname` & add hostname
+  - `cat > /etc/hosts` & add `127.0.0.1       localhost`
+  - `passwd` and set the root password
+  - `adduser {username}` create a user
+  - `passwd {username}` set password 
+  - `groupadd sudo`
+  -  edit `/etc/sudoers` and uncomment the `%sudo` line 
+  -  
