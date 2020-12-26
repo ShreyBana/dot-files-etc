@@ -57,3 +57,7 @@
   - `pacman -S grub efibootmgr`
   - `grub-install`
   - `grub-mkconfig -o /boot/grub/grub.cfg`
+  - `systemctl enable NetworkManager`
+
+### Setting Up i3wm
+  - `sudo pacman -S nvidia i3 lightdm`
