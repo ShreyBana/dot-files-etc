@@ -11,7 +11,7 @@ then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 export PATH
-PS1='\e[0;32m[\W]\e[0m >'
+PS1="\[\e[0;32m\][\W]\[\e[0m\] > "
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
