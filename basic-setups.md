@@ -58,12 +58,10 @@
   - `grub-install`
   - `grub-mkconfig -o /boot/grub/grub.cfg`
   - `systemctl enable NetworkManager`
+  - `sudo pacman -S nvidia gnome`
   
 ### Install Yay
   - `pacman -S --needed git base-devel`
   - `git clone https://aur.archlinux.org/yay.git`
   - `cd yay`
   - `makepkg -si`
-
-### Install Gnome 
-  - `sudo pacman -S nvidia gnome`
