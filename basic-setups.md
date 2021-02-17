@@ -65,6 +65,5 @@
   - `cd yay`
   - `makepkg -si`
 
-### Setting Up i3wm
-  - `sudo pacman -S nvidia i3 lightdm nitrogen`
-  - 
+### Install Gnome 
+  - `sudo pacman -S nvidia gnome`
