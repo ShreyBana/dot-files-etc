@@ -41,6 +41,9 @@
   - `mkdir /mnt/home` create home dir **IMP**
   - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
   - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty efibootmgr networkmanager nvidia gnome grub`
+  - `grub-install`
+  - `grub-mkconfig -o /boot/grub/grub.cfg`
+  - `systemctl enable NetworkManager`
   - `genfstab -U /mnt >> /mnt/etc/fstab`
   - `arch-chroot /mnt`
   - `ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime`
@@ -54,11 +57,6 @@
   - `groupadd sudo`
   -  edit `/etc/sudoers` and uncomment the `%sudo` line 
   - `usermod -a -G sudo {username}`
-  - `pacman -S grub efibootmgr`
-  - `grub-install`
-  - `grub-mkconfig -o /boot/grub/grub.cfg`
-  - `systemctl enable NetworkManager`
-  - `sudo pacman -S nvidia gnome`
   
 ### Install Yay
   - `pacman -S --needed git base-devel`
