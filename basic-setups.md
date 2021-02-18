@@ -35,11 +35,11 @@
   - `mkfs.ext4 /dev/sdxY` for root & home
   - `mkfs.fat -F32 /dev/sdxY` for efi 
   - `mkswap /dev/sdxY` & `swapon /dev/sdxY` for swap
-  - `mount /dev/sdxY /mnt` mount the root partition *<- IMP*
-  - `mkdir /mnt/boot; mkdir /mnt/boot/efi` create efi dir
-  - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion
-  - `mkdir /mnt/home` create home dir 
-  - `mount /dev/sdxY /mnt/home` mount linux home
+  - `mount /dev/sdxY /mnt` mount the root partition **IMP**
+  - `mkdir /mnt/boot; mkdir /mnt/boot/efi` create efi dir **IMP**
+  - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion **IMP otherwise grub will not install**
+  - `mkdir /mnt/home` create home dir **IMP**
+  - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
   - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty efibootmgr networkmanager nvidia gnome`
   - `genfstab -U /mnt >> /mnt/etc/fstab`
   - `arch-chroot /mnt`
