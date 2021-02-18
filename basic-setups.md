@@ -40,14 +40,13 @@
   - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion **IMP otherwise grub will not install**
   - `mkdir /mnt/home` create home dir **IMP**
   - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
-  - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty efibootmgr networkmanager nvidia gnome grub git vlc firefox alsa`
+  - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty efibootmgr networkmanager nvidia gnome grub git vlc firefox`
   - `genfstab -U /mnt >> /mnt/etc/fstab`
   - `arch-chroot /mnt`
   - `grub-install`
   - `grub-mkconfig -o /boot/grub/grub.cfg`
   - `systemctl enable NetworkManager`
   - `systemctl enable gdm`
-  - `systemctl enable alsa`
   - `ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime`
   - `hwclock --systohc`
   -  Edit `/etc/locale.gen` and uncomment `en_US.UTF-8` then run `locale-gen`
