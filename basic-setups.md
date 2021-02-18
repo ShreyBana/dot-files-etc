@@ -40,23 +40,23 @@
   - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion **IMP otherwise grub will not install**
   - `mkdir /mnt/home` create home dir **IMP**
   - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
-  - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty efibootmgr networkmanager nvidia gnome grub`
+  - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty efibootmgr networkmanager nvidia gnome grub git vlc firefox alsa`
+  - `genfstab -U /mnt >> /mnt/etc/fstab`
+  - `arch-chroot /mnt`
   - `grub-install`
   - `grub-mkconfig -o /boot/grub/grub.cfg`
   - `systemctl enable NetworkManager`
-  - `genfstab -U /mnt >> /mnt/etc/fstab`
-  - `arch-chroot /mnt`
+  - `systemctl enable gdm`
   - `ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime`
   - `hwclock --systohc`
   -  Edit `/etc/locale.gen` and uncomment `en_US.UTF-8` then run `locale-gen`
   - `cat > /etc/hostname` & add hostname
   - `cat > /etc/hosts` & add `127.0.0.1       localhost`
   - `passwd` and set the root password
-  - `adduser {username}` create a user
-  - `passwd {username}` set password 
   - `groupadd sudo`
   -  edit `/etc/sudoers` and uncomment the `%sudo` line 
-  - `usermod -a -G sudo {username}`
+  -  reboot and login as root and a new user via the gui in the settings menu
+  - `usermod -a -G sudo {username}` to enable **sudo** commands
   
 ### Install Yay
   - `pacman -S --needed git base-devel`
