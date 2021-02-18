@@ -56,7 +56,7 @@
   - `passwd` and set the root password
   - `groupadd sudo`
   -  edit `/etc/sudoers` and uncomment the `%sudo` line 
-  -  reboot and login as root and a new user via the gui in the settings menu
+  -  reboot and login as root and a new user w/ the settings menu
   - `usermod -a -G sudo <username>` to enable **sudo** commands
   
 ### Install Yay
