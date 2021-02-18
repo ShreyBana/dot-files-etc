@@ -29,8 +29,8 @@
 # Arch
 ### Installation steps
   - `iwctl` to enter the netwrok manager icli
-  - `station {devicename} connect SSID` connect to the network
-  - `station {devicename} show` to check
+  - `station <devicename> connect SSID` connect to the network
+  - `station <devicename> show` to check
   - `cfdisk` create root, swap & efi in ssd then make home in hdd
   - `mkfs.ext4 /dev/sdxY` for root & home
   - `mkfs.fat -F32 /dev/sdxY` for efi 
@@ -47,6 +47,7 @@
   - `grub-mkconfig -o /boot/grub/grub.cfg`
   - `systemctl enable NetworkManager`
   - `systemctl enable gdm`
+  - `systemctl enable alsa`
   - `ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime`
   - `hwclock --systohc`
   -  Edit `/etc/locale.gen` and uncomment `en_US.UTF-8` then run `locale-gen`
@@ -56,10 +57,11 @@
   - `groupadd sudo`
   -  edit `/etc/sudoers` and uncomment the `%sudo` line 
   -  reboot and login as root and a new user via the gui in the settings menu
-  - `usermod -a -G sudo {username}` to enable **sudo** commands
+  - `usermod -a -G sudo <username>` to enable **sudo** commands
   
 ### Install Yay
-  - `pacman -S --needed git base-devel`
-  - `git clone https://aur.archlinux.org/yay.git`
-  - `cd yay`
+  - `cd Downloads`
+  - `git clone https://aur.archlinux.org/yay-git.git`
+  - `sudo chown -R <username>:<username> ./yay-git`
+  - `cd yay-git`
   - `makepkg -si`
