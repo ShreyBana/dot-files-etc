@@ -64,3 +64,4 @@
   - `sudo chown -R <username>:<username> ./yay-git`
   - `cd yay-git`
   - `makepkg -si`
+  - `yay -S nerd-fonts-source-code-pro`
