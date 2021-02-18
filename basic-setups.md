@@ -35,12 +35,12 @@
   - `mkfs.ext4 /dev/sdxY` for root & home
   - `mkfs.fat -F32 /dev/sdxY` for efi 
   - `mkswap /dev/sdxY` & `swapon /dev/sdxY` for swap
-  - `mount /dev/sdxY /mnt` mount the root partition
+  - `mount /dev/sdxY /mnt` mount the root partition *<- IMP*
   - `mkdir /mnt/boot; mkdir /mnt/boot/efi` create efi dir
   - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion
   - `mkdir /mnt/home` create home dir 
   - `mount /dev/sdxY /mnt/home` mount linux home
-  - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty NetworkManager`
+  - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty efibootmgr networkmanager nvidia gnome`
   - `genfstab -U /mnt >> /mnt/etc/fstab`
   - `arch-chroot /mnt`
   - `ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime`
