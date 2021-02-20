@@ -89,8 +89,8 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: DejaVuSansMono Nerd Font Mono
-    style: Book
+    family: dejavusansmono nerd font
+    style: regular
     # The `style` can be specified to pick a specific face.
     # Bold font face
     #bold:
