@@ -65,3 +65,10 @@
   - `cd yay-git`
   - `makepkg -si`
   - `yay -S nerd-fonts-source-code-pro`
+
+# Optional Stuff:
+
+### GRUB
+  - All changes to be made in `/etc/default/grub` and then run `sudo grub-mkconfig -o /boot/grub/grub.cfg`
+  - If getting `funky smelling output from rdrand` on boot add `GRUB_CMDLINE_LINUX_DEFAULT=nordrand` to get the kernel to not use the `rdrand` command
+  - If getting low res after installing a theme comment out `GRUB_TERMINAL_OUTPUT=console` via `#`
