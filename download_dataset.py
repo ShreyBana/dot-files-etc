@@ -7,7 +7,7 @@ MB = 1024 * 1024
 URL_LIST = sys.argv[1:]
 
 def print_progress(percentage):
-    print('%{:.2f} '.format(percentage) + '[' + '=' * int(percentage * 3 / 10) + ' ' * (30 - int(percentage * 3 / 10)) + ']', end='\r')
+    print('\r%{:.2f} '.format(percentage) + '[' + '=' * int(percentage * 3 / 10) + ' ' * (30 - int(percentage * 3 / 10)) + ']', end='\0')
 
 for url in URL_LIST:
     print('---------------------------------')
