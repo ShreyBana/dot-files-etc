@@ -11,7 +11,7 @@ then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 export PATH
-PS1="\[\e[0;32m\]\w\[\e[0m\]\n "
+PS1="\[\e[0;32m\]\w\[\e[0m\]\n " 
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
@@ -19,9 +19,10 @@ PS1="\[\e[0;32m\]\w\[\e[0m\]\n "
 # User specific aliases and functions
 alias cls='clear'
 alias catpaste="xclip -o | cat "
-export maincpp='/home/shreybana/Templates/main.cpp'
+export maincpp='/home/shrey_bana/Templates/main.cpp'
 alias maincat='cat < $maincpp | cat'
 alias toProjects='cd ~/Desktop/Projects/'
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
+export QT_QPA_PLATFORMTHEME=qt5ct
