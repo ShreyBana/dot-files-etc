@@ -26,7 +26,7 @@ for url in sys.argv[1:]:
     with open(path, 'wb') as fd:
         downloaded = 0
         print_progress(downloaded * 100 / size)
-        for chunk in r.iter_content(chunk_size=int(size * 0.1) * MB): # set to 10% of total size of the file
+        for chunk in r.iter_content(chunk_size=chunk_size):
             fd.write(chunk)
             downloaded += 0.1 * size
             downloaded = min(downloaded, size)
