@@ -1,10 +1,11 @@
+from zipfile import ZipFile
 import requests
 import sys
 import os
 
 DATASETS_PATH = ''
 MB = 1024 * 1024
-URL_LIST = sys.argv[1:]
+URL_LIST = []
 
 def print_progress(percentage):
     print('\r%{:.2f} '.format(percentage) + '[' + '=' * int(percentage * 3 / 10) + ' ' * (30 - int(percentage * 3 / 10)) + ']', end='\0')
@@ -32,5 +33,16 @@ for url in URL_LIST:
             downloaded += chunk_size / MB
             downloaded = min(downloaded, size)
             print_progress(downloaded * 100 / size)
+        fd.close()
 
-    print('\n')
+    print('\nUnzipping...')
+    
+    with ZipFile(path, 'r') as myzip:
+        myzip.extractall(DATASETS_PATH)
+        myzip.close()
+
+    print('Deleting archive...')
+
+    os.remove(path)
+
+    print('Complete')
