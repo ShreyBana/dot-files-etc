@@ -2,7 +2,7 @@ import requests
 import sys
 import os
 
-DATASETS_PATH = '/home/shrey_bana/projects/datasets/'
+DATASETS_PATH = ''
 MB = 1024 * 1024
 URL_LIST = sys.argv[1:]
 
