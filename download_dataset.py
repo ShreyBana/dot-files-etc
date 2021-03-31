@@ -7,7 +7,7 @@ MB = 1024 * 1024
 URL_LIST = sys.argv[1:]
 
 def print_progress(percentage):
-    print('%{:.2f} '.format(percentage) + '[' + '=' * int(percentage / 10) + ' ' * (10 - int(percentage / 10)) + ']', end='\r')
+    print('%{:.2f} '.format(percentage) + '[' + '=' * int(percentage * 3 / 10) + ' ' * (30 - int(percentage * 3 / 10)) + ']', end='\r')
 
 for url in URL_LIST:
     print('---------------------------------')
@@ -22,8 +22,8 @@ for url in URL_LIST:
         continue
 
     print('Downloading {}'.format(filename))
-    print('File Size ~ {} MB'.format(int(size)))
-    chunk_size = max(int(size * 0.1), 1) * MB # set to 10% of total size of the file but lower bounded by 1 MB
+    print('File Size: (approx) {} MB'.format(int(size)))
+    chunk_size = 4096
     with open(path, 'wb') as fd:
         downloaded = 0
         print_progress(downloaded * 100 / size)
