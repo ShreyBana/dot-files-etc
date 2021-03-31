@@ -4,11 +4,12 @@ import os
 
 DATASETS_PATH = '/home/shrey_bana/projects/datasets/'
 MB = 1024 * 1024
+URL_LIST = sys.argv[1:]
 
 def print_progress(percentage):
     print('%{:.2f} '.format(percentage) + '[' + '=' * int(percentage / 10) + ' ' * (10 - int(percentage / 10)) + ']', end='\r')
 
-for url in sys.argv[1:]:
+for url in URL_LIST:
     print('---------------------------------')
     filename = url.split('/')[-1]
     path = DATASETS_PATH + filename
@@ -22,13 +23,13 @@ for url in sys.argv[1:]:
 
     print('Downloading {}'.format(filename))
     print('Total Size: {:.2f} MB'.format(size))
-    chunk_size = min(int(size * 0.1) * MB, int(MB)) # set to 10% of total size of the file but lower bounded by 1 MB
+    chunk_size = max(int(size * 0.1), 1) * MB # set to 10% of total size of the file but lower bounded by 1 MB
     with open(path, 'wb') as fd:
         downloaded = 0
         print_progress(downloaded * 100 / size)
         for chunk in r.iter_content(chunk_size=chunk_size):
             fd.write(chunk)
-            downloaded += 0.1 * size
+            downloaded += chunk_size / MB
             downloaded = min(downloaded, size)
             print_progress(downloaded * 100 / size)
 
