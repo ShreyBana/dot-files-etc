@@ -22,7 +22,7 @@ for url in URL_LIST:
         continue
 
     print('Downloading {}'.format(filename))
-    print('File Size: {:.2f} MB'.format(size))
+    print('File Size ~ {} MB'.format(int(size)))
     chunk_size = max(int(size * 0.1), 1) * MB # set to 10% of total size of the file but lower bounded by 1 MB
     with open(path, 'wb') as fd:
         downloaded = 0
