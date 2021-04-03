@@ -4,29 +4,31 @@ import requests
 import sys
 import os
 
-DATASETS_PATH = '' # edit in your download path
+PATHS = {'DATASET' : ''}
+DOWNLOADED = []
 MB = 1024 * 1024
 URL_LIST = sys.argv[1:]
 
 def print_progress(percentage):
-    print('\r%{:.2f} '.format(percentage) + '[' + '=' * int(percentage * 3 / 10) + ' ' * (30 - int(percentage * 3 / 10)) + ']', end='\0')
+    print('\r%{:.2f} '.format(percentage) + '[' + '=' * int(percentage * 3 / 10) + ' ' * (30 - int(percentage * 3 / 10)) + ']', end=' ')
 
 for url in URL_LIST:
     print('---------------------------------')
-    filename = url.split('/')[-1]
-    path = DATASETS_PATH + filename
+    filename = url.split('/')[-1].split('.')[0] # assumes downloading w/ .zip ext
+    path = PATHS['DATASET'] + filename
+    PATHS[filename] = path + '/'
 
     r = requests.get(url, stream=True)
     size = int(r.headers.get('content-length')) / MB
 
-    if os.path.exists(path.split('.')[0]):
-        print('Dataset {} already exists at {}'.format(filename.split('.')[0], path.split('.')[0]))
+    if os.path.exists(path):
+        print('Dataset {} already exists at {}'.format(filename, path))
         continue
 
-    print('Downloading {}'.format(filename))
-    print('File Size: (approx) {} MB'.format(int(ceil(size))))
+    print('Downloading {}'.format(filename + '.zip'))
+    print('File Size: (approx) {} MB'.format(ceil(size)))
     chunk_size = 4096
-    with open(path, 'wb') as fd:
+    with open(path + '.zip', 'wb') as fd:
         downloaded = 0
         print_progress(downloaded * 100 / size)
         for chunk in r.iter_content(chunk_size=chunk_size):
@@ -38,12 +40,17 @@ for url in URL_LIST:
 
     print('\nUnzipping...')
     
-    with ZipFile(path, 'r') as myzip:
-        myzip.extractall(DATASETS_PATH)
+    with ZipFile(path + '.zip', 'r') as myzip:
+        myzip.extractall(PATHS['DATASET'])
         myzip.close()
-
+    
     print('Deleting archive...')
 
-    os.remove(path)
-
+    os.remove(path + '.zip')
+    
     print('Complete')
+    DOWNLOADED.append(filename)
+
+print('\nFiles downloaded:', end = ' ')
+for filename in DOWNLOADED:
+    print(filename + ' @ {}'.format(PATHS[filename]))
