@@ -1,4 +1,5 @@
 from zipfile import ZipFile
+from math import ceil
 import requests
 import sys
 import os
@@ -23,7 +24,7 @@ for url in URL_LIST:
         continue
 
     print('Downloading {}'.format(filename))
-    print('File Size: (approx) {} MB'.format(int(size)))
+    print('File Size: (approx) {} MB'.format(int(ceil(size))))
     chunk_size = 4096
     with open(path, 'wb') as fd:
         downloaded = 0
