@@ -1,6 +1,7 @@
 from zipfile import ZipFile
 from math import ceil
 import requests
+import time
 import sys
 import os
 
@@ -17,6 +18,7 @@ for url in url_list:
     filename = url.split('/')[-1].split('.')[0] # assumes downloading w/ .zip extension
     path = os.path.join(downloads_path, filename)
     downloads.append(filename)
+    start = time.time()
 
     r = requests.get(url, stream=True)
     size = int(r.headers.get('content-length')) / MB
@@ -48,4 +50,5 @@ for url in url_list:
 
     os.remove(path + '.zip')
     
-    print('Complete')
+    total_time = time.time() - start
+    print('Done!\nTime elapsed: {} minutes\nAvg download speed: {} mbps'.format(total_time // 60, size // total_time))
