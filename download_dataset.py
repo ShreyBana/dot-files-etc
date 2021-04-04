@@ -5,12 +5,12 @@ import sys
 import os
 
 MB = 1024 * 1024
-downloads_path = '/home/shrey_bana/projects/datasets'
+downloads_path = ''
 url_list = sys.argv[1:]
 downloads = []
 
 def print_progress(percentage):
-    print('\r%{:.2f} '.format(percentage) + '[' + '=' * (percentage * 3 // 10) + ' ' * (30 - (percentage * 3 // 10)) + ']', end=' ')
+    print('\r%{:.2f} '.format(percentage) + '[' + '=' * int(percentage * 3 / 10) + ' ' * (30 - int(percentage * 3 / 10)) + ']', end=' ')
 
 for url in url_list:
     print('---------------------------------')
