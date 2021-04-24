@@ -21,8 +21,6 @@ alias cls='clear'
 alias catpaste="xclip -o | cat "
 export maincpp='/home/shrey_bana/Templates/main.cpp'
 alias maincat='cat < $maincpp | cat'
-alias toProjects='cd ~/Desktop/Projects/'
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
-export QT_QPA_PLATFORMTHEME=qt5ct
