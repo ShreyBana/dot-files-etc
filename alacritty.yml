@@ -89,7 +89,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: dejavusansmono nerd font
+    family: hack nerd font
     style: regular
     # The `style` can be specified to pick a specific face.
     # Bold font face
