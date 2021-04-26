@@ -30,15 +30,17 @@ Plug 'vim-python/python-syntax'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'ryanoasis/vim-devicons'
 Plug 'pacha/vem-tabline'
-Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'Yggdroot/indentLine'
 call plug#end()
 
 "--COLOR SCHEMING--"
 colorscheme gruvbox
 set background=dark
-let g:airline_theme='gruvbox'
+let g:airline_theme = 'gruvbox'
 let g:python_highlight_func_calls = 1
 let g:python_highlight_operators = 1
+let g:indentLine_char = ':'
+let g:indentLine_color_term = 237
 
 "--KEY BINDINGS--"
 let mapleader = "."
