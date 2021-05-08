@@ -1,16 +1,16 @@
 syntax on
 set term=xterm-256color
-set tabstop=2 softtabstop=2
+set tabstop=2
 set shiftwidth=2
 set expandtab
-set smarttab
+set smartindent
 set autoindent
 filetype indent off
-set cindent
 set nowrap
 set smartcase
 set noswapfile
 set nobackup
+set nocompatible
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
@@ -31,6 +31,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'ryanoasis/vim-devicons'
 Plug 'pacha/vem-tabline'
 Plug 'Yggdroot/indentLine'
+Plug 'myint/indent-finder'
 call plug#end()
 
 "--COLOR SCHEMING--"
