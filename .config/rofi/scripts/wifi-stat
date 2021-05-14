@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+row=$(nmcli -f IN-USE dev wifi list --rescan no | awk '$1 == "*" {print NR}')
+signal=$(nmcli -f SIGNAL dev wifi list --rescan no| awk 'NR == r { print $1 }' r=$row)
+ssid=$(nmcli -f SSID dev wifi list --rescan no | awk 'NR == r { print $1 }' r=$row)
+
+if [[ $signal -gt "75" ]]; then
+  color="#00e38d"
+elif [[ $signal -gt "50" ]]; then
+  color="#00d1ff"
+elif [[ $signal -gt "25" ]]; then
+  color="#ffd100"
+else
+  color="#ff0018"
+fi
+
+printf "%s %s\n" %{F$color}%{T2}直 %{F-}%{T1}$ssid

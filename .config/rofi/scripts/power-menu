@@ -1,0 +1,31 @@
+#!/usr/bin/bash
+shutdown="襤"
+reboot="ﰇ"
+logout=""
+sleep="鈴"
+
+choice=$(printf "%s\n%s\n%s\n%s" $shutdown $reboot $sleep $logout | rofi -dmenu -theme "../themes/volume.rasi" -columns 4 -selected-row 1 -font "roboto mono nerd font 20")
+
+case $choice in
+
+  $shutdown)
+    sudo shutdown
+    ;;
+
+  $reboot)
+    sudo reboot
+    ;;
+
+  $logout)
+    sudo logout
+    ;;
+
+  $sleep)
+    sudo halt
+    ;;
+
+  *)
+    echo default
+    ;;
+
+esac

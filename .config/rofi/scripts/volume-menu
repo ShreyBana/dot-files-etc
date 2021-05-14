@@ -1,0 +1,66 @@
+#!/usr/bin/bash
+volume_up="ﱛ"
+volume_down="ﱜ"
+source=$(pacmd list-sinks | awk -F ": " '/active port: <analog/ { print $2 }' | awk 'NR ==  1 { print }')
+
+if [[ $source = "<analog-output-headphones>" ]]; then
+  source="蓼"
+else
+  source=""
+fi
+
+stat=$(amixer sget Master | awk -F"[][]" '/Left:/ { print $4 }')
+if [[ $stat = "on" ]]; then
+  mute="ﱝ"
+else
+  mute="墳"
+fi
+
+choice=1
+arg=2
+
+while [[ $choice != "" ]]; do
+  choice=$(printf "%s\n%s\n%s\n%s" $source $mute $volume_up $volume_down | rofi -dmenu -theme "../themes/volume.rasi" -columns 4 -selected-row $arg -font "roboto mono nerd font 20")
+
+  case $choice in
+    
+    $volume_up)
+      amixer sset Master 5%+
+      arg=2
+      ;;
+
+    $volume_down)
+      amixer sset Master 5%-
+      arg=3
+      ;;
+
+    $mute)
+      if [[ $mute = "ﱝ" ]]; then
+        action="mute"
+        mute="墳"
+      else 
+        action="unmute"
+        mute="ﱝ"
+      fi
+      amixer sset Master $action
+      arg=1
+      ;;
+
+    $source)
+      if [[ $source = "" ]]; then
+        pacmd set-sink-port 1 analog-output-headphones
+        source="蓼"
+      else
+        pacmd set-sink-port 1 analog-output-lineout
+        source=""
+      fi
+      arg=0
+      ;;
+
+    *)
+      exit 0
+      ;;
+
+  esac
+
+done

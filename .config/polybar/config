@@ -1,0 +1,165 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+;TODO: powermenu, pulseaudio source icon, source selector & volume menu, network menu
+
+[colors]
+background = #222
+background-alt = #444
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+red = #ff0018
+orange = #ff4a00
+deep-yellow = #ffa500
+light-yellow = #ffed00
+light-blue = #00d1ff
+deep-blue = #0078ff
+lime-green = #00e38d
+purple = #9f78e1
+
+
+[bar/example]
+width = 100%
+height = 27
+fixed-center = false
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-size = 3
+line-color = #f00
+border-size = 0
+border-color = #00000000
+padding-left = 0
+padding-right = 0
+module-margin-left = 0
+module-margin-right = 0
+
+font-0 = roboto mono nerd font:pixelsize=12;0
+font-1 = roboto mono nerd font:pixelsize=14;1
+font-2 = roboto mono nerd font:pixelsize=16;2
+
+modules-left = date
+modules-center = i3
+modules-right = volume wifi powermenu
+tray-position = right
+;tray-padding = 2
+;tray-background = #0063ff
+
+;wm-restack = bspwm
+;wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+cursor-click = pointer
+cursor-scroll = ns-resize
+bottom = true
+
+[module/date]
+type = internal/date
+interval = 1
+date = %a, %d %B %Y
+time = %H:%M:%S
+label =  %date%  %time%
+format = <label>
+format-padding = 1
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #0a6cf5
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+;pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;羚
+ws-icon-font = 2
+
+[module/wifi]
+type = custom/script
+exec = $HOME/.config/rofi/scripts/wifi-stat
+click-left = $HOME/.config/rofi/scripts/wifi-menu
+format-underline = ${colors.purple}
+format-padding = 2
+format-margin = 2
+
+[module/volume]
+type = custom/script
+exec = $HOME/.config/rofi/scripts/volume-stat
+click-left = $HOME/.config/rofi/scripts/volume-menu
+interval = 0
+format-underline = ${colors.lime-green}
+label-padding = 2
+
+[module/powermenu]
+type = custom/text
+content = 拉
+content-font = 3
+content-margin = 0
+content-padding = 2
+content-foreground = ${colors.orange}
+content-underline = ${colors.orange}
+click-left = $HOME/.config/rofi/scripts/power-menu
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 0
+; vim:ft=dosini
