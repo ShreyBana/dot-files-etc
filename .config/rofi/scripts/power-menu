@@ -4,7 +4,7 @@ reboot="ﰇ"
 logout=""
 sleep="鈴"
 
-choice=$(printf "%s\n%s\n%s\n%s" $shutdown $reboot $sleep $logout | rofi -dmenu -theme "../themes/volume.rasi" -columns 4 -selected-row 1 -font "roboto mono nerd font 20")
+choice=$(printf "%s\n%s\n%s\n%s" $poweroff $reboot $sleep $logout | rofi -dmenu -theme "../themes/volume.rasi" -columns 4 -selected-row 1 -font "roboto mono nerd font 20")
 
 case $choice in
 
