@@ -54,7 +54,7 @@ font-1 = roboto mono nerd font:pixelsize=12;2
 font-2 = roboto mono nerd font:pixelsize=14;2
 
 modules-left = date i3
-modules-right = filesystem memory volume wifi 
+modules-right = filesystem memory volume network 
 tray-position = right
 tray-padding = 2
 tray-background = #0063ff
@@ -131,20 +131,33 @@ ws-icon-2 = 3;
 ws-icon-default = ﲾ
 ws-icon-font = 2
 
-[module/wifi]
+[module/network]
+type = internal/network
+interface = wlp3s0
+interval = 3.0
+label-connected = %{F#00e38d}%{T2}說 %{F#bf}%{T1}%essid%%downspeed:9%
+format-connected = <label-connected>
+label-disconnected = %{F#ff0018}%{T2}ﲁ
+format-disconnected = <label-disconnected>
+format-connected-background = #141414
+format-disconnected-background = #141414
+format-connected-padding = 2
+format-disconnected-padding = 2
+
+; UN-USED
+[module/wifi] 
 type = custom/script
 exec = $HOME/.config/rofi/scripts/wifi-stat
 click-left = $HOME/.config/rofi/scripts/wifi-menu
 format-background = #141414
 ;format-underline = ${colors.purple}
 format-padding = 2
-format-margin = 0
 
 [module/volume]
 type = custom/script
 exec = $HOME/.config/rofi/scripts/volume-stat
 click-left = $HOME/.config/rofi/scripts/volume-menu
-interval = 0
+interval = 1
 ;format-underline = ${colors.lime-green}
 format-background = #171717
 format-padding = 4
@@ -160,7 +173,7 @@ format-background = #1a1a1a
 [module/filesystem]
 type = internal/fs
 mount-0 = /
-label-mounted = %{F#9f78e1}%{T2} %{T1}%mountpoint%: %{F#bf}%used%
+label-mounted = %{F#9f78e1}%{T2} %{F#bf}%{T1}%used%
 format-mounted = <label-mounted>
 format-mounted-padding = 2
 format-mounted-background = #1c1c1c
