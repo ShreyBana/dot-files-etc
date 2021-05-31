@@ -84,7 +84,7 @@ label =  %{T2} %{T1}%date% %{T2} %{T1}%time%
 format = <label>
 format-padding = 2
 format-prefix-foreground = ${colors.foreground-alt}
-format-background = #151617
+format-background = #111415
 ;format-underline = #0a6cf5
 
 [module/i3]
@@ -139,19 +139,19 @@ label-connected = %{F#00e38d}%{T2}說 %{F#bf}%{T1}%essid%%downspeed:9%
 format-connected = <label-connected>
 label-disconnected = %{F#ff0018}%{T2}ﲁ
 format-disconnected = <label-disconnected>
-format-connected-background = #151617
-format-disconnected-background = #151617
+format-connected-background = #111415
+format-disconnected-background = #111415
 format-connected-padding = 2
 format-disconnected-padding = 2
 
 ; UN-USED
-[module/wifi] 
-type = custom/script
-exec = $HOME/.config/rofi/scripts/wifi-stat
-click-left = $HOME/.config/rofi/scripts/wifi-menu
-format-background = #141414
-;format-underline = ${colors.purple}
-format-padding = 2
+;[module/wifi] 
+;type = custom/script
+;exec = $HOME/.config/rofi/scripts/wifi-stat
+;click-left = $HOME/.config/rofi/scripts/wifi-menu
+;format-background = #141414
+;;format-underline = ${colors.purple}
+;format-padding = 2
 
 [module/volume]
 type = custom/script
@@ -159,7 +159,7 @@ exec = $HOME/.config/rofi/scripts/volume-stat
 click-left = $HOME/.config/rofi/scripts/volume-menu
 interval = 1
 ;format-underline = ${colors.lime-green}
-format-background = #171919
+format-background = #151819
 format-padding = 4
 
 [module/memory]
@@ -168,7 +168,7 @@ interval = 2
 label = %{F#ff4a00}%{T2} %{F#bfbfbf}%{T1}%percentage_used%%
 format = <label>
 format-padding = 4
-format-background = #1a1b1b
+format-background = #191c1d
 
 [module/filesystem]
 type = internal/fs
@@ -176,7 +176,7 @@ mount-0 = /
 label-mounted = %{F#9f78e1}%{T2} %{F#bf}%{T1}%used%
 format-mounted = <label-mounted>
 format-mounted-padding = 2
-format-mounted-background = #1d2021
+format-mounted-background = #1d2223
 
 [module/powermenu]
 type = custom/text
