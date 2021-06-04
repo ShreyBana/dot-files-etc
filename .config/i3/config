@@ -203,7 +203,7 @@ bindsym $sup+r mode "resize"
 #######################################################################
 
 # gaps
-gaps inner 5
+gaps inner 15
 gaps outer 5
 for_window [class="Firefox"] gaps inner 0
 smart_gaps on
@@ -230,10 +230,11 @@ default_border none
 #  status_command i3status --config ~/.config/i3status/config
 #}
 # assignments:
-
+assign [class="discord"] 4
+assign [class="teams"] 5
 
 #startup applications:
-exec --no-startup-id nitrogen --set-auto $HOME/Pictures/Wallpaper/grassland-pixel-art.png
+exec --no-startup-id nitrogen --set-auto $HOME/Pictures/Wallpaper/green-vine.jpg
 exec --no-startup-id firefox -P Section
 #exec --no-startup-id i3-msg 'workspace 1:Work; exec alacritty;'
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh

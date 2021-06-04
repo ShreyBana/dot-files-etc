@@ -1,0 +1,48 @@
+#!/bin/python
+from subprocess import run, PIPE, Popen
+from functools import reduce
+import threading
+
+state = 0 # 0 -> not in use; 1 -> in use; 2 -> closed
+
+def menu(output):
+  choice = run(
+      ["rofi", "-dmenu", "-p", "\"Search\"", "-selected-row", "1"], 
+      stdin=output,
+      capture_output=True, 
+      text=True
+      ).stdout
+  print(choice)
+
+def get_output(flag):
+  if flag:
+    run(["nmcli", "dev", "wifi", "list"], capture_output=True)
+
+  FIELDS = ["SSID", "RATE", "BARS", "SECURITY"]
+  rows = None
+  for field in FIELDS:
+    str = run(
+        ["nmcli", "-f", field, "dev", "wifi", "list"], 
+        capture_output=True, 
+        text=True
+        ).stdout.split('\n')
+    str = [s.strip() for s in str]
+    if rows == None:
+      rows = str
+    else:
+      for i in range(len(str)):
+        rows[i] += '\t' + str[i]
+
+  output = reduce(lambda a,b: a + '\n' + b, rows) 
+  p = Popen(
+      ["column", "-t", "-s", "\t", "-o", "\t"],
+      stdout=PIPE,
+      stdin=PIPE,
+      text=True,
+      stderr=PIPE
+      )
+  output = p.communicate(input=output)[0]
+  return output
+
+if __name__ == "__main__":
+  menu(get_output(False))

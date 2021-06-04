@@ -1,0 +1,20 @@
+#!/bin/bash
+source=$(pacmd list-sinks | awk -F ": " '/active port: <analog/ { print $2 }' | awk 'NR ==  1 { print }')
+if [[ $source = "<analog-output-headphones>" ]]; then
+  source=""
+  source_muted="ﳌ"
+else
+  source="蓼"
+  source_muted="遼"
+fi
+
+status=$(amixer sget Master | awk -F "[][]" '/Left:/ { print $4 }')
+if [[ $status = "on" ]]; then
+  status="%{F#00d1ff}%{T2}$source"
+else
+  status="%{F#ff0018}%{T2}$source_muted"
+fi
+
+percentage=$(amixer sget Master | awk -F "[][]" '/Left:/ { print $2 }')
+
+printf "%s %s\n" $status %{F-}%{T1}$percentage

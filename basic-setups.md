@@ -36,7 +36,7 @@
   - `mkfs.fat -F32 /dev/sdxY` for efi 
   - `mkswap /dev/sdxY` & `swapon /dev/sdxY` for swap
   - `mount /dev/sdxY /mnt` mount the root partition **IMP**
-  - `mkdir /mnt/boot; mkdir /mnt/boot/efi` create efi dir **IMP**
+  - `mkdir -p /mnt/boot/efi` create efi dir **IMP**
   - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion **IMP otherwise grub will not install**
   - `mkdir /mnt/home` create home dir **IMP**
   - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
@@ -54,9 +54,10 @@
   - `cat > /etc/hosts` & add `127.0.0.1       localhost`
   - `passwd` and set the root password
   - `groupadd sudo`
-  -  edit `/etc/sudoers` and uncomment the `%sudo` line 
-  -  reboot and login as root and a new user w/ the settings menu
-  - `usermod -a -G sudo <username>` to enable **sudo** commands
+  -  edit `/etc/sudoers` and uncomment the `%sudo` line & make sure to leave the `%` 
+  - `useradd -m USER_NAME` to create new user with defaults
+  - `passwd USER_NAME` to set the password
+  - `usermod -aG sudo USER_NAME` to enable **sudo** commands
   
 ### Install Yay
   - `cd Downloads`
