@@ -41,7 +41,7 @@
   - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion **IMP otherwise grub will not install**
   - `mkdir /mnt/home` create home dir **IMP**
   - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
-  - `pacstrap /mnt linux linux-firmware base base-devel  efibootmgr networkmanager grub git lightdm lightdm-webkit2-greeter pulseaudio pulseaudio-alsa xorg-server i3 alacritty vim ranger highlight w3m rofi nitrogen vlc firefox`
+  - `pacstrap /mnt linux linux-firmware base base-devel  efibootmgr networkmanager grub git lightdm lightdm-webkit2-greeter pulseaudio pulseaudio-alsa xorg-server i3 alacritty vim ranger highlight w3m rofi nitrogen vlc firefox noto-fonts-emoji`
   - `genfstab -U /mnt >> /mnt/etc/fstab`
   - `arch-chroot /mnt`
   - `grub-install`
