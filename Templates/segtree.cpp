@@ -8,11 +8,11 @@ private:
   node* tree;
   int size, *arr;
 
-  node merge (const node& lc, const node& rc) 
+  node merge(const node& lc, const node& rc) 
   {
   }
 
-  void build (int v, int tl, int tr) 
+  void build(int v, int tl, int tr) 
   {
     if (tl == tr) {
       tree[v] = node (arr[tl]);
@@ -24,11 +24,11 @@ private:
     }
   }
 
-  void set (int v, int tl, int tr, ) {}
+  void set(int v, int tl, int tr, ) {}
 
-  type query (int v, int tl , int tr, ) {}
+  type query(int v, int tl , int tr, ) {}
 public:
-  segtree (int *arr, int size):arr(arr), size(size) 
+  segtree(int *arr, int size):arr(arr), size(size) 
   {
     int log_n = 1;
     while ((1 << log_n) < size) log_n++;
@@ -36,13 +36,13 @@ public:
     build(0, 0, size - 1);
   }
 
-  void set (int ) {}
+  void set(int ) {}
 
-  type query (int ) {}
+  type query(int ) {}
 };
   
 
-int main (void) 
+int main(void) 
 {
   ios_base::sync_with_stdio(false), cin.tie(0);
   int tc; cin >> tc;
