@@ -28,9 +28,10 @@
 
 # Arch
 ### Installation steps
-  - `iwctl` to enter the netwrok manager icli
-  - `station <devicename> connect SSID` connect to the network
-  - `station <devicename> show` to check
+  - `iwctl` to enter cli
+  - `device list` to show available stations
+  - `station DEVICE_NAME connect SSID` connect to the network
+  - `station DEVICE_NAME show` to check
   - `cfdisk` create root, swap & efi in ssd then make home in hdd
   - `mkfs.ext4 /dev/sdxY` for root & home
   - `mkfs.fat -F32 /dev/sdxY` for efi 
@@ -40,7 +41,7 @@
   - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion **IMP otherwise grub will not install**
   - `mkdir /mnt/home` create home dir **IMP**
   - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
-  - `pacstrap /mnt base base-devel linux linux-firmware vim alacritty efibootmgr networkmanager nvidia gnome grub git vlc firefox`
+  - `pacstrap /mnt linux linux-firmware base base-devel vim alacritty efibootmgr networkmanager grub git vlc firefox i3 lightdm lightdm-webkit2-greeter ranger rofi pulseaudio xorg-server nitrogen`
   - `genfstab -U /mnt >> /mnt/etc/fstab`
   - `arch-chroot /mnt`
   - `grub-install`
