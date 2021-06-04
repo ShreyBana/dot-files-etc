@@ -74,3 +74,9 @@
   - All changes to be made in `/etc/default/grub` and then run `sudo grub-mkconfig -o /boot/grub/grub.cfg`
   - If getting `funky smelling output from rdrand` on boot add `GRUB_CMDLINE_LINUX_DEFAULT=nordrand` to get the kernel to not use the `rdrand` instruction
   - If getting low res after installing a theme comment out `GRUB_TERMINAL_OUTPUT=console` via `#`
+
+### fish
+  - `sudo pacman -S fish`
+  - `chsh -l` to check if its installed correctly
+  - `chsh -s /usr/bin/fish` change default shell for current user
+  - `fish_config` to run the default config script
