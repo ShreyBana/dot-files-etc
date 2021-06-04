@@ -47,7 +47,7 @@
   - `grub-install`
   - `grub-mkconfig -o /boot/grub/grub.cfg`
   - `systemctl enable NetworkManager`
-  - `systemctl enable gdm`
+  - `systemctl enable lightdm`
   - `ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime`
   - `hwclock --systohc`
   -  Edit `/etc/locale.gen` and uncomment `en_US.UTF-8` then run `locale-gen`
@@ -80,3 +80,6 @@
   - `chsh -l` to check if its installed correctly
   - `chsh -s /usr/bin/fish` change default shell for current user
   - `fish_config` to run the default config script
+
+### lightdm
+  - `vim /etc/lightdm/lightdm.conf` uncomment under `[Seat:*]` the line containing `greeter-sesssion=` and put the name of the greeter you want to use ex: `greeter-session=lightdm-webkit2-greeter`
