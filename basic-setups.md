@@ -30,8 +30,8 @@
 ### Installation steps
   - `iwctl` to enter cli
   - `device list` to show available stations
-  - `station DEVICE_NAME connect SSID` connect to the network
-  - `station DEVICE_NAME show` to check
+  - `station DEVICENAME connect SSID` connect to the network
+  - `station DEVICENAME show` to check
   - `cfdisk` create root, swap & efi in ssd then make home in hdd
   - `mkfs.ext4 /dev/sdxY` for root & home
   - `mkfs.fat -F32 /dev/sdxY` for efi 
@@ -56,9 +56,9 @@
   - `passwd` and set the root password
   - `groupadd sudo`
   -  edit `/etc/sudoers` and uncomment the `%sudo` line & make sure to leave the `%` 
-  - `useradd -m USER_NAME` to create new user with defaults
+  - `useradd -m USERNAME` to create new user with defaults
   - `passwd USER_NAME` to set the password
-  - `usermod -aG sudo USER_NAME` to enable **sudo** commands
+  - `usermod -aG sudo USERNAME` to enable **sudo** commands
   
 ### Install Yay
   - `cd Downloads`
