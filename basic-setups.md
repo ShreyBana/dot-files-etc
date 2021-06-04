@@ -28,9 +28,10 @@
 
 # Arch
 ### Installation steps
-  - `iwctl` to enter the netwrok manager icli
-  - `station <devicename> connect SSID` connect to the network
-  - `station <devicename> show` to check
+  - `iwctl` to enter cli
+  - `device list` to show available stations
+  - `station DEVICE_NAME connect SSID` connect to the network
+  - `station DEVICE_NAME show` to check
   - `cfdisk` create root, swap & efi in ssd then make home in hdd
   - `mkfs.ext4 /dev/sdxY` for root & home
   - `mkfs.fat -F32 /dev/sdxY` for efi 
