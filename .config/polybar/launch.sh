@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+mybarusr/bin/env bash
 
 # Terminate already running bar instances
 killall -q polybar
@@ -11,4 +11,4 @@ polybar bar1 2>&1 | tee -a /tmp/polybar1.log & disown
 polybar bar2 2>&1 | tee -a /tmp/polybar2.log & disown
 
 echo "Bars launched..."
-polybar example > ~/.polybar.log
+polybar mybar > ~/.polybar.log

@@ -31,6 +31,7 @@ light-yellow = #ffed00
 light-blue = #00d1ff
 deep-blue = #0078ff
 lime-green = #00e38d
+green = #00e733
 purple = #9f78e1
 
 
@@ -54,7 +55,7 @@ font-1 = roboto mono nerd font:pixelsize=12;2
 font-2 = roboto mono nerd font:pixelsize=14;2
 
 modules-left = date i3
-modules-right = filesystem memory volume network 
+modules-right = battery filesystem memory volume network 
 tray-position = right
 tray-padding = 2
 tray-background = #0063ff
@@ -121,7 +122,7 @@ ws-icon-font = 2
 
 [module/network]
 type = internal/network
-interface = wlp3s0
+interface = wlo1
 interval = 3.0
 label-connected = %{F#00e38d}%{T2}說 %{F#bf}%{T1}%essid%%downspeed:9%
 format-connected = <label-connected>
@@ -165,6 +166,35 @@ label-mounted = %{F#9f78e1}%{T2} %{F#bf}%{T1}%used%
 format-mounted = <label-mounted>
 format-mounted-padding = 2
 format-mounted-background = #1d2223
+
+[module/battery]
+type = internal/battery
+full-at = 96
+battery = BAT0
+adapter = AC
+poll-interval = 5
+
+format-full-padding = 2
+label-full = %{F#00e38d}  %{F#bf}100%
+
+format-charging = <animation-charging> <label-charging>
+format-charging-padding = 2
+label-charging = %{F#bf}%percentage:4%%
+animation-charging-0 = %{F#ffd300}
+animation-charging-1 = %{F#ffd300}
+animation-charging-2 = %{F#ffd300}
+animation-charging-3 = %{F#ffd300}
+animation-charging-4 = %{F#ffd300}
+animation-charging-framerate = 1000
+
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-padding = 2
+label-discharging = %{F#bf}%percentage:3%%
+ramp-capacity-0 = %{F#ff0000}
+ramp-capacity-1 = %{F#ff0000}
+ramp-capacity-2 = %{F#ff9400}
+ramp-capacity-3 = %{F#00e38d}
+ramp-capacity-4 = %{F#00e38d}
 
 [module/powermenu]
 type = custom/text
