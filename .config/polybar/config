@@ -39,7 +39,6 @@ lime-green = #00e38d
 green = #00e733
 purple = #9f78e1
 
-
 [bar/mybar]
 width = 100%
 height = 27
@@ -83,7 +82,6 @@ format = <label>
 format-padding = 2
 format-prefix-foreground = ${colors.foreground-alt}
 format-background = ${colors.background-gradient-0}
-;format-underline = #0a6cf5
 
 [module/i3]
 type = internal/i3
@@ -122,6 +120,11 @@ label-urgent-font = 2
 ws-icon-0 = 1;
 ws-icon-1 = 2;
 ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;ﭮ
+ws-icon-5 = 6;羚
+;ws-icon-6 = 7;
+;ws-icon-8 = 8;
 ws-icon-default = ﲾ
 ws-icon-font = 2
 
@@ -186,6 +189,7 @@ format-mounted = <label-mounted>
 format-mounted-padding = 4
 format-mounted-background = ${colors.background-gradient-4}
 
+;for laptops only
 [module/battery]
 type = internal/battery
 full-at = 96

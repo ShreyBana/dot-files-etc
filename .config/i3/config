@@ -230,11 +230,15 @@ default_border none
 #  status_command i3status --config ~/.config/i3status/config
 #}
 # assignments:
-assign [class="discord"] 4
-assign [class="teams"] 5
+assign [class="Firefox"] 1
+assign [class="Firefox"] 2
+assign [class="Alacritty"] 3
+assign [class="Alacritty"] 4
+assign [class="discord"] 5
+assign [class="teams"] 6
 
 #startup applications:
 exec --no-startup-id nitrogen --set-auto $HOME/Pictures/Wallpaper/green-vine.jpg
-exec --no-startup-id firefox -P Section
-#exec --no-startup-id i3-msg 'workspace 1:Work; exec alacritty;'
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec --no-startup-id firefox -P Section
+exec --no-startup-id alacritty 
