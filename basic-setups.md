@@ -75,6 +75,9 @@
   - If getting `funky smelling output from rdrand` on boot add `GRUB_CMDLINE_LINUX_DEFAULT=nordrand` to get the kernel to not use the `rdrand` instruction
   - If getting low res after installing a theme comment out `GRUB_TERMINAL_OUTPUT=console` via `#`
 
+### Dual-Boot issues
+  -  run `timedatectl set-local-rtc 1` to fix issues with time at boot 
+
 ### fish
   - `sudo pacman -S fish`
   - `chsh -l` to check if its installed correctly
