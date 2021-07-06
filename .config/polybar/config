@@ -15,7 +15,6 @@
 ;   The README contains a lot of information
 ;
 ;==========================================================
-
 [colors]
 background = #232627
 background-alt = #444
@@ -58,7 +57,7 @@ font-0 = roboto mono nerd font:pixelsize=10.5;2
 font-1 = roboto mono nerd font:pixelsize=12;2
 font-2 = roboto mono nerd font:pixelsize=14;2
 
-modules-left = date i3
+modules-left = date bspwm i3
 modules-right = battery filesystem temperature memory volume network 
 tray-position = right
 tray-padding = 2
@@ -83,11 +82,12 @@ format-padding = 2
 format-prefix-foreground = ${colors.foreground-alt}
 format-background = ${colors.background-gradient-0}
 
-[module/i3]
-type = internal/i3
+[module/bspwm]
+type = internal/bspwm
 format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
+pin-workspaces = false
 
 label-mode-padding = 1
 label-mode-foreground = #000
@@ -117,14 +117,23 @@ label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
 label-urgent-font = 2
 
-ws-icon-0 = 1;
-ws-icon-1 = 2;
-ws-icon-2 = 3;
-ws-icon-3 = 4;
-ws-icon-4 = 5;ﭮ
-ws-icon-5 = 6;羚
-;ws-icon-6 = 7;
-;ws-icon-8 = 8;
+label-occupied = %icon%
+label-occupied-padding = 2
+label-occupied-font = 2
+label-empty = %icon%
+label-empty-padding = 2
+label-empty-font = 2
+
+ws-icon-0 = web1;
+ws-icon-1 = web2;
+ws-icon-2 = work1;
+ws-icon-3 = work2;
+ws-icon-4 = work3;
+ws-icon-5 = discord;ﭮ
+ws-icon-6 = teams;羚
+ws-icon-7 = spotify;阮
+;ws-icon-8 = steam;
+;ws-icon-9 = games;
 ws-icon-default = ﲾ
 ws-icon-font = 2
 
@@ -133,7 +142,7 @@ type = internal/network
 ;interface = wlo1 <- laptop
 interface = wlp3s0
 interval = 3.0
-label-connected = %{F#00e38d}%{T2}說 %{F#bf}%{T1}%essid%%downspeed:9%
+label-connected = %{F#00e38d}%{T2}說 %{F#bfbfbf}%{T1}%essid%%downspeed:9%
 format-connected = <label-connected>
 label-disconnected = %{F#ff0018}%{T2}ﲁ
 format-disconnected = <label-disconnected>
@@ -177,14 +186,14 @@ warn-temperature = 80
 format = <label>
 format-background = ${colors.background-gradient-3}
 format-padding = 4
-label = %{F#ff4f00}%{T2} %{F#bf}%{T1}%temperature-c:4%
+label = %{F#ff4f00}%{T2} %{F#bfbfbf}%{T1}%temperature-c:4%
 format-warn = <label-warn>
-label-warn = %{F#ff0000}%{T2} %{F#bf}%{T1}%temperature-c%
+label-warn = %{F#ff0000}%{T2} %{F#bfbfbf}%{T1}%temperature-c%
 
 [module/filesystem]
 type = internal/fs
 mount-0 = /
-label-mounted = %{F#9f78e1}%{T2} %{F#bf}%{T1}%used%
+label-mounted = %{F#9f78e1}%{T2} %{F#bfbfbf}%{T1}%used%
 format-mounted = <label-mounted>
 format-mounted-padding = 4
 format-mounted-background = ${colors.background-gradient-4}
@@ -198,11 +207,11 @@ adapter = AC
 poll-interval = 5
 
 format-full-padding = 2
-label-full = %{F#00e38d}  %{F#bf}100%
+label-full = %{F#00e38d}  %{F#bfbfbf}100%
 
 format-charging = <animation-charging> <label-charging>
 format-charging-padding = 2
-label-charging = %{F#bf}%percentage:4%%
+label-charging = %{F#bfbfbf}%percentage:4%%
 animation-charging-0 = %{F#ffd300}
 animation-charging-1 = %{F#ffd300}
 animation-charging-2 = %{F#ffd300}
@@ -212,7 +221,7 @@ animation-charging-framerate = 1000
 
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-padding = 2
-label-discharging = %{F#bf}%percentage:3%%
+label-discharging = %{F#bfbfbf}%percentage:3%%
 ramp-capacity-0 = %{F#ff0000}
 ramp-capacity-1 = %{F#ff0000}
 ramp-capacity-2 = %{F#ff9400}
@@ -240,3 +249,51 @@ screenchange-reload = true
 [global/wm]
 margin-top = 0
 ; vim:ft=dosini
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+label-mode-padding = 1
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+label-focused = %icon%
+;label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+label-focused-font = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %icon%
+label-unfocused-padding = 2
+label-unfocused-font = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %icon%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+label-visible-font = 2
+
+; urgent = Workspace with urgency hint set
+label-urgent = %icon%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+label-urgent-font = 2
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;ﭮ
+ws-icon-6 = 7;羚
+ws-icon-7 = 8;阮
+;ws-icon-7 = 9;
+;ws-icon-8 = 0;
+ws-icon-default = ﲾ
+ws-icon-font = 2
+; vim:set ft=dosini:
