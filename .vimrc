@@ -1,7 +1,8 @@
 "--SYNTAX & RELATED--"
 syntax on
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 set smartindent
 set autoindent
@@ -27,7 +28,7 @@ Plug 'morhetz/gruvbox'
 Plug 'tomasiser/vim-code-dark'
 Plug 'preservim/nerdtree'
 Plug 'skywind3000/asyncrun.vim'
-Plug 'ycm-core/YouCompleteMe'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-python/python-syntax'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'ryanoasis/vim-devicons'
@@ -35,9 +36,20 @@ Plug 'pacha/vem-tabline'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'dense-analysis/ale'
+Plug 'eslint/eslint'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+Plug 'psf/black', { 'branch': 'stable' }
 Plug 'uiiaoo/java-syntax.vim'
 call plug#end()
 let g:vem_tabline_show_number = "buffnr"
+"--ALE--"
+let g:ale_fixers = {'javascript': ['prettier', 'eslint'], 'css': ['prettier'], 'html': ['prettier'], 'json': ['prettier']}
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1
+"--Prettier--"
 
 "--COLOR SCHEMING--"
 set term=xterm-256color
@@ -53,7 +65,7 @@ let g:python_highlight_func_calls = 1
 let g:python_highlight_operators = 1
 
 "--KEY BINDINGS--"
-let mapleader = "."
+let mapleader = ";"
 map <C-g> :FZF<CR>
 autocmd filetype cpp nnoremap <F8> :w <bar> exec '!clear; g++ -std=c++20 -Wall '.shellescape('%').' -o '.shellescape('%:r')<CR>
 nnoremap <Leader>t :NERDTreeToggle<CR>
@@ -64,6 +76,19 @@ nnoremap <Space>l :wincmd l<CR>
 nnoremap <Space>b :buffers<CR>:buffer<Space>
 nnoremap H gT
 nnoremap L gt
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+"--AUTORUN--"
+autocmd BufWritePre *.py execute ':Black'
 
 "--STARTUP--"
 "autocmd VimEnter * NERDTree
+autocmd BufNewFile,BufRead *.fish set syntax=bash
