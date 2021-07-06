@@ -56,6 +56,7 @@ bindsym $sup+Shift+q kill
 #bindsym $sup+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
 bindsym $sup+d exec rofi -show drun
+bindsym $sup+f exec rofi -show file-browser
 bindsym $sup+Shift+p exec rofi -show run
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
@@ -92,7 +93,7 @@ bindsym $sup+b split h
 bindsym $sup+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $sup+f fullscreen toggle
+bindsym $sup+Shift+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $sup+s layout stacking
@@ -230,13 +231,14 @@ default_border none
 #  status_command i3status --config ~/.config/i3status/config
 #}
 # assignments:
-assign [class="discord"] 5
-assign [class="teams"] 6
+assign [class="discord"] 6
+assign [class="teams"] 7
+for_window [class="Spotify"] move to workspace 8
 
 #startup applications:
-exec --no-startup-id nitrogen --set-auto $HOME/Pictures/Wallpaper/green-vine.jpg
-exec --no-startup-id $HOME/.config/polybar/launch.sh
-exec --no-startup-id "i3-msg workspace 4;alacritty"
-exec --no-startup-id "sleep 0.5;i3-msg workspace 3;alacritty"
-exec --no-startup-id "sleep 1;i3-msg workspace 2;firefox -P ShreyBana"
-exec --no-startup-id "sleep 1.75;i3-msg workspace 1;firefox -P Section"
+exec_always --no-startup-id nitrogen --set-auto $HOME/Pictures/Wallpaper/green-vine.jpg
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec --no-startup-id i3-msg 'workspace 2; exec firefox -P ShreyBana; workspace 1'
+exec --no-startup-id i3-msg 'workspace 1; exec firefox -P Section; workspace 3'
+exec --no-startup-id i3-msg 'workspace 3; exec alacritty'
+# vim:set ft=bash:
