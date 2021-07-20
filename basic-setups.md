@@ -69,6 +69,10 @@
 
 # Optional Stuff:
 
+### Fonts:
+  - `yay -S nerd-fonts-hack nerd-fonts-roboto-mono` required for alacritty and polybar
+  - `sudo pacman -S otf-ipafont` japanese fonts
+
 ### GRUB
   - All changes to be made in `/etc/default/grub` and then run `sudo grub-mkconfig -o /boot/grub/grub.cfg`
   - If getting `funky smelling output from rdrand` on boot add `GRUB_CMDLINE_LINUX_DEFAULT=nordrand` to get the kernel to not use the `rdrand` instruction
