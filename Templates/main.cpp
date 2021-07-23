@@ -3,8 +3,8 @@ using namespace std;
 
 int main(void) 
 {
-  ios_base::sync_with_stdio(false), cin.tie(0);
-  int tc; cin >> tc;
-  while (tc--) {
-  }
+    ios_base::sync_with_stdio(false), cin.tie(0);
+    int tc; cin >> tc;
+    while (tc--) {
+    }
 }
