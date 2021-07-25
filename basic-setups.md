@@ -40,7 +40,7 @@
   - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion **IMP otherwise grub will not install**
   - `mkdir /mnt/home` create home dir **IMP**
   - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
-  - `pacstrap /mnt linux linux-firmware base base-devel  efibootmgr networkmanager grub git lightdm lightdm-webkit2-greeter pulseaudio pulseaudio-alsa xorg-server i3 alacritty vim ranger highlight w3m rofi nitrogen vlc firefox noto-fonts-emoji`
+  - `pacstrap /mnt linux linux-firmware base base-devel  efibootmgr networkmanager grub git lightdm lightdm-webkit2-greeter pulseaudio pulseaudio-alsa xorg-server i3 alacritty vim ranger highlight w3m rofi nitrogen vlc firefox noto-fonts-emoji zathura zathura-pdf-mudpdf`
   - `genfstab -U /mnt >> /mnt/etc/fstab`
   - `arch-chroot /mnt`
   - `grub-install`
@@ -49,13 +49,14 @@
   - `systemctl enable lightdm`
   - `ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime`
   - `hwclock --systohc`
-  -  Edit `/etc/locale.gen` and uncomment `en_US.UTF-8` then run `locale-gen`
+  -  Edit `/etc/locale.gen` and uncomment `en_US.UTF-8`.
+  - `locale-gen`
   - `cat > /etc/hostname` & add hostname
   - `cat > /etc/hosts` & add `127.0.0.1       localhost`
   - `passwd` and set the root password
   - `groupadd sudo`
   -  edit `/etc/sudoers` and uncomment the `%sudo` line & make sure to leave the `%` 
-  - `useradd -m USERNAME` to create new user with defaults
+  - `useradd -m USERNAME -c "FULL NAME"` to create new user with defaults (full name is used to at login).
   - `passwd USER_NAME` to set the password
   - `usermod -aG sudo USERNAME` to enable **sudo** commands
   
