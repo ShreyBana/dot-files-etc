@@ -60,12 +60,10 @@
   - `usermod -aG sudo USERNAME` to enable **sudo** commands
   
 ### Install Yay
-  - `cd Downloads`
-  - `git clone https://aur.archlinux.org/yay-git.git`
-  - `sudo chown -R <username>:<username> ./yay-git`
-  - `cd yay-git`
+  - `pacman -S --needed git base-devel`
+  - `git clone https://aur.archlinux.org/yay.git`
+  - `cd yay`
   - `makepkg -si`
-  - `cd ..; sudo rm -r yay-git`
 
 # Optional Stuff:
 
@@ -89,3 +87,6 @@
 
 ### lightdm
   - `vim /etc/lightdm/lightdm.conf` uncomment under `[Seat:*]` the line containing `greeter-sesssion=` and put the name of the greeter you want to use ex: `greeter-session=lightdm-webkit2-greeter`
+
+### username
+  - To change the GECO comment(used by gdm & lightdm for login user name aka `Full Name`), you have to edit `/etc/login.defs` to be able to make the appropriate change via `chfn`.

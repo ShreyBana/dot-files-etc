@@ -43,6 +43,7 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'uiiaoo/java-syntax.vim'
+Plug 'dag/vim-fish'
 Plug 'lukas-reineke/indent-blankline.nvim'
 call plug#end()
 let g:vem_tabline_show_number = "buffnr"

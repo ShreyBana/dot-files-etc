@@ -236,7 +236,7 @@ assign [class="teams"] 7
 for_window [class="Spotify"] move to workspace 8
 
 #startup applications:
-exec_always --no-startup-id nitrogen --set-auto $HOME/Pictures/Wallpaper/green-vine.jpg
+exec_always --no-startup-id nitrogen --restore
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id i3-msg 'workspace 2; exec firefox -P ShreyBana; workspace 1'
 exec --no-startup-id i3-msg 'workspace 1; exec firefox -P Section; workspace 3'
