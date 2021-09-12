@@ -19,7 +19,6 @@ def get_output(flag):
     run(["nmcli", "dev", "wifi", "list"], capture_output=True)
 
   FIELDS = ["SSID", "RATE", "BARS", "SECURITY"]
-  rows = None
   for field in FIELDS:
     str = run(
         ["nmcli", "-f", field, "dev", "wifi", "list"], 

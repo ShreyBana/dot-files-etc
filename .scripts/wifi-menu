@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+{ echo "SSID:RATE:BARS:SECURITY" & nmcli  -t -f SSID,RATE,BARS,SECURITY d wifi list --rescan no; } | 
+    column -t -s ":" |
+    rofi -dmenu -p "Search" -selected-row 1
