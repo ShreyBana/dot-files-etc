@@ -154,16 +154,16 @@ format-disconnected-padding = 2
 ; UN-USED
 ;[module/wifi] 
 ;type = custom/script
-;exec = $HOME/.config/rofi/scripts/wifi-stat
-;click-left = $HOME/.config/rofi/scripts/wifi-menu
+;exec = $HOME/.scripts/wifi-stat
+;click-left = $HOME/.scripts/wifi-menu
 ;format-background = #141414
 ;;format-underline = ${colors.purple}
 ;format-padding = 2
 
 [module/volume]
 type = custom/script
-exec = $HOME/.config/rofi/scripts/volume-stat
-click-left = $HOME/.config/rofi/scripts/volume-menu
+exec = $HOME/.scripts/volume-stat
+click-left = $HOME/.scripts/volume-menu
 interval = 1
 ;format-underline = ${colors.lime-green}
 format-background = ${colors.background-gradient-1}
@@ -236,7 +236,7 @@ content-margin = 0
 content-padding = 1
 content-foreground = ${colors.orange}
 ;content-underline = ${colors.orange}
-click-left = $HOME/.config/rofi/scripts/power-menu
+click-left = $HOME/.scripts/power-menu
 
 [settings]
 screenchange-reload = true
