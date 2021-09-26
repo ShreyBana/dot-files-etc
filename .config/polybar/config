@@ -16,13 +16,21 @@
 ;
 ;==========================================================
 [colors]
-background = #232627
+background = #282828
+background-hard = #1d1d1d
 background-alt = #444
 background-gradient-0 = #0d1011
 background-gradient-1 = #111415
 background-gradient-2 = #151819
 background-gradient-3 = #191c1d
-background-gradient-4 = #1d2223
+background-gradient-4 = #9f78e1
+font = #232627
+font-hard = #a89984
+network = #689d6a
+volume = #d79921
+ram = #458588
+temp = #cc241d
+filesystem = #b16286
 foreground = #bfbfbf
 foreground-alt = #555
 primary = #ffb52a
@@ -41,7 +49,7 @@ purple = #9f78e1
 [bar/mybar]
 width = 100%
 height = 27
-fixed-center = false
+fixed-center = true
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-size = 3
@@ -57,7 +65,8 @@ font-0 = roboto mono nerd font:pixelsize=10.5;2
 font-1 = roboto mono nerd font:pixelsize=12;2
 font-2 = roboto mono nerd font:pixelsize=14;2
 
-modules-left = date bspwm i3
+modules-left = date 
+modules-center = i3
 modules-right = battery filesystem temperature memory volume network 
 tray-position = right
 tray-padding = 2
@@ -68,6 +77,56 @@ scroll-down = i3wm-wsprev
 cursor-click = pointer
 cursor-scroll = ns-resize
 ;bottom = true
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+label-mode-padding = 1
+label-mode-foreground = ${colors.font-hard}
+label-mode-background = ${colors.primary}
+
+label-focused = %icon%
+;label-focused-background = ${colors.background-alt}
+label-focused-foreground = ${colors.font-hard}
+label-focused-underline= ${colors.volume}
+label-focused-padding = 2
+label-focused-font = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %icon%
+label-unfocused-foreground = ${colors.font-hard}
+label-unfocused-padding = 2
+label-unfocused-font = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %icon%
+label-visible-background = ${self.label-focused-background}
+label-visible-foreground = ${colors.font-hard}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+label-visible-font = 2
+
+; urgent = Workspace with urgency hint set
+label-urgent = %icon%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+label-urgent-font = 2
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;ﭮ
+ws-icon-6 = 7;羚
+ws-icon-7 = 8;阮
+;ws-icon-7 = 9;
+;ws-icon-8 = 0;
+ws-icon-default = ﲾ
+ws-icon-font = 2
 
 [module/date]
 type = internal/date
@@ -80,7 +139,8 @@ label =  %{T2} %{T1}%date% %{T2} %{T1}%time%
 format = <label>
 format-padding = 2
 format-prefix-foreground = ${colors.foreground-alt}
-format-background = ${colors.background-gradient-0}
+format-background = ${colors.background-hard}
+format-foreground = ${colors.font-hard}
 
 [module/bspwm]
 type = internal/bspwm
@@ -142,20 +202,21 @@ type = internal/network
 ;interface = wlo1 <- laptop
 interface = wlp3s0
 interval = 3.0
-label-connected = %{F#00e38d}%{T2}說 %{F#bfbfbf}%{T1}%essid%%downspeed:9%
+label-connected = %{T2}說 %{T1}%essid%
+label-connected-foreground = ${colors.font}
 format-connected = <label-connected>
 label-disconnected = %{F#ff0018}%{T2}ﲁ
 format-disconnected = <label-disconnected>
-format-connected-background = ${colors.background-gradient-0}
-format-disconnected-background = ${colors.background-gradient-0}
-format-connected-padding = 2
-format-disconnected-padding = 2
+format-connected-background = ${colors.network}
+format-disconnected-background = ${colors.network}
+format-connected-padding = 1
+format-disconnected-padding = 1
 
 ; UN-USED
 ;[module/wifi] 
 ;type = custom/script
 ;exec = $HOME/.scripts/wifi-stat
-;click-left = $HOME/.scripts/wifi-menu
+;click-left = $HOME/.scriptswifi-menu
 ;format-background = #141414
 ;;format-underline = ${colors.purple}
 ;format-padding = 2
@@ -166,16 +227,17 @@ exec = $HOME/.scripts/volume-stat
 click-left = $HOME/.scripts/volume-menu
 interval = 1
 ;format-underline = ${colors.lime-green}
-format-background = ${colors.background-gradient-1}
-format-padding = 4
+format-background = ${colors.volume}
+format-padding = 2
 
 [module/memory]
 type = internal/memory
 interval = 2
-label = %{F#00afff}%{T2} %{F#bfbfbf}%{T1}%percentage_used%%
+label = %{T2} %{T1}%percentage_used%%
+label-foreground = ${colors.font}
 format = <label>
-format-padding = 4
-format-background = ${colors.background-gradient-2}
+format-padding = 2
+format-background = ${colors.ram}
 
 [module/temperature]
 type = internal/temperature
@@ -184,19 +246,22 @@ hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon0/temp2_input
 base-temperature = 40
 warn-temperature = 80
 format = <label>
-format-background = ${colors.background-gradient-3}
-format-padding = 4
-label = %{F#ff4f00}%{T2} %{F#bfbfbf}%{T1}%temperature-c:4%
+format-background = ${colors.temp}
+format-padding = 2
+label = %{T2} %{T1}%temperature-c:4%
+label-foreground = ${colors.font}
 format-warn = <label-warn>
 label-warn = %{F#ff0000}%{T2} %{F#bfbfbf}%{T1}%temperature-c%
 
+;filesystem
 [module/filesystem]
 type = internal/fs
 mount-0 = /
-label-mounted = %{F#9f78e1}%{T2} %{F#bfbfbf}%{T1}%used%
+label-mounted = %{F#0d1011}%{T2} %{T1}%used%
+label-foreground = ${colors.font}
 format-mounted = <label-mounted>
-format-mounted-padding = 4
-format-mounted-background = ${colors.background-gradient-4}
+format-mounted-padding = 2
+format-mounted-background = ${colors.filesystem}
 
 ;for laptops only
 [module/battery]
@@ -228,72 +293,4 @@ ramp-capacity-2 = %{F#ff9400}
 ramp-capacity-3 = %{F#00e38d}
 ramp-capacity-4 = %{F#00e38d}
 
-[module/powermenu]
-type = custom/text
-content = 襤
-content-font = 3
-content-margin = 0
-content-padding = 1
-content-foreground = ${colors.orange}
-;content-underline = ${colors.orange}
-click-left = $HOME/.scripts/power-menu
-
-[settings]
-screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = source
-;compositing-border = over
-;pseudo-transparency = false
-
-[global/wm]
-margin-top = 0
-; vim:ft=dosini
-
-[module/i3]
-type = internal/i3
-format = <label-state> <label-mode>
-index-sort = true
-wrapping-scroll = false
-
-label-mode-padding = 1
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
-
-label-focused = %icon%
-;label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
-label-focused-padding = 2
-label-focused-font = 2
-
-; unfocused = Inactive workspace on any monitor
-label-unfocused = %icon%
-label-unfocused-padding = 2
-label-unfocused-font = 2
-
-; visible = Active workspace on unfocused monitor
-label-visible = %icon%
-label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${self.label-focused-underline}
-label-visible-padding = ${self.label-focused-padding}
-label-visible-font = 2
-
-; urgent = Workspace with urgency hint set
-label-urgent = %icon%
-label-urgent-background = ${colors.alert}
-label-urgent-padding = 2
-label-urgent-font = 2
-
-ws-icon-0 = 1;
-ws-icon-1 = 2;
-ws-icon-2 = 3;
-ws-icon-3 = 4;
-ws-icon-4 = 5;
-ws-icon-5 = 6;ﭮ
-ws-icon-6 = 7;羚
-ws-icon-7 = 8;阮
-;ws-icon-7 = 9;
-;ws-icon-8 = 0;
-ws-icon-default = ﲾ
-ws-icon-font = 2
 ; vim:set ft=dosini:

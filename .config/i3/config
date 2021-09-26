@@ -207,7 +207,7 @@ bindsym $sup+r mode "resize"
 gaps inner 15
 gaps outer 5
 for_window [class="Firefox"] gaps inner 0
-smart_gaps on
+#smart_gaps on
 
 # border style:
 default_border none
@@ -232,12 +232,17 @@ default_border none
 #}
 # assignments:
 assign [class="discord"] 6
-assign [class="teams"] 7
+for_window [class="Microsoft Teams - Preview"] move to workspace 7
 for_window [class="Spotify"] move to workspace 8
+
+#custom bindings:
+bindsym Print       exec flameshot full
+bindsym $sup+Print exec flameshot gui
 
 #startup applications:
 exec_always --no-startup-id nitrogen --restore
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id picom
 exec --no-startup-id i3-msg 'workspace 2; exec firefox -P ShreyBana; workspace 1'
 exec --no-startup-id i3-msg 'workspace 1; exec firefox -P Section; workspace 3'
 exec --no-startup-id i3-msg 'workspace 3; exec alacritty'
