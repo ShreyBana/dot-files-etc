@@ -1,12 +1,15 @@
 function template 
     switch $argv[1]
         case -m
-            cat ~/templates/main.cpp | cat > $argv[2]
+            set FILE_PATH ~/templates/main.cpp
         case -st
-            cat ~/cp/templates/segment_tree.cpp | cat > $argv[2]
+            set FILE_PATH ~/templates/segment_tree.cpp
         case -ft
-            cat ~/cp/templates/fenwick_tree.cpp | cat > $argv[2]
+            set FILE_PATH ~/templates/fenwick_tree.cpp
         case '*'
             echo Please specify a valid flag.
+    end
+    for arg in $argv[2..-1]
+        cat < $FILE_PATH | cat > $arg
     end
 end

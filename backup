@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for file in .config/*; do
+    sudo cp /home/shrey_bana/$file ./.config/ -r
+done

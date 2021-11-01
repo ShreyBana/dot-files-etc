@@ -3,7 +3,7 @@ configuration {
 /*	width: 50;*/
 /*	lines: 15;*/
 /*	columns: 1;*/
-  font: "roboto mono nerd font 14";
+  font: "iosevka nerd font 14";
 /*	bw: 1;*/
 /*	location: 0;*/
 /*	padding: 5;*/
@@ -152,3 +152,6 @@ configuration {
 }
 
 @import "/usr/share/rofi/themes/glue_pro_blue.rasi"
+//@theme "/usr/share/rofi/themes/lb.rasi"
+//@theme "/usr/share/rofi/themes/gruvbox-dark-hard.rasi"
+@theme "/home/shrey_bana/.config/rofi/themes/nord.rasi"

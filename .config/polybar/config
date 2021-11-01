@@ -19,26 +19,28 @@ include-file = /home/shrey_bana/.config/polybar/modules.ini
 
 [bar/fullbar]
 width = 100%
-height = 31
+height = 27
 fixed-center = true
-background = #00000000
+background = ${colors.background}
 foreground = ${colors.foreground}
 line-size = 3
 line-color = #f00
 border-size = 5
+border-left-size = 10
+border-right-size = 10
 border-color = #00000000
-padding-left = 1
-padding-right = 1
+padding-left = 
+padding-right = 
 module-margin-left = 0
 module-margin-right = 0
 
-font-0 = roboto mono nerd font:pixelsize=10.5;2
-font-1 = roboto mono nerd font:pixelsize=12;2
+font-0 = iosevka nerd font:pixelsize=10;2
+font-1 = roboto mono Nerd Font:pixelsize=11;2
 font-2 = roboto mono nerd font:pixelsize=20;5.5
 
-modules-left = leftwm date rightwm
-modules-center = leftwm i3 rightwm
-modules-right = leftsystem filesystem temperature memory volume network rightsystem
+modules-left =  date 
+modules-center =  i3
+modules-right = filesystem temperature memory pulseaudio network
 tray-position = left
 tray-padding = 2
 tray-background = #0063ff
