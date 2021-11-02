@@ -5,4 +5,4 @@
 - Sleep timings in i3 config may need some tweaking on different machines.
 - shell -> `fish`
 - ls -> `exa`
-- prompt -> `startship`
+- prompt -> `starship`

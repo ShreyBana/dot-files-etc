@@ -1,5 +1,3 @@
 #!/bin/bash
 
-for file in .config/*; do
-    sudo cp $file /home/shrey_bana/.config/ -r
-done
+sudo cp .config/* /home/shrey_bana/.config/ -r
