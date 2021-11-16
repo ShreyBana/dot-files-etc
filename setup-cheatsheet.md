@@ -35,11 +35,11 @@
   - `mkfs.ext4 /dev/sdxY` for root & home
   - `mkfs.fat -F32 /dev/sdxY` for efi 
   - `mkswap /dev/sdxY` & `swapon /dev/sdxY` for swap
-  - `mount /dev/sdxY /mnt` mount the root partition **IMP**
-  - `mkdir -p /mnt/boot/efi` create efi dir **IMP**
-  - `mount /dev/sdxY /mnt/boot/efi` mount the efi partiotion **IMP otherwise grub will not install**
-  - `mkdir /mnt/home` create home dir **IMP**
-  - `mount /dev/sdxY /mnt/home` mount linux home **IMP**
+  - `mount /dev/sdxY /mnt` mount the root partition
+  - `mkdir -p /mnt/boot/efi` create efi dir
+  - `mount /dev/sdxY /mnt/boot/efi`
+  - `mkdir /mnt/home` create home dir
+  - `mount /dev/sdxY /mnt/home` mount linux home
   - `pacstrap /mnt linux linux-firmware base base-devel \`
     - `pacman-contrib efibootmgr networkmanager grub git \`
     - `lightdm lightdm-webkit2-greeter pulseaudio pulseaudio-alsa xorg-server alacritty vim \`
@@ -56,13 +56,13 @@
   - `hwclock --systohc`
   -  Edit `/etc/locale.gen` and uncomment `en_US.UTF-8`.
   - `locale-gen`
-  - `cat > /etc/hostname` & add hostname
-  - `cat > /etc/hosts` & add `127.0.0.1       localhost`
+  - Edit `/etc/hostname` & add hostname
+  - Edit `/etc/hosts` & add `127.0.0.1       localhost`
   - `passwd` and set the root password
   - `groupadd sudo`
   -  edit `/etc/sudoers` and uncomment the `%sudo` line & make sure to leave the `%` 
   - `useradd -m USERNAME -c "FULL NAME"` to create new user with defaults (full name is used to at login).
-  - `passwd USER_NAME` to set the password
+  - `passwd USERNAME` to set the password
   - `usermod -aG sudo USERNAME` to enable **sudo** commands
   
 ### Install Yay
@@ -71,28 +71,28 @@
   - `cd yay`
   - `makepkg -si`
 
-# Optional Stuff:
+# Troubleshooting & Other Stuff:
 
 ### Fonts:
-  - `yay -S nerd-fonts-hack nerd-fonts-roboto-mono` required for alacritty and polybar
-  - `sudo pacman -S otf-ipafont` japanese fonts
+  - Arch package `otf-ipafont` for japanese fonts
 
 ### GRUB
+  - If you're not getting the grub menu on boot most probably grub wasn't properly installed so via the usb remount all the drives and re-install grub.
   - All changes to be made in `/etc/default/grub` and then run `sudo grub-mkconfig -o /boot/grub/grub.cfg`
   - If getting `funky smelling output from rdrand` on boot add `GRUB_CMDLINE_LINUX_DEFAULT=nordrand` to get the kernel to not use the `rdrand` instruction
   - If getting low res after installing a theme comment out `GRUB_TERMINAL_OUTPUT=console` via `#`
 
-### Dual-Boot issues
+### Dual-Boot Issues
   -  run `timedatectl set-local-rtc 1` to fix issues with time at boot 
 
-### fish
+### lightdm
+  - `vim /etc/lightdm/lightdm.conf` uncomment under `[Seat:*]` the line containing `greeter-sesssion=` and put the name of the greeter you want to use ex: `greeter-session=lightdm-webkit2-greeter`
+
+### Changing Your Shell
   - `sudo pacman -S fish`
   - `chsh -l` to check if its installed correctly
   - `chsh -s /usr/bin/fish` change default shell for current user
   - `fish_config` to run the default config script
 
-### lightdm
-  - `vim /etc/lightdm/lightdm.conf` uncomment under `[Seat:*]` the line containing `greeter-sesssion=` and put the name of the greeter you want to use ex: `greeter-session=lightdm-webkit2-greeter`
-
-### username
+### Changing `Full Name`
   - To change the GECO comment(used by gdm & lightdm for login user name aka `Full Name`), you have to edit `/etc/login.defs` to be able to make the appropriate change via `chfn`.
