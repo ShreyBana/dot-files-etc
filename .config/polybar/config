@@ -39,7 +39,7 @@ font-1 = roboto mono Nerd Font:pixelsize=11;2
 font-2 = roboto mono nerd font:pixelsize=20;5.5
 
 modules-left =  date 
-modules-center =  i3
+modules-center = xmonad
 modules-right = filesystem temperature memory pulseaudio network
 tray-position = left
 tray-padding = 2

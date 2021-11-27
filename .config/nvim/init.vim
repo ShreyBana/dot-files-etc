@@ -22,6 +22,9 @@ highlight Comment cterm=italic gui=italic
 
 "--VIM PLUG--"
 call plug#begin('~/.vim/plugged')
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'haishanh/night-owl.vim'
+Plug 'romgrk/doom-one.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml', { 'branch': 'main' }
 Plug 'neovimhaskell/haskell-vim'
@@ -57,13 +60,13 @@ let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1
 
 "--COLOR SCHEMING--"
-set termguicolors
 let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
 let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-let g:gruvbox_italic = 1
+set termguicolors
 set background=dark
-let g:airline_theme = "gruvbox"
 colorscheme gruvbox
+let g:gruvbox_italic = 1
+let g:airline_theme = "gruvbox"
 let g:python_highlight_func_calls = 1
 let g:python_highlight_operators = 1
 let g:indent_blankline_filetype_exclude = [
