@@ -102,3 +102,4 @@
 ### Curosr
   - To change the size of the Xcursor edit the `~/.Xresources` and add `Xcursor.size: 32` or some power of 2.
   - To change the root/bg cursor to left pointer run `xsetroot -cursor_name left_ptr`
+  - To change the size of root/bg cursor run `xsetroot -xcf /usr/share/icons/THEME_NAME/cursors/left_ptr 32` or some power of 2.
