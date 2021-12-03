@@ -74,7 +74,8 @@
 # Troubleshooting & Other Stuff:
 
 ### Fonts:
-  - Arch package `otf-ipafont` for japanese fonts
+  - Arch package `otf-ipafont` for japanese fonts.
+  - To change firefox font size of the toolbar use gtk-3.0 settings.
 
 ### GRUB
   - If you're not getting the grub menu on boot most probably grub wasn't properly installed so via the usb remount all the drives and re-install grub.
@@ -97,3 +98,7 @@
 
 ### Changing `Full Name`
   - To change the GECO comment(used by gdm & lightdm for login user name aka `Full Name`), you have to edit `/etc/login.defs` to be able to make the appropriate change via `chfn`.
+
+### Curosr
+  - To change the size of the Xcursor edit the `~/.Xresources` and add `Xcursor.size: 32` or some power of 2.
+  - To change the root/bg cursor to left pointer run `xsetroot -cursor_name left_ptr`
