@@ -63,4 +63,39 @@ modules-center = battery filesystem temperature memory volume network
 radius = 5.5
 tray-position = right
 
+[bar/swift3bar]
+width = 100%
+height = 30
+fixed-center = true
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-size = 5
+line-color = #f00
+border-size = 5
+border-left-size = 15
+border-right-size = 15
+border-color = #00000000
+padding-left = 
+padding-right = 
+module-margin-left = 0
+module-margin-right = 0
+
+font-0 = iosevka nerd font:pixelsize=13;2
+font-1 = roboto mono Nerd Font:pixelsize=14;2
+font-2 = roboto mono nerd font:pixelsize=22;5.5
+
+modules-left =  date 
+modules-center = xmonad
+modules-right = filesystem battery memory pulseaudio network
+tray-position = left
+tray-padding = 2
+tray-background = #0063ff
+
+wm-restack = i3
+scroll-down = i3wm-wsprev
+cursor-click = pointer
+cursor-scroll = ns-resize
+separator = 
+radius = 0.0
+
 ; vim:set ft=dosini:
