@@ -39,10 +39,14 @@ void update(type value) {} // could be range or point so left as is
   
 void query(int ) {} // could be range or point so left as is
 
+void solve() 
+{
+}
+
 int main(void) 
 {
     ios_base::sync_with_stdio(false), cin.tie(0);
     int tc; cin >> tc;
-    while (tc--) {
-    }
+    while (tc--) 
+        solve();
 }

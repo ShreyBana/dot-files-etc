@@ -1,3 +1,26 @@
 #!/bin/bash
 
-sudo cp .config/* /home/shrey_bana/.config/ -r
+config_links=( "alacritty" 
+        "polybar" 
+        "fish"
+        "i3"
+        "nvim/init.vim"
+        "picom"
+        "rofi"
+        "ranger/rc.conf"
+        "starship.toml"
+        "gtk-2.0"
+        "gtk-3.0"
+        "user-dirs.dirs")
+
+for file in ${confg_links[@]}; do
+    ln -sf $(pwd)/.config/$file $HOME/.config/$file
+done
+
+ln -sf $(pwd)/pictures/wallpapers $HOME/pictures/wallpapers
+ln -sf $(pwd)/pictures/screenshots $HOME/pictures/screenshots
+ln -sf $(pwd)/templates $HOME/templates
+
+mkdir -p $HOME/.config/xmonad
+cp .config/xmonad/xmonad.hs $HOME/.config/xmonad/xmonad.hs
+cp .config/xmonad/stack.yaml $HOME/.config/xmonad/stack.yaml

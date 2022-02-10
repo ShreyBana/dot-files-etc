@@ -1,5 +1,0 @@
-#!/bin/bash
-
-for file in .config/*; do # only want the current set of files in the git repo's .config folder
-    sudo cp /home/shrey_bana/$file ./.config/ -r
-done
