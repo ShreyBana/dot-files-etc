@@ -1,0 +1,1 @@
+/home/shrey_bana/desktop/dot-files-etc/.config/nvim/init.vim

@@ -1,9 +1,9 @@
-local servers = { 'hls', 'tsserver', 'jsonls' }
+local servers = { 'hls', 'tsserver', 'jsonls', 'purescriptls' }
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float({ border = "rounded" })<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float({ border = "double" })<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
@@ -50,3 +50,14 @@ for _, server in pairs(servers) do
     }
   }
 end
+local function lspSymbol(name, icon)
+vim.fn.sign_define(
+	'DiagnosticSign' .. name,
+	{ text = icon, numhl = 'DiagnosticDefault' .. name, texthl = 'DiagnosticSign' .. name }
+)
+end
+lspSymbol('Error', '')
+lspSymbol('Information', '')
+lspSymbol('Hint', '')
+lspSymbol('Info', '')
+lspSymbol('Warning', '')

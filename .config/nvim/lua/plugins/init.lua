@@ -28,4 +28,14 @@ return require('packer').startup(function(use)
   use 'onsails/lspkind-nvim'
   use 'lukas-reineke/indent-blankline.nvim'
   use 'jose-elias-alvarez/null-ls.nvim'
+  use 'purescript-contrib/purescript-vim'
+  use {
+    'akinsho/bufferline.nvim', 
+    tag = "*", 
+    requires = 'kyazdani42/nvim-web-devicons'
+  }
+  use {
+    'lewis6991/gitsigns.nvim',
+    tag = 'release'
+  }
 end)

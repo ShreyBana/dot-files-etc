@@ -18,7 +18,8 @@ cmp.setup({
         nvim_lsp = '[LSP]',
         luasnip = '[LUASNIP]',
         nvim_lua = '[LUA]',
-        latex_symbol = '[LATEX]'
+        latex_symbol = '[LATEX]',
+        path = '[PATH]'
       })
     })
   },
