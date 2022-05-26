@@ -64,7 +64,7 @@ endif
 " Function calls
 "
 
-syn match pythonFunctionCall '\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\ze\%(\s*(\)' nextgroup=pythonNoise
+syn match pythonFunctionCall '\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\ze\%(\s*(\)'
 
 "
 " Keywords
@@ -112,7 +112,7 @@ syn keyword pythonOperator      and in is not or
 syn match pythonOperator        '\V=\|-\|+\|*\|@\|/\|%\|&\||\|^\|~\|<\|>\|!=\|:='
 endif
 syn match pythonError           '[$?]\|\([-+@%&|^~]\)\1\{1,}\|\([=*/<>]\)\2\{2,}\|\([+@/%&|^~<>]\)\3\@![-+*@/%&|^~<>]\|\*\*[*@/%&|^<>]\|=[*@/%&|^<>]\|-[+*@/%&|^~<]\|[<!>]\+=\{2,}\|!\{2,}=\+' display
-syn match pythonNoise /[:,;]/
+syn match pythonNoise /[:,.]/ contained transparent containedin=pythonExpression,pythonConditional,pythonStatement
 syn region pythonBracket start=/\[/ end=/\]/ contained
 "
 " Decorators (new in Python 2.4)
