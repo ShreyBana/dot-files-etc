@@ -1,4 +1,4 @@
-local servers = { 'hls', 'tsserver', 'jsonls', 'purescriptls', 'sourcekit', 'jdtls' }
+local servers = { 'hls', 'tsserver', 'jsonls', 'purescriptls', 'sourcekit', 'jdtls', 'rust_analyzer' }
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions

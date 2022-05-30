@@ -1,5 +1,27 @@
 " For version 5.x: Clear all syntax items
 " For versions greater than 6.x: Quit when a syntax file was already loaded
+syn match pythonNoise /[:,.;]/ containedin=ALLBUT,pythonString,pythonComment
+syn match pythonFunctionParens /[()]/ containedin=ALLBUT,pythonString,pythonComment
+syn match pythonSqParens /[\[\]]/ containedin=ALLBUT,pythonString,pythonComment
+syn match pythonCurlyParens /[{}]/ containedin=ALLBUT,pythonString,pythonComment
+hi! link pythonFunctionParens Noise
+hi! link pythonSqParens Noise
+hi! link pythonCurlyParens Noise
+hi! link pythonClassVar gruvboxbluebold
+hi! link pythonFunction gruvboxyellow
+hi! link pythonFunctionCall gruvboxyellow
+hi! link pythonImport gruvboxaqua
+hi! link pythonInclude gruvboxaqua
+hi! link pythonDot gruvboxblue
+hi! link pythonBuiltin gruvboxbluebold
+hi! link pythonOperator gruvboxblue
+hi! link pythonNone gruvboxpink
+hi! link pythonNoise gruvboxgray
+hi! link pythonDecorator gruvboxblue
+hi! link pythonDecoratorName gruvboxblue
+hi! link pythonDottedName gruvboxblue
+hi! link pythonBrackets gruvboxgray
+
 if v:version < 600
     syntax clear
 elseif exists('b:current_syntax')
@@ -112,7 +134,6 @@ syn keyword pythonOperator      and in is not or
 syn match pythonOperator        '\V=\|-\|+\|*\|@\|/\|%\|&\||\|^\|~\|<\|>\|!=\|:='
 endif
 syn match pythonError           '[$?]\|\([-+@%&|^~]\)\1\{1,}\|\([=*/<>]\)\2\{2,}\|\([+@/%&|^~<>]\)\3\@![-+*@/%&|^~<>]\|\*\*[*@/%&|^<>]\|=[*@/%&|^<>]\|-[+*@/%&|^~<]\|[<!>]\+=\{2,}\|!\{2,}=\+' display
-syn match pythonNoise /[:,.]/ contained transparent containedin=pythonExpression,pythonConditional,pythonStatement
 syn region pythonBracket start=/\[/ end=/\]/ contained
 "
 " Decorators (new in Python 2.4)

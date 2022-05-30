@@ -216,3 +216,22 @@ highlight def link purescriptType Type
 highlight def link purescriptComment Comment
 
 let b:current_syntax = "purescript"
+hi! link purescriptModuleKeyword gruvboxred
+hi! link purescriptModule gruvboxyellow
+hi! link purescriptImportKeyword gruvboxred
+hi! link purescriptImport gruvboxyellow
+hi! link purescriptWhere gruvboxred
+hi! link purescriptAsKeyword gruvboxred
+hi! link purescriptImportAs gruvboxred
+hi! link purescriptHidingKeyword gruvboxaqua
+hi! link purescriptFunction gruvboxaqua
+hi! link purescriptFunctionDecl gruvboxyellow
+hi! link purescriptOperatorFunction gruvboxblue
+hi! link purescriptConstructor gruvboxaqua
+hi! link purescriptTypeVar gruvboxblue
+hi! link purescriptOperatorType gruvboxblue
+hi! link purescriptOperatorTypeSig gruvboxblue
+hi! link purescriptDelimiter Noise
+hi! link purescriptDot gruvboxblue
+hi! link purescriptConditional gruvboxred
+hi! link purescriptConstructor gruvboxyellow
