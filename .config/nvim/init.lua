@@ -17,7 +17,7 @@ set.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
 set.swapfile = false
 set.backup = false
 set.compatible = false
-set.undodir = '/home/shrey_bana/.vim/undodir/'
+set.undodir = '/Users/shrey.bana/.vim/undodir/'
 set.undofile = true
 set.incsearch = true
 set.rnu = true
@@ -35,15 +35,15 @@ vim.api.nvim_set_keymap('n', '<leader>fh' ,'<cmd>Telescope help_tags<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>t' ,'<cmd>NvimTreeToggle<cr>', opts)
 vim.api.nvim_set_keymap('n', 'H' ,'<cmd>BufferLineCyclePrev<cr>', opts)
 vim.api.nvim_set_keymap('n', 'L' ,'<cmd>BufferLineCycleNext<cr>', opts)
+vim.cmd("map <leader>h <C-w>h");
+vim.cmd("map <leader>l <C-w>l");
+vim.cmd("map <leader>k <C-w>k");
+vim.cmd("map <leader>j <C-w>j");
+vim.cmd("nnoremap <leader>bb :BufferLineMoveNext<CR>")
+vim.cmd("nnoremap <leader>bf :BufferLineMovePrev<CR>")
 
 -- PLUGINS
 require('plugins.init')
-require('plugins.lualine')
-require('plugins.telescope')
-require('plugins.nvim-tree')
-require('plugins.treesitter')
-require('plugins.bufferline')
-require('plugins.gitsigns')
 require('plugins.lsp.null-ls')
 require('plugins.lsp.cmp')
 require('plugins.lsp.init')
@@ -56,3 +56,4 @@ vim.cmd('colorscheme gruvbox')
 vim.cmd('hi darkolivegreen guifg=#556b2f')
 vim.cmd('hi! link Function gruvboxyellow')
 vim.cmd('hi! link Noise gruvboxfg4')
+vim.cmd('hi! link Operator gruvboxblue')

@@ -1,4 +1,4 @@
-local servers = { 'hls', 'tsserver', 'jsonls', 'purescriptls', 'sourcekit', 'jdtls', 'rust_analyzer' }
+local servers = { 'tsserver', 'jsonls', 'purescriptls', 'sourcekit', 'jdtls', 'rust_analyzer' }
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -50,6 +50,48 @@ for _, server in pairs(servers) do
     }
   }
 end
+
+lsp_config.groovyls.setup {
+  cmd = { "java", "-jar", "/Users/shrey.bana/.lsp/groovy-language-server/build/libs/groovy-language-server-all.jar" },
+  capabilities = capabilties,
+  on_attach = on_attach,
+   handlers = {
+     ["textDocument/publishDiagnostics"] = vim.lsp.with(
+       vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- Disable virtual_text
+        virtual_text = false
+       }
+    ),
+  },
+  flags = {
+    -- This will be the default in neovim 0.7+
+    debounce_text_changes = 150,
+  },
+  filetypes = { "groovy", "Jenkinsfile" }
+}
+
+lsp_config.hls.setup {
+  settings = {
+    haskell = {
+      formattingProvider = "stylish-haskell"
+    }
+  },
+  capabilities = capabilties,
+  on_attach = on_attach,
+   handlers = {
+     ["textDocument/publishDiagnostics"] = vim.lsp.with(
+       vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- Disable virtual_text
+        virtual_text = false
+       }
+    ),
+  },
+  flags = {
+    -- This will be the default in neovim 0.7+
+    debounce_text_changes = 150,
+  },
+}
+
 local function lspSymbol(name, icon)
 vim.fn.sign_define(
 	'DiagnosticSign' .. name,

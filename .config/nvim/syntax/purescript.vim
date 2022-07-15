@@ -14,9 +14,11 @@ syn match purescriptIdentifier "\<[_a-z]\(\w\|\'\)*\>"
 syn match purescriptNumber "0[xX][0-9a-fA-F]\+\|0[oO][0-7]\|[0-9]\+"
 syn match purescriptFloat "[0-9]\+\.[0-9]\+\([eE][-+]\=[0-9]\+\)\="
 syn keyword purescriptBoolean true false
+syn keyword purescriptFunctionKeywords data type newtype instance
 
 " Delimiters
-syn match purescriptDelimiter "[,;|.()[\]{}]"
+syn match purescriptNoise /[,;|()\[\]{}']/ 
+syn match purescriptOperator /[.]/
 
 " Type
 syn match purescriptType "\%(\<class\s\+\)\@15<!\<\u\w*\>" contained
@@ -24,14 +26,14 @@ syn match purescriptType "\%(\<class\s\+\)\@15<!\<\u\w*\>" contained
   \ nextgroup=purescriptType,purescriptTypeVar skipwhite
 syn match purescriptTypeVar "\<[_a-z]\(\w\|\'\)*\>" contained
   \ containedin=purescriptData,purescriptNewtype,purescriptTypeAlias,purescriptFunctionDecl
-syn region purescriptTypeExport matchgroup=purescriptType start="\<[A-Z]\(\S\&[^,.]\)*\>("rs=e-1 matchgroup=purescriptDelimiter end=")" contained extend
-  \ contains=purescriptConstructor,purescriptDelimiter
+syn region purescriptTypeExport matchgroup=purescriptType start="\<[A-Z]\(\S\&[^,.]\)*\>("rs=e-1 matchgroup=purescriptNoise end=")" contained extend
+  \ contains=purescriptConstructor,purescriptNoise
 
 " Constructor
 syn match purescriptConstructor "\%(\<class\s\+\)\@15<!\<\u\w*\>"
 syn region purescriptConstructorDecl matchgroup=purescriptConstructor start="\<[A-Z]\w*\>" end="\(|\|$\)"me=e-1,re=e-1 contained
   \ containedin=purescriptData,purescriptNewtype
-  \ contains=purescriptType,purescriptTypeVar,purescriptDelimiter,purescriptOperatorType,purescriptOperatorTypeSig,@purescriptComment
+  \ contains=purescriptType,purescriptTypeVar,purescriptNoise,purescriptOperatorType,purescriptOperatorTypeSig,@purescriptComment
 
 
 " Function
@@ -60,7 +62,7 @@ syn match purescriptModule "^module\>\s\+\<\(\w\+\.\?\)*\>"
   \ skipnl
   \ skipempty
 syn region purescriptModuleParams start="(" skip="([^)]\{-})" end=")" fold contained keepend
-  \ contains=purescriptClassDecl,purescriptClass,purescriptClassName,purescriptDelimiter,purescriptType,purescriptTypeExport,purescriptStructure,purescriptModuleKeyword,@purescriptComment
+  \ contains=purescriptClassDecl,purescriptClass,purescriptClassName,purescriptNoise,purescriptType,purescriptTypeExport,purescriptStructure,purescriptModuleKeyword,@purescriptComment
   \ nextgroup=purescriptImportParams skipwhite
 
 " Import
@@ -92,15 +94,15 @@ syn match purescriptImportHiding "hiding"
 syn region purescriptFunctionDecl
   \ excludenl start="^\z(\s*\)\(\(foreign\s\+import\)\_s\+\)\?[_a-z]\(\w\|\'\)*\_s\{-}\(::\|∷\)"
   \ end="^\z1\=\S"me=s-1,re=s-1 keepend
-  \ contains=purescriptFunctionDeclStart,purescriptForall,purescriptOperatorType,purescriptOperatorTypeSig,purescriptTypeVar,purescriptDelimiter,@purescriptComment
+  \ contains=purescriptFunctionDeclStart,purescriptForall,purescriptOperatorType,purescriptOperatorTypeSig,purescriptTypeVar,purescriptNoise,@purescriptComment
 syn region purescriptFunctionDecl
   \ excludenl start="^\z(\s*\)where\z(\s\+\)[_a-z]\(\w\|\'\)*\_s\{-}\(::\|∷\)"
   \ end="^\(\z1\s\{5}\z2\)\=\S"me=s-1,re=s-1 keepend
-  \ contains=purescriptFunctionDeclStart,purescriptForall,purescriptOperatorType,purescriptOperatorTypeSig,purescriptTypeVar,purescriptDelimiter,@purescriptComment
+  \ contains=purescriptFunctionDeclStart,purescriptForall,purescriptOperatorType,purescriptOperatorTypeSig,purescriptTypeVar,purescriptNoise,@purescriptComment
 syn region purescriptFunctionDecl
   \ excludenl start="^\z(\s*\)let\z(\s\+\)[_a-z]\(\w\|\'\)*\_s\{-}\(::\|∷\)"
   \ end="^\(\z1\s\{3}\z2\)\=\S"me=s-1,re=s-1 keepend
-  \ contains=purescriptFunctionDeclStart,purescriptForall,purescriptOperatorType,purescriptOperatorTypeSig,purescriptTypeVar,purescriptDelimiter,@purescriptComment
+  \ contains=purescriptFunctionDeclStart,purescriptForall,purescriptOperatorType,purescriptOperatorTypeSig,purescriptTypeVar,purescriptNoise,@purescriptComment
 syn match purescriptFunctionDeclStart "^\s*\(\(foreign\s\+import\|let\|where\)\_s\+\)\?\([_a-z]\(\w\|\'\)*\)\_s\{-}\(::\|∷\)" contained
   \ contains=purescriptImportKeyword,purescriptWhere,purescriptLet,purescriptFunction,purescriptOperatorType
 syn keyword purescriptForall forall
@@ -170,7 +172,7 @@ highlight def link purescriptImport Type
 highlight def link purescriptModuleKeyword purescriptKeyword
 highlight def link purescriptImportAs Identifier
 highlight def link purescriptModuleName Identifier
-highlight def link purescriptModuleParams purescriptDelimiter
+highlight def link purescriptModuleParams purescriptNoise
 highlight def link purescriptImportKeyword purescriptKeyword
 highlight def link purescriptAsKeyword purescriptKeyword
 highlight def link purescriptHidingKeyword purescriptKeyword
@@ -183,7 +185,7 @@ highlight def link purescriptBoolean Boolean
 highlight def link purescriptNumber Number
 highlight def link purescriptFloat Float
 
-highlight def link purescriptDelimiter Delimiter
+highlight def link purescriptNoise Delimiter
 
 highlight def link purescriptOperatorTypeSig purescriptOperatorType
 highlight def link purescriptOperatorFunction purescriptOperatorType
@@ -223,15 +225,16 @@ hi! link purescriptImport gruvboxyellow
 hi! link purescriptWhere gruvboxred
 hi! link purescriptAsKeyword gruvboxred
 hi! link purescriptImportAs gruvboxred
-hi! link purescriptHidingKeyword gruvboxaqua
-hi! link purescriptFunction gruvboxaqua
-hi! link purescriptFunctionDecl gruvboxyellow
+hi! link purescriptHidingKeyword gruvboxred
+hi! link purescriptFunction gruvboxyellow
+hi! link purescriptFunctionDecl gruvboxaqua
 hi! link purescriptOperatorFunction gruvboxblue
-hi! link purescriptConstructor gruvboxaqua
+hi! link purescriptConstructor gruvboxyellow
 hi! link purescriptTypeVar gruvboxblue
 hi! link purescriptOperatorType gruvboxblue
 hi! link purescriptOperatorTypeSig gruvboxblue
-hi! link purescriptDelimiter Noise
+hi! link purescriptNoise Noise
 hi! link purescriptDot gruvboxblue
 hi! link purescriptConditional gruvboxred
 hi! link purescriptConstructor gruvboxyellow
+hi! link purescriptFunctionKeywords gruvboxyellow

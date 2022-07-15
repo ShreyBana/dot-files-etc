@@ -3,7 +3,8 @@ hi! link jsFunction gruvboxorange
 hi! link jsFuncCall gruvboxyellow
 hi! link jsNoise gruvboxfg4
 hi! link jsOperator gruvboxblue
-hi! link jsDot gruvboxblue
+hi! link jsDot Noise
+hi! link jsFuncArgCommas Noise
 hi! link jsBrackets gruvboxfg4
 hi! link jsDestructuringBraces gruvboxfg4
 hi! link jsVariableDef gruvboxblue
@@ -11,5 +12,8 @@ hi! link jsFuncArgs gruvboxblue
 hi! link jsGlobalObjects gruvboxbluebold
 hi! link jsGlobalNodeObjects gruvboxaquabold
 hi! link jsDestructuringBlock gruvboxblue
-hi! link jsObjectKey cleared
+hi! link jsObjectKey gruvboxblue
 hi! link jsSpecial gruvboxpurple
+syn match jsParenthesis /[()]/ containedin=jsFunction,jsFuncCall,jsFuncName
+hi! link jsParenthesis Noise
+hi! link jsConstant gruvboxpink
