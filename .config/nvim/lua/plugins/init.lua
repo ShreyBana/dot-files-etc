@@ -51,4 +51,7 @@ return require("packer").startup(function(use)
   use "preservim/vim-markdown"
   use "folke/which-key.nvim"
   use "tpope/vim-fugitive"
+  use ({ 'projekt0n/github-nvim-theme' })
+  use "windwp/nvim-spectre"
+  use "bfrg/vim-cpp-modern"
 end)

@@ -9,9 +9,12 @@ set.expandtab = true
 set.smartindent = true
 set.autoindent = true
 set.smartcase = true
-set.wrap = true
+set.wrap = false
 set.linebreak = true
 set.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
+set.clipboard = "unnamedplus"
+set.number = true
+set.relativenumber = true
 
 -- META
 set.swapfile = false
@@ -24,6 +27,7 @@ set.rnu = true
 set.encoding = 'UTF-8'
 set.cursorline = true
 vim.cmd("au BufNewFile,BufRead *.purs setf purescript")
+vim.cmd("au BufNewFile,BufRead *.sh let b:is_bash=1")
 
 -- KEY-MAPPINGS
 vim.g.mapleader = ';' 

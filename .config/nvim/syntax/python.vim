@@ -21,6 +21,7 @@ hi! link pythonDecorator gruvboxblue
 hi! link pythonDecoratorName gruvboxblue
 hi! link pythonDottedName gruvboxblue
 hi! link pythonBrackets gruvboxgray
+hi! link pythonBoolean Constant
 
 if v:version < 600
     syntax clear
@@ -132,7 +133,6 @@ endif
 "
 syn keyword pythonOperator      and in is not or
 syn match pythonOperator        '\V=\|-\|+\|*\|@\|/\|%\|&\||\|^\|~\|<\|>\|!=\|:='
-endif
 syn match pythonError           '[$?]\|\([-+@%&|^~]\)\1\{1,}\|\([=*/<>]\)\2\{2,}\|\([+@/%&|^~<>]\)\3\@![-+*@/%&|^~<>]\|\*\*[*@/%&|^<>]\|=[*@/%&|^<>]\|-[+*@/%&|^~<]\|[<!>]\+=\{2,}\|!\{2,}=\+' display
 syn region pythonBracket start=/\[/ end=/\]/ contained
 "
@@ -363,13 +363,11 @@ endif
 " Builtin objects
 "
 
-if s:Enabled('g:python_highlight_builtin_objs')
-    syn keyword pythonNone        None
-    syn keyword pythonBoolean     True False
-    syn keyword pythonSingleton   Ellipsis NotImplemented
-    syn keyword pythonBuiltinObj  __debug__ __doc__ __file__ __name__ __package__
-    syn keyword pythonBuiltinObj  __loader__ __spec__ __path__ __cached__
-endif
+syn keyword pythonNone        None
+syn keyword pythonBoolean     True False
+syn keyword pythonSingleton   Ellipsis NotImplemented
+syn keyword pythonBuiltinObj  __debug__ __doc__ __file__ __name__ __package__
+syn keyword pythonBuiltinObj  __loader__ __spec__ __path__ __cached__
 
 "
 " Builtin functions

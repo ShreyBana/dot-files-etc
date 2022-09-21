@@ -1,11 +1,11 @@
-local servers = { 'tsserver', 'jsonls', 'purescriptls', 'sourcekit', 'jdtls', 'rust_analyzer' }
+local servers = { 'tsserver', 'jsonls', 'purescriptls', 'sourcekit', 'jdtls', 'rust_analyzer', 'pylsp' }
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float({ border = "double" })<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.diagnostic.goto_prev({ float = { border = "double" } })<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>D', '<cmd>lua vim.diagnostic.goto_next({ float = { border = "double" } })<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 -- Use an on_attach function to only map the following keys
@@ -43,6 +43,11 @@ for _, server in pairs(servers) do
           virtual_text = false
          }
       ),
+      ["textDocument/hover"] = vim.lsp.with(
+        vim.lsp.handlers.hover, {
+          border = "double"
+        }
+      )
     },
     flags = {
       -- This will be the default in neovim 0.7+
@@ -56,13 +61,18 @@ lsp_config.groovyls.setup {
   capabilities = capabilties,
   on_attach = on_attach,
    handlers = {
-     ["textDocument/publishDiagnostics"] = vim.lsp.with(
-       vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- Disable virtual_text
-        virtual_text = false
-       }
-    ),
-  },
+       ["textDocument/publishDiagnostics"] = vim.lsp.with(
+         vim.lsp.diagnostic.on_publish_diagnostics, {
+          -- Disable virtual_text
+          virtual_text = false
+         }
+      ),
+      ["textDocument/hover"] = vim.lsp.with(
+        vim.lsp.handlers.hover, {
+          border = "double"
+        }
+      )
+    },
   flags = {
     -- This will be the default in neovim 0.7+
     debounce_text_changes = 150,
@@ -82,9 +92,15 @@ lsp_config.hls.setup {
      ["textDocument/publishDiagnostics"] = vim.lsp.with(
        vim.lsp.diagnostic.on_publish_diagnostics, {
         -- Disable virtual_text
-        virtual_text = false
+        virtual_text = false,
+        border = "double"
        }
     ),
+     ["textDocument/hover"] = vim.lsp.with(
+        vim.lsp.handlers.hover, {
+          border = "double"
+        }
+    )
   },
   flags = {
     -- This will be the default in neovim 0.7+

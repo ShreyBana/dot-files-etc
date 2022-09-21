@@ -69,6 +69,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["Jenkinsfile-vim-syntax"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/Jenkinsfile-vim-syntax",
+    url = "https://github.com/martinda/Jenkinsfile-vim-syntax"
+  },
   LuaSnip = {
     loaded = true,
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/LuaSnip",
@@ -103,6 +108,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
+  },
+  ["github-nvim-theme"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/github-nvim-theme",
+    url = "https://github.com/projekt0n/github-nvim-theme"
   },
   ["gitsigns.nvim"] = {
     loaded = true,
@@ -144,6 +154,11 @@ _G.packer_plugins = {
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
     url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
   },
+  ["nvim-autopairs"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
+    url = "https://github.com/windwp/nvim-autopairs"
+  },
   ["nvim-cmp"] = {
     loaded = true,
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/nvim-cmp",
@@ -153,6 +168,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
+  },
+  ["nvim-spectre"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/nvim-spectre",
+    url = "https://github.com/windwp/nvim-spectre"
   },
   ["nvim-tree.lua"] = {
     loaded = true,
@@ -179,20 +199,50 @@ _G.packer_plugins = {
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
+  tabular = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/tabular",
+    url = "https://github.com/godlygeek/tabular"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["vim-fish"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/vim-fish",
+    url = "https://github.com/dag/vim-fish"
+  },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
   },
   ["vim-javascript"] = {
     loaded = true,
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/vim-javascript",
     url = "https://github.com/pangloss/vim-javascript"
   },
+  ["vim-jsx-pretty"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/vim-jsx-pretty",
+    url = "https://github.com/MaxMEllon/vim-jsx-pretty"
+  },
+  ["vim-markdown"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/vim-markdown",
+    url = "https://github.com/preservim/vim-markdown"
+  },
   ["vscode.nvim"] = {
     loaded = true,
     path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/vscode.nvim",
     url = "https://github.com/Mofiqul/vscode.nvim"
+  },
+  ["which-key.nvim"] = {
+    loaded = true,
+    path = "/Users/shrey.bana/.local/share/nvim/site/pack/packer/start/which-key.nvim",
+    url = "https://github.com/folke/which-key.nvim"
   }
 }
 
