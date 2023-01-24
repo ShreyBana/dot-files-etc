@@ -90,7 +90,7 @@ window:
   #multiplier: 3
 # Font configuration
 font:
-  size: 12.5
+  size: 10
   # Normal (roman) font face
   normal:
     # Font family
@@ -122,7 +122,8 @@ font:
     # value specified for the normal font.
     #family: "OperatorMono Book"
     # The `style` can be specified to pick a specific face.
-    style: Italic
+    family: "RobotoMono Nerd Font Mono"
+    style: Medium Italic
 
   # Bold italic font face
   bold_italic:
