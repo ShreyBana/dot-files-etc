@@ -1,1 +1,2 @@
-return require('lualine').setup()
+return require('lualine').setup {
+}

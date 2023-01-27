@@ -17,7 +17,7 @@ syn keyword purescriptBoolean true false
 syn keyword purescriptFunctionKeywords data type newtype instance
 
 " Delimiters
-syn match purescriptNoise /[,;|()\[\]{}']/ 
+syn match purescriptNoise /[,;|()\[\]{}]/ 
 syn match purescriptOperator /[.]/
 
 " Type
@@ -38,7 +38,7 @@ syn region purescriptConstructorDecl matchgroup=purescriptConstructor start="\<[
 
 " Function
 syn match purescriptFunction "\%(\<instance\s\+\|\<class\s\+\)\@18<!\<[_a-z]\(\w\|\'\)*\>" contained
-" syn match purescriptFunction "\<[_a-z]\(\w\|\'\)*\>" contained
+syn match purescriptFunction "\<[_a-z]\(\w\|\'\)*\>" contained
 syn match purescriptFunction "(\%(\<class\s\+\)\@18<!\(\W\&[^(),\"]\)\+)" contained extend
 syn match purescriptBacktick "`[_A-Za-z][A-Za-z0-9_\.]*`"
 
@@ -71,12 +71,9 @@ syn match purescriptImport "\<import\>\s\+\(qualified\s\+\)\?\<\(\w\+\.\?\)*"
   \ contains=purescriptImportKeyword,purescriptModuleName
   \ nextgroup=purescriptImportParams,purescriptImportAs,purescriptImportHiding
   \ skipwhite
-syn region purescriptImportParams
-  \ start="("
-  \ skip="([^)]\{-})"
-  \ end=")"
+syn match purescriptImportParams /\((.*(,)?)*\)/
   \ contained
-  \ contains=purescriptClass,purescriptClass,purescriptStructure,purescriptType,purescriptIdentifier
+  \ contains=purescriptClass,purescriptClass,purescriptStructure,purescriptType,purescriptIdentifier,purescriptNoise
   \ nextgroup=purescriptImportAs
   \ skipwhite
 syn keyword purescriptAsKeyword as contained
@@ -166,20 +163,13 @@ syn keyword purescriptCommentTodo contained TODO FIXME XXX
 
 syn sync minlines=50
 
+"---HIGHLIGHTING---
 " highlight links
 highlight def link purescriptModule Type
 highlight def link purescriptImport Type
-highlight def link purescriptModuleKeyword purescriptKeyword
 highlight def link purescriptImportAs Identifier
 highlight def link purescriptModuleName Identifier
 highlight def link purescriptModuleParams purescriptNoise
-highlight def link purescriptImportKeyword purescriptKeyword
-highlight def link purescriptAsKeyword purescriptKeyword
-highlight def link purescriptHidingKeyword purescriptKeyword
-
-highlight def link purescriptConditional Conditional
-highlight def link purescriptWhere purescriptKeyword
-highlight def link purescriptInfixKeyword purescriptKeyword
 
 highlight def link purescriptBoolean Boolean
 highlight def link purescriptNumber Number
@@ -194,47 +184,65 @@ highlight def link purescriptOperatorType purescriptOperator
 highlight def link purescriptConstructorDecl purescriptConstructor
 highlight def link purescriptConstructor purescriptFunction
 
-highlight def link purescriptTypeVar Identifier
-highlight def link purescriptForall purescriptStatement
-
-highlight def link purescriptChar String
 highlight def link purescriptBacktick purescriptOperator
-highlight def link purescriptString String
-highlight def link purescriptMultilineString String
 
-highlight def link purescriptLineComment purescriptComment
-highlight def link purescriptBlockComment purescriptComment
 
 " purescript general highlights
-highlight def link purescriptClass purescriptKeyword
 highlight def link purescriptClassName Type
-highlight def link purescriptStructure purescriptKeyword
 highlight def link purescriptKeyword Keyword
 highlight def link purescriptStatement Statement
-highlight def link purescriptLet Statement
 highlight def link purescriptOperator Function
 highlight def link purescriptFunction Function
-highlight def link purescriptType Type
 highlight def link purescriptComment Comment
 
+" Overrides
+hi link psType gruvboxaqua
+
+" Keywords
+hi link purescriptWhere Keyword
+hi link purescriptLet Keyword
+hi link purescriptConditional Keyword
+hi link purescriptImportKeyword Keyword
+hi link purescriptAsKeyword Keyword
+hi link purescriptHidingKeyword Keyword
+hi link purescriptInfixKeyword Keyword
+hi link purescriptClass Keyword
+hi link purescriptStructure Keyword
+hi link purescriptModuleKeyword Keyword
+hi link purescriptFunctionKeywords Keyword
+hi link purescriptForall Keyword
+
+" Types
+hi link purescriptImportAs psType
+hi link purescriptModule psType
+hi link purescriptImport psType
+hi link purescriptTypeVar psType
+hi link purescriptFunctionDecl psType
+hi link purescriptConstructor psType
+
+" Strings
+hi link purescriptString String
+hi link purescriptMultilineString String
+hi link purescriptChar String
+
+" Functions
+hi link purescriptFunction Function
+
+" Operators
+hi link purescriptOperatorFunction Operator
+hi link purescriptOperatorTypeSig Operator
+hi link purescriptDot Operator
+hi link purescriptOperatorType Operator
+
+" Comments
+hi link purescriptLineComment Comment
+hi link purescriptBlockComment Comment
+
+" Special
+hi link purescriptTypeVar gruvboxblue
+
+" Noise
+hi link purescriptNoise Noise
+
 let b:current_syntax = "purescript"
-hi! link purescriptModuleKeyword gruvboxred
-hi! link purescriptModule gruvboxyellow
-hi! link purescriptImportKeyword gruvboxred
-hi! link purescriptImport gruvboxyellow
-hi! link purescriptWhere gruvboxred
-hi! link purescriptAsKeyword gruvboxred
-hi! link purescriptImportAs gruvboxred
-hi! link purescriptHidingKeyword gruvboxred
-hi! link purescriptFunction gruvboxyellow
-hi! link purescriptFunctionDecl gruvboxaqua
-hi! link purescriptOperatorFunction gruvboxblue
-hi! link purescriptConstructor gruvboxyellow
-hi! link purescriptTypeVar gruvboxblue
-hi! link purescriptOperatorType gruvboxblue
-hi! link purescriptOperatorTypeSig gruvboxblue
-hi! link purescriptNoise Noise
-hi! link purescriptDot gruvboxblue
-hi! link purescriptConditional gruvboxred
-hi! link purescriptConstructor gruvboxyellow
-hi! link purescriptFunctionKeywords gruvboxyellow
+

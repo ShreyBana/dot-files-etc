@@ -15,6 +15,7 @@ set.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
 set.clipboard = "unnamedplus"
 set.number = true
 set.relativenumber = true
+set.cc = '95'
 
 -- META
 set.swapfile = false
@@ -36,9 +37,19 @@ vim.api.nvim_set_keymap('n', '<leader>ff' ,'<cmd>Telescope find_files<cr>', opts
 vim.api.nvim_set_keymap('n', '<leader>fg' ,'<cmd>Telescope live_grep<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>fb' ,'<cmd>Telescope buffers<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>fh' ,'<cmd>Telescope help_tags<cr>', opts)
-vim.api.nvim_set_keymap('n', '<leader>t' ,'<cmd>NvimTreeToggle<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>t'  ,'<cmd>NvimTreeToggle<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>n'  ,'<cmd>Gitsigns next_hunk<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>p'  ,'<cmd>Gitsigns prev_hunk<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>P' ,'<cmd>Gitsigns preview_hunk<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>r'  ,'<cmd>Gitsigns reset_hunk<cr>', opts)
 vim.api.nvim_set_keymap('n', 'H' ,'<cmd>BufferLineCyclePrev<cr>', opts)
 vim.api.nvim_set_keymap('n', 'L' ,'<cmd>BufferLineCycleNext<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>S', '<cmd>lua require("spectre").open()<cr>', opts)
+vim.api.nvim_set_keymap('n', '<C-d>', '<C-d>zz', opts)
+vim.api.nvim_set_keymap('n', '<C-u>', '<C-u>zz', opts)
+vim.api.nvim_set_keymap('n', 'G', 'Gzz', opts)
+vim.api.nvim_set_keymap('n', 'n', 'nzz', opts)
+vim.api.nvim_set_keymap('n', 'N', 'Nzz', opts)
 vim.cmd("map <leader>h <C-w>h");
 vim.cmd("map <leader>l <C-w>l");
 vim.cmd("map <leader>k <C-w>k");

@@ -35,7 +35,7 @@ return require("packer").startup(function(use)
   }
   use {
     "lewis6991/gitsigns.nvim",
-    tag = "release"
+    tag = "v0.5"
   }
   use "pangloss/vim-javascript"
   use "neovimhaskell/haskell-vim"
