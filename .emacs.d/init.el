@@ -17,7 +17,7 @@
 
 ;; Fonts Settings
 (set-face-attribute
- 'default nil :family "JetBrains Mono" :weight 'normal :height 180)
+ 'default nil :family "JetBrains Mono" :weight 'normal :height 140)
 
 ;; Custom Var Options
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -58,6 +58,7 @@
 
 ;(setq use-package-always-ensure t)
 (add-to-list 'load-path "~/.emacs.d/setup-files/")
+
 
 (use-package which-key
   :ensure t
@@ -233,3 +234,13 @@
 (require 'setup-javascript)
 (require 'setup-tree-sitter)
 (require 'setup-page-break-lines)
+
+(add-to-list 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
+(defun new-frame-setup (frame)
+  (if (display-graphic-p frame)
+      (setq neo-theme 'icons)))
+;; Run for already-existing frames (For single instance emacs)
+(mapc 'new-frame-setup (frame-list))
+;; Run when a new frame is created (For emacs in client/server mode)
+(add-hook 'after-make-frame-functions 'new-frame-setup)
+(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
