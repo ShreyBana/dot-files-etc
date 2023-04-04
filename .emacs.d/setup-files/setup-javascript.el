@@ -1,7 +1,7 @@
 
 (use-package js2-mode
   :ensure t
-  :hook (js2-mode . lsp-deferred)
+  :hook (js2-mode . eglot-ensure)
   :mode
   (("\\.js\\'" . js2-mode))
   :custom

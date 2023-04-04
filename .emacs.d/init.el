@@ -17,7 +17,7 @@
 
 ;; Fonts Settings
 (set-face-attribute
- 'default nil :family "JetBrains Mono" :weight 'normal :height 140)
+ 'default nil :family "JetBrains Mono" :height 150)
 
 ;; Custom Var Options
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -74,7 +74,6 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-Iosvkem t)
   (set-face-attribute 'font-lock-constant-face nil :weight 'semi-bold)
 
   ;; Enable flashing mode-line on errors
@@ -88,16 +87,21 @@
   (doom-themes-org-config)
   (set-cursor-color "#6c9ef8"))
 
-(setq doom-modeline-support-imenu t)
-(setq doom-modeline-height 25)
 (use-package doom-modeline
   :ensure t
   :init
+  (setq doom-modeline-hud t)
   (doom-modeline-mode 1)
   (custom-set-faces
-  '(mode-line ((t (:family "JetBrains Mono" :height 0.9))))
-  '(mode-line-active ((t (:family "JetBrains Mono" :height 0.9)))) ; For 29+
-  '(mode-line-inactive ((t (:family "JetBrains Mono" :height 0.9))))))
+  '(mode-line ((t (:family "Fira Code" :height 0.9))))
+  '(mode-line-active ((t (:family "Fira Code" :height 0.9)))) ; For 29+
+  '(mode-line-inactive ((t (:family "Fira Code" :height 0.9)))))
+  :custom
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-support-imenu t)
+  (doom-modeline-hud t)
+  (doom-modeline-enable-word-count t)
+  (doom-modeline-height 10))
 
 (use-package all-the-icons
   :if (display-graphic-p))
@@ -136,39 +140,39 @@
 ;  :ensure t
 ;  :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package ivy
-  :ensure t
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
-
-;; More Help On Cmds
-(use-package ivy-rich
-  :ensure t
-  :init
-  (ivy-rich-mode 1))
-
-;; More Features For Builtins
-(use-package counsel
-  :ensure t
-  :bind (("M-x" . counsel-M-x)
-	 ("C-x b" . counsel-ibuffer)
-	 ("C-x C-f" . counsel-find-file)
-	 :map minibuffer-local-map
-	 ("C-r" . 'counsel-minibuffer-history)))
+; (use-package ivy
+;   :ensure t
+;   :diminish
+;   :bind (("C-s" . swiper)
+;          :map ivy-minibuffer-map
+;          ("TAB" . ivy-alt-done)	
+;          ("C-l" . ivy-alt-done)
+;          ("C-j" . ivy-next-line)
+;          ("C-k" . ivy-previous-line)
+;          :map ivy-switch-buffer-map
+;          ("C-k" . ivy-previous-line)
+;          ("C-l" . ivy-done)
+;          ("C-d" . ivy-switch-buffer-kill)
+;          :map ivy-reverse-i-search-map
+;          ("C-k" . ivy-previous-line)
+;          ("C-d" . ivy-reverse-i-search-kill))
+;   :config
+;   (ivy-mode 1))
+; 
+; ;; More Help On Cmds
+; (use-package ivy-rich
+;   :ensure t
+;   :init
+;   (ivy-rich-mode 1))
+; 
+; ;; More Features For Builtins
+; (use-package counsel
+;   :ensure t
+;   :bind (("M-x" . counsel-M-x)
+; 	 ("C-x b" . counsel-ibuffer)
+; 	 ("C-x C-f" . counsel-find-file)
+; 	 :map minibuffer-local-map
+; 	 ("C-r" . 'counsel-minibuffer-history)))
 
 ;; Better Doc & Help Pages
 (use-package helpful
@@ -226,7 +230,9 @@
   :ensure t)
 (require 'setup-org)
 (require 'setup-git)
-(require 'setup-lsp)
+(require 'setup-vertico)
+(require 'setup-consult)
+;(require 'setup-lsp)
 (require 'setup-dashboard)
 (require 'setup-company)
 (require 'setup-haskell)
@@ -234,8 +240,14 @@
 (require 'setup-javascript)
 (require 'setup-tree-sitter)
 (require 'setup-page-break-lines)
+(require 'setup-dired)
+(require 'setup-eglot)
+(require 'setup-elisp)
+(require 'setup-eshell)
+(require 'setup-magit)
+(require 'setup-theme)
 
-(add-to-list 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
+;(add-to-list 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
 (defun new-frame-setup (frame)
   (if (display-graphic-p frame)
       (setq neo-theme 'icons)))
@@ -243,4 +255,4 @@
 (mapc 'new-frame-setup (frame-list))
 ;; Run when a new frame is created (For emacs in client/server mode)
 (add-hook 'after-make-frame-functions 'new-frame-setup)
-(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
+;(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
