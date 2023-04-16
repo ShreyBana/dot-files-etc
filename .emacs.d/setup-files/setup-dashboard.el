@@ -4,6 +4,7 @@
   :config
   (dashboard-setup-startup-hook)
   :init
+  (setq dashboard-projects-backend 'project-el)
   (setq dashboard-items '((projects . 5)
 			  (bookmarks . 5)
 			  (recents  . 5)

@@ -1,5 +1,8 @@
 (use-package eshell
   :hook ((eshell-mode . (lambda () (display-fill-column-indicator-mode 0)))
+	 (eshell-mode . (lambda ()
+			  (setq-local corfu-auto nil)
+			  (corfu-mode)))
 	 (eshell-mode . (lambda () (hl-line-mode 0)))))
 
 (use-package eshell-prompt-extras

@@ -13,9 +13,9 @@
   ; 				       company-backends)))))
   :config
   ; (set-face-attribute 'haskell-pragma-face nil :foreground "#fb4934")
-  (set-face-attribute 'haskell-keyword-face nil :weight 'semi-bold)
-  (set-face-attribute 'haskell-operator-face nil :weight 'semi-bold)
+  (set-face-attribute 'haskell-keyword-face nil :weight 'medium)
+  (set-face-attribute 'haskell-operator-face nil :weight 'medium)
   ; (set-face-attribute 'font-lock-doc-face nil :foreground "#98971a" :slant 'oblique)
-  (set-face-attribute 'haskell-definition-face nil :weight 'semi-bold))
+  (set-face-attribute 'haskell-definition-face nil :weight 'medium))
 
 (provide 'setup-haskell)
