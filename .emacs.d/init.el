@@ -1,3 +1,6 @@
+(setq modus-themes-vivendi-color-overrides
+      '((bg-main . "#1d2021")
+        (fg-main . "#c2c2c2")))
 ;; Don't show the splash screen
 (setq inhibit-startup-message t)
 
@@ -17,7 +20,7 @@
 
 ;; Fonts Settings
 (set-face-attribute
- 'default nil :family "JetBrains Mono" :height 150)
+ 'default nil :family "Hack Nerd Font" :height 160 :weight 'regular)
 
 ;; Custom Var Options
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -56,6 +59,11 @@
  ;; If there is more than one, they won't work right.
  )
 
+(use-package exec-path-from-shell
+  :ensure t)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
 ;(setq use-package-always-ensure t)
 (add-to-list 'load-path "~/.emacs.d/setup-files/")
 
@@ -75,6 +83,7 @@
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (set-face-attribute 'font-lock-constant-face nil :weight 'semi-bold)
+  (set-face-attribute 'font-lock-keyword-face nil :weight 'semi-bold)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -85,7 +94,7 @@
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
-  (set-cursor-color "#6c9ef8"))
+  (set-cursor-color "#689d6a"))
 
 (use-package doom-modeline
   :ensure t
@@ -174,44 +183,45 @@
 ; 	 :map minibuffer-local-map
 ; 	 ("C-r" . 'counsel-minibuffer-history)))
 
+
 ;; Better Doc & Help Pages
 (use-package helpful
   :ensure t
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-varaible-function #'helpful-variable)
+  ;:custom
+  ;(counsel-describe-function-function #'helpful-callable)
+  ;(counsel-describe-varaible-function #'helpful-variable)
   :bind
-  ([remap describe-function] . counsel-describe-function)
+  ;([remap describe-function] . counsel-describe-function)
   ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
+  ;([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
-  
-(use-package general
-  :ensure t
-  :config
+;  
+;(use-package general
+;  :ensure t
+;  :config
+;
+;  (general-define-key "C-M-j" 'counsel-switch-buffer)
+;  
+;  (general-create-definer rune/leader-keys
+;    :keymaps '(normal insert visual emacs)
+;    :perfix "SPC"
+;    :global-prefix "C-SPC"))
+;
+;(use-package projectile
+;  :ensure t
+;  :diminish projectile-mode
+;  :config (projectile-mode)
+;  :custom ((projectile-completion-system 'ivy))
+;  :bind-keymap
+;  ("C-c p" . projectile-command-map)
+;  :init
+;  (when (file-directory-p "~/sdk")
+;    (setq projectile-project-search-path '("~/sdk" "~/euler")))
+;  (setq projectile-switch-project-action #'projectile-dired))
 
-  (general-define-key "C-M-j" 'counsel-switch-buffer)
-  
-  (general-create-definer rune/leader-keys
-    :keymaps '(normal insert visual emacs)
-    :perfix "SPC"
-    :global-prefix "C-SPC"))
-
-(use-package projectile
-  :ensure t
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  (when (file-directory-p "~/sdk")
-    (setq projectile-project-search-path '("~/sdk")))
-  (setq projectile-switch-project-action #'projectile-dired))
-
-(use-package counsel-projectile
-  :ensure t
-  :config (counsel-projectile-mode))
+; (use-package counsel-projectile
+;   :ensure t
+;   :config (counsel-projectile-mode))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -246,6 +256,8 @@
 (require 'setup-eshell)
 (require 'setup-magit)
 (require 'setup-theme)
+(require 'setup-corfu)
+(require 'setup-ligatures)
 
 ;(add-to-list 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
 (defun new-frame-setup (frame)
@@ -255,4 +267,4 @@
 (mapc 'new-frame-setup (frame-list))
 ;; Run when a new frame is created (For emacs in client/server mode)
 (add-hook 'after-make-frame-functions 'new-frame-setup)
-;(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
+(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#49cf66")))

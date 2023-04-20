@@ -6,7 +6,12 @@
       '((comment yellow-cooler)
         (string green-cooler))
       modus-vivendi-palette-overrides
-      '((bg-main "#282828")))
+      '((bg-main "#282828")
+	(fg-main "#d9d4cb")
+	(bg-hl-line bg-inactive)
+	(fnname "#f4974f")
+	(keyword red)
+	(preprocessor red)))
   :config
   (load-theme 'modus-vivendi :no-confirm))
 
