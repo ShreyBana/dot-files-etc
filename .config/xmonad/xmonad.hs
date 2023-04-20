@@ -1,4 +1,3 @@
--- #Imports
 import XMonad
 import XMonad.Util.EZConfig
 import XMonad.Util.Ungrab
@@ -23,25 +22,26 @@ blue = "#1780e8"
 font = "#abb2bf"
 
 -- #Main
-main :: IO()
+main :: IO ()
 main = do 
     dbus <- XD.connect
-        -- Request access (needed when sending messages)
     XD.requestAccess dbus
-    xmonad $ docks $ def { modMask = mod4Mask
-    , terminal = "alacritty"
-    , layoutHook = spacingRaw False (Border 0 7 7 7) True (Border 7 7 7 7) True $ myLayout
-    , focusedBorderColor = "#458588"
-    , normalBorderColor = "#b16286"
-    , borderWidth = 2
-    , startupHook = myStartupHook
-    , logHook = dynamicLogWithPP (myLogHook dbus)
-    }
+    xmonad $ docks $ def
+      { terminal = "alacritty"
+      , modMask = mod4Mask
+      , layoutHook = spacingRaw False (Border 0 0 0 0) True (Border 2 2 2 2) True $ myLayout
+      , focusedBorderColor = "#458588"
+      , normalBorderColor = "#b16286"
+      , borderWidth = 2
+      , startupHook = myStartupHook
+      , logHook = dynamicLogWithPP (myLogHook dbus)
+      }
         `additionalKeysP`
         [ ("M-S-f" , spawn "firefox")
         , ("M-S-p", spawn "rofi -show drun")
         , ("M-<F3>", spawn "brightnessctl s +10%")
         , ("M-<F4>", spawn "brightnessctl s 10%-")
+        , ("M-S-s", spawn "flameshot full")
         ]
 
 
@@ -53,8 +53,8 @@ myLogHook dbus = def
     , ppUrgent = wrap ("%{u" ++ red ++ "}%{+u} ") " %{-u}"
     , ppHidden = wrap " " " "
     , ppWsSep = ""
-    , ppSep = "  %{F" ++ blue ++ "}\xf303%{F" ++ font ++ "}    "
-    , ppTitle = shorten 50
+    , ppSep = " >>%{F" ++ font ++ "}  "
+    , ppTitle = shorten 25
     , ppOrder = \(ws:_:t:_) -> [ws,t]
     }
 
@@ -66,11 +66,12 @@ myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
     ratio   = 005 / 008  -- Default proportion of screen occupied by master pane
     delta   = 003 / 100  -- Percent of screen to
 
-
 -- #Startup
 myStartupHook = do
-            spawnOnce "feh --bg-fill $HOME/pictures/wallpapers/green-leaves.jpg"
-            spawnOnce "picom"
-            spawnOnce "alacritty"
-            spawnOnce "xsetroot -xcf /usr/share/icons/Adwaita/cursors/left_ptr 32"
-            spawn "$HOME/.config/polybar/./launch.sh"
+    spawnOnce "feh --bg-fill $HOME/pictures/wallpapers/green-leaves.jpg"
+    spawnOnce "picom"
+    spawnOnce "alacritty"
+    spawnOnce "xsetroot -xcf /usr/share/icons/Adwaita/cursors/left_ptr 32"
+    spawnOnce "xmodmap $HOME/.Xmodmap"
+    spawnOnce "exec $HOME/.local/bin/xscreen-lock"
+    spawn "$HOME/.config/polybar/./launch.sh"
