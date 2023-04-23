@@ -1,0 +1,51 @@
+Config
+  { overrideRedirect = False
+  , font     = "JetBrains Mono Bold 12"
+  , additionalFonts = ["JetBrains Mono Medium 14", "JetBrains Mono Medium 20"]
+  , bgColor  = "#2d302b"
+  , fgColor  = "#679191"
+  , position = TopH 30
+  , commands = [ Run Weather "EGPF"
+                   [ "--template", "<weather> <tempC>°C"
+                   , "-L", "0"
+                   , "-H", "25"
+                   , "--low"   , "lightblue"
+                   , "--normal", "#9db9b9"
+                   , "--high"  , "red"
+                   ] 36000
+               , Run Network "wlp1s0"
+                 [ "--template" , "U:<tx>kB/s D:<rx>kB/s"
+                 , "--Low"      , "1000"       -- units: B/s
+                 , "--High"     , "20971520"       -- units: B/s
+                 , "--low"      , "#dAA520"
+                 , "--high"     , "darkred"
+                 ] 10
+               , Run Wireless "wlp1s0"
+                 [ "-t", "<fn=1>󰀂</fn>  <essid>"
+                 ] 10
+               , Run Com "hostname" ["-i"] "ip" 10
+               , Run Battery
+                 [ "--template" , "<acstatus>"
+                 , "--Low"      , "10"
+                 , "--High"     , "80"
+                 , "--low"      , "#cc241d"
+                 , "--"
+                           , "-o"	, "<fn=1>󱟞</fn> <left>%"
+                           , "-O"	, "<fn=1><fc=#dAA520>󰂄</fc></fn> <left>%"
+                 ] 10
+               , Run Cpu
+                   [ "-L", "3"
+                   , "-H", "50"
+                   , "--high"  , "#cc241d"
+                   , "--template", " <total>%"
+                   ] 10
+               , Run Memory ["-t", "<fn=1>󰍛</fn> <usedratio>%"] 10
+               , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
+               , Run Date "󱑂 %H:%M  %a %d-%m-%Y" "date" 10
+               , Run XMonadLog
+               ]
+  , sepChar  = "%"
+  , alignSep = "}{"
+  , template = " %wlp1s0wi% %ip% %wlp1s0% }%XMonadLog%{ %battery% -<< %cpu% * %memory% -<< %date% "
+  }
+
