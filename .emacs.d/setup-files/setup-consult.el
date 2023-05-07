@@ -7,8 +7,8 @@
          :map minibuffer-local-map
          ("C-r" . consult-history))
   :custom
-  (completion-in-region-function #'consult-completion-in-region)
-  :config
-  (consult-preview-mode))
+  (completion-in-region-function #'consult-completion-in-region))
+  ;:config
+  ;(consult-preview-mode))
 
 (provide 'setup-consult)

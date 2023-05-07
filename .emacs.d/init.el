@@ -20,7 +20,7 @@
 
 ;; Fonts Settings
 (set-face-attribute
- 'default nil :family "Hack Nerd Font" :height 160 :weight 'regular)
+ 'default nil :family "Fira Code" :height 140 :weight 'regular)
 
 ;; Custom Var Options
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -140,10 +140,10 @@
   :config
   (evil-collection-init))
 
-(use-package highlight-indent-guides
-  :init
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (setq highlight-indent-guides-method 'character))
+;;(use-package highlight-indent-guides
+;;  :init
+;;  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+;;  (setq highlight-indent-guides-method 'character))
 
 ;(use-package rainbow-delimiters
 ;  :ensure t
