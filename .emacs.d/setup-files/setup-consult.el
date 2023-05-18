@@ -8,7 +8,6 @@
          ("C-r" . consult-history))
   :custom
   (completion-in-region-function #'consult-completion-in-region))
-  ;:config
-  ;(consult-preview-mode))
+  ;:config ;(consult-preview-mode))
 
 (provide 'setup-consult)

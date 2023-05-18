@@ -20,7 +20,7 @@
 
 ;; Fonts Settings
 (set-face-attribute
- 'default nil :family "Fira Code" :height 140 :weight 'regular)
+ 'default nil :family "FiraCode Nerd Font Mono" :height 120 :weight 'regular)
 
 ;; Custom Var Options
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -34,6 +34,7 @@
 
 ;; Char Ruler
 (setq-default display-fill-column-indicator-column 95)
+(setq-default display-fill-column-indicator-character "||")
 (global-display-fill-column-indicator-mode t)
 
 (global-hl-line-mode t)
@@ -94,7 +95,7 @@
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
-  (set-cursor-color "#689d6a"))
+  (set-cursor-color "#dfaf7a"))
 
 (use-package doom-modeline
   :ensure t
@@ -102,15 +103,16 @@
   (setq doom-modeline-hud t)
   (doom-modeline-mode 1)
   (custom-set-faces
-  '(mode-line ((t (:family "Fira Code" :height 0.9))))
-  '(mode-line-active ((t (:family "Fira Code" :height 0.9)))) ; For 29+
-  '(mode-line-inactive ((t (:family "Fira Code" :height 0.9)))))
+  '(mode-line ((t (:family "Hack Nerd Font" :height 0.90))))
+  '(mode-line-active ((t (:family "Hack Nerd Font" :height 0.90)))) ; For 29+
+  '(mode-line-inactive ((t (:family "Hack Nerd Font" :height 0.90)))))
   :custom
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-support-imenu t)
   (doom-modeline-hud t)
   (doom-modeline-enable-word-count t)
-  (doom-modeline-height 10))
+  (doom-modeline-bar-width 10)
+  (doom-modeline-height 11))
 
 (use-package all-the-icons
   :if (display-graphic-p))
@@ -140,10 +142,10 @@
   :config
   (evil-collection-init))
 
-;;(use-package highlight-indent-guides
-;;  :init
-;;  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-;;  (setq highlight-indent-guides-method 'character))
+;(use-package highlight-indent-guides
+;  :init
+;  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+;  (setq highlight-indent-guides-method 'character))
 
 ;(use-package rainbow-delimiters
 ;  :ensure t
@@ -234,10 +236,11 @@
   :config
   (set-face-attribute 'highlight-numbers-number nil :weight 'semi-bold))
 
-(use-package jenkinsfile-mode
-  :ensure t)
-(use-package json-mode
-  :ensure t)
+
+(use-package jenkinsfile-mode :ensure t)
+(use-package fish-mode :ensure t)
+(use-package json-mode :ensure t)
+
 (require 'setup-org)
 (require 'setup-git)
 (require 'setup-vertico)
@@ -258,7 +261,10 @@
 (require 'setup-theme)
 (require 'setup-corfu)
 (require 'setup-ligatures)
-
+(require 'setup-nix)
+(require 'setup-rust)
+(require 'setup-direnv)
+(require 'setup-docker)
 ;(add-to-list 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
 (defun new-frame-setup (frame)
   (if (display-graphic-p frame)
@@ -267,4 +273,4 @@
 (mapc 'new-frame-setup (frame-list))
 ;; Run when a new frame is created (For emacs in client/server mode)
 (add-hook 'after-make-frame-functions 'new-frame-setup)
-(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#49cf66")))
+;(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#49cf66")))

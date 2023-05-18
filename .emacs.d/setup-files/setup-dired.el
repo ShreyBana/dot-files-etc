@@ -1,4 +1,4 @@
-(setq insert-directory-program "gls" dired-use-ls-dired t)
+;(setq insert-directory-program "gls" dired-use-ls-dired t)
 
 (use-package dired
   :ensure nil
