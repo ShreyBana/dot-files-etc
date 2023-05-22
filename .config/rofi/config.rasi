@@ -151,7 +151,6 @@ configuration {
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
 
-@import "/usr/share/rofi/themes/glue_pro_blue.rasi"
 //@theme "/usr/share/rofi/themes/lb.rasi"
 //@theme "/usr/share/rofi/themes/gruvbox-dark-hard.rasi"
 @theme "/home/shrey_bana/.config/rofi/themes/nord.rasi"

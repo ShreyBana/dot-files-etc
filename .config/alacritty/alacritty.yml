@@ -90,7 +90,7 @@ window:
   #multiplier: 3
 # Font configuration
 font:
-  size: 9
+  size: 7
   # Normal (roman) font face
   normal:
     # Font family
