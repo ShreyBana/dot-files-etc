@@ -1,10 +1,10 @@
 Config
   { overrideRedirect = False
-  , font     = "JetBrains Mono Bold 12"
-  , additionalFonts = ["JetBrains Mono Medium 14", "JetBrains Mono Medium 20"]
+  , font     = "JetBrainsMono Nerd Font Bold 11"
+  , additionalFonts = ["JetBrainsMono Nerd Font Medium 14", "JetBrainsMono Nerd Font 20"]
   , bgColor  = "#2d302b"
   , fgColor  = "#679191"
-  , position = TopH 30
+  , position = TopHM 30 5 5 5 5
   , commands = [ Run Weather "EGPF"
                    [ "--template", "<weather> <tempC>°C"
                    , "-L", "0"
@@ -13,17 +13,17 @@ Config
                    , "--normal", "#9db9b9"
                    , "--high"  , "red"
                    ] 36000
-               , Run Network "wlp1s0"
+               , Run Network "wlp5s0"
                  [ "--template" , "U:<tx>kB/s D:<rx>kB/s"
                  , "--Low"      , "1000"       -- units: B/s
                  , "--High"     , "20971520"       -- units: B/s
                  , "--low"      , "#dAA520"
                  , "--high"     , "darkred"
                  ] 10
-               , Run Wireless "wlp1s0"
+               , Run Wireless "wlp5s0"
                  [ "-t", "<fn=1>󰀂</fn>  <essid>"
                  ] 10
-               , Run Com "hostname" ["-i"] "ip" 10
+               , Run Com "sh" ["-c", "hostname -i | awk '{ print $1 }'"] "ip" 10
                , Run Battery
                  [ "--template" , "<acstatus>"
                  , "--Low"      , "10"
@@ -42,10 +42,14 @@ Config
                , Run Memory ["-t", "<fn=1>󰍛</fn> <usedratio>%"] 10
                , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
                , Run Date "󱑂 %H:%M  %a %d-%m-%Y" "date" 10
+               , Run DiskU
+                   [("/", "<fn=1></fn> <used>")]
+                   []
+                   20
                , Run XMonadLog
                ]
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = " %wlp1s0wi% %ip% %wlp1s0% }%XMonadLog%{ %battery% -<< %cpu% * %memory% -<< %date% "
+  , template = " %wlp5s0wi% %ip% %wlp5s0% }<fc=#abb2bf>%XMonadLog%</fc>{ %disku% * %cpu% * %memory% -<< %date% "
   }
 
