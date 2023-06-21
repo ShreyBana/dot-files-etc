@@ -1,10 +1,11 @@
 Config
   { overrideRedirect = False
-  , font     = "JetBrains Mono Bold 12"
-  , additionalFonts = ["JetBrains Mono Medium 14", "JetBrains Mono Medium 20"]
-  , bgColor  = "#2d302b"
+  , font     = "JetBrainsMono Nerd Font Propo Bold 10"
+  , additionalFonts = ["JetBrainsMono Nerd Font Propo Medium 11", "JetBrainsMono Nerd Font Propo Medium 17"]
+  , bgColor  = "#282828"
   , fgColor  = "#679191"
-  , position = TopH 30
+  , alpha = 230
+  , position = TopH 25
   , commands = [ Run Weather "EGPF"
                    [ "--template", "<weather> <tempC>°C"
                    , "-L", "0"
@@ -21,7 +22,7 @@ Config
                  , "--high"     , "darkred"
                  ] 10
                , Run Wireless "wlp1s0"
-                 [ "-t", "<fn=1>󰀂</fn>  <essid>"
+                 [ "-t", "<fn=1>󰀂</fn> <essid>"
                  ] 10
                , Run Com "hostname" ["-i"] "ip" 10
                , Run Battery
@@ -30,22 +31,23 @@ Config
                  , "--High"     , "80"
                  , "--low"      , "#cc241d"
                  , "--"
-                           , "-o"	, "<fn=1>󱟞</fn> <left>%"
+                           , "-o"	, "<fn=1><fc=#689d6a>󱟞</fc></fn> <left>%"
                            , "-O"	, "<fn=1><fc=#dAA520>󰂄</fc></fn> <left>%"
                  ] 10
                , Run Cpu
                    [ "-L", "3"
                    , "-H", "50"
                    , "--high"  , "#cc241d"
-                   , "--template", " <total>%"
+                   , "--template", "<fc=#689d6a> </fc><total>%"
                    ] 10
-               , Run Memory ["-t", "<fn=1>󰍛</fn> <usedratio>%"] 10
+               , Run DiskU [("/", "<fc=#689d6a>󰋊</fc> <used>")] [] 20
+               , Run Memory ["-t", "<fn=1><fc=#689d6a>󰍛</fc></fn> <usedratio>%"] 10
                , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
-               , Run Date "󱑂 %H:%M  %a %d-%m-%Y" "date" 10
+               , Run Date "󱑂 %H:%M 󰃶 %a %d-%m-%Y" "date" 10
                , Run XMonadLog
                ]
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = " %wlp1s0wi% %ip% %wlp1s0% }%XMonadLog%{ %battery% -<< %cpu% * %memory% -<< %date% "
+  , template = " <fc=#689d6a>%wlp1s0wi% %ip%</fc> %wlp1s0% }<fc=#928374>%XMonadLog%</fc>{ %battery% * %disku% * %cpu% * %memory% <fc=#928374>:: %date%</fc> "
   }
 
