@@ -1,10 +1,12 @@
 Config
   { overrideRedirect = False
-  , font     = "JetBrainsMono NF Bold 9"
-  , additionalFonts = ["JetBrainsMono NF Medium 10", "JetBrainsMono NF 16"]
-  , bgColor  = "#282828"
-  , fgColor  = "#679191"
-  , position = TopH 23
+  , font     = "Iosevka NFP Bold 11"
+  , additionalFonts = [ "JetBrainsMono NF Bold 10"
+                      , "JetBrainsMono NF 16"
+                      ]
+  , bgColor  = "#202325"
+  , fgColor  = "#a9a9a9"
+  , position = TopH 25
   , commands = [ Run Weather "EGPF"
                    [ "--template", "<weather> <tempC>°C"
                    , "-L", "0"
@@ -16,12 +18,12 @@ Config
                , Run Network "wlp5s0"
                  [ "--template" , "U:<tx>kB/s D:<rx>kB/s"
                  , "--Low"      , "1000"       -- units: B/s
-                 , "--High"     , "20971520"       -- units: B/s
-                 , "--low"      , "#dAA520"
+                 , "--High"     , "20971520"   -- units: B/s
+                 , "--low"      , "#a9a9a9"
                  , "--high"     , "darkred"
                  ] 10
                , Run Wireless "wlp5s0"
-                 [ "-t", "<fn=1>󰀂</fn> ::<essid>"
+                 [ "-t", "<fn=1>󰀂</fn> :<essid>"
                  ] 10
                , Run Com "sh" ["-c", "hostname -i | awk '{ print $1 }'"] "ip" 10
                , Run Battery
@@ -37,18 +39,18 @@ Config
                    [ "-L", "3"
                    , "-H", "50"
                    , "--high"  , "#cc241d"
-                   , "--template", "<fc=#689d6a> </fc> <total>%"
+                   , "--template", "<fn=1><fc=#5b6366>CPU:</fc></fn> <total>%"
                    ] 10
-               , Run DiskU [("/", "<fc=#689d6a>󰋊</fc> <used>")] [] 20
-               , Run Memory ["-t", "<fn=1><fc=#689d6a>󰍛</fc></fn> <usedratio>%"] 10
+               , Run DiskU [("/", "<fn=1><fc=#5b6366>Disk /:</fc></fn> <used>")] [] 20
+               , Run Memory ["-t", "<fn=1><fc=#5b6366>Mem:</fc></fn> <usedratio>%"] 10
                , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
-               , Run Date "󱑂 %H:%M 󰃶 %a %d-%m-%Y" "date" 10
-               , Run Volume "default" "Master" [ "-t", "<fn=1><fc=#689d6a>󰋋</fc></fn> <volume>%" ] 10
+               , Run Date "󰃶 %a, %d-%m-%Y 󱑂 %H:%M:%S" "date" 10
+               , Run Volume "default" "Master" [ "-t", "<fn=1><fc=#5b6366>Vol:</fc></fn> <volume>%" ] 10
                , Run Com "sh" ["-c","/home/shrey_bana/.local/bin/spotify.sh"] "music" 10
                , Run XMonadLog
                ]
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = " <fc=#689d6a>%wlp5s0wi%@%ip%</fc> %wlp5s0% * %music% }<fc=#928374>%XMonadLog%</fc>{ %default:Master% * %disku% * %cpu% * %memory% <fc=#928374>:: %date%</fc> "
+  , template = " <fn=1><fc=#5b6366>%wlp5s0wi%@%ip%</fc></fn> %wlp5s0% || <fn=1>%music%</fn> }%XMonadLog%{ %default:Master% | %disku% | %cpu% | %memory% =<< %date% "
   }
 

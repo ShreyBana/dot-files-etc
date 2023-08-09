@@ -1,28 +1,16 @@
 (use-package modus-themes
   :ensure t
   :init
-  (set-cursor-color "#dfaf7a")
+  (set-cursor-color "#db7b5f")
   (setq
       modus-themes-common-palette-overrides
       '((comment yellow-cooler)
-        (string green-cooler))
-      modus-vivendi-palette-overrides
-      '((bg-main "#282828")
-	(fg-main "#d9d4cb")
+        (string green-cooler)
 	(bg-hl-line bg-inactive)
-	(bg-mode-line-active "#454545")
-	(border-mode-line-active bg-mode-line-active)
-	(fnname "#f4974f")
-	(bg-active "#4d4d4d")
-	(keyword red)
-	(preprocessor red)))
+	(bg-mode-line-active "#303030")
+	(bg-changed-fringe "#1640b0")
+	(border-mode-line-active bg-mode-line-active)))
   :config
   (load-theme 'modus-vivendi :no-confirm))
-
-;(load-theme 'doom-solarized-dark t)
-;(use-package zenburn-theme
-;  :ensure t
-;  :config
-;  (load-theme 'zenburn t))
 
 (provide 'setup-theme)

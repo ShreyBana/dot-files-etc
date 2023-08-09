@@ -17,56 +17,68 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "22.11"; # Please read the comment before changing.
+  home.stateVersion = "23.05"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  nixpkgs.overlays = [
-    (self: super: {
-      hls =
-        let 
-          easy-hls-src = super.fetchFromGitHub {
-            owner  = "jkachmar";
-            repo   = "easy-hls-nix";
-            rev    = "6cb50f04e3a61b1ec258c6849df84dae9dfd763f";
-            sha256 = "1rvi6067nw64dka8kksl7f34pwkq7wx7pnhnz3y261fw9z5j4ndp";
-          };
-        in
-          super.callPackage easy-hls-src { ghcVersions = [ "8.8.4" ]; };
-      })
-  ];
-  home.packages = with pkgs; [
-    htop
-    starship
-    rofi
-    spotify
-    rnix-lsp
-    hls
-    stack
-    nodejs-14_x
-    node2nix
-    haskell.compiler.ghc88
-    android-studio
-    google-chrome-dev
-    rust-analyzer
-    direnv
-    lorri
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-  ];
+  # nixpkgs.overlays = [
+  #   (self: super: {
+  #     hls =
+  #       let 
+  #         easy-hls-src = super.fetchFromGitHub {
+  #           owner  = "jkachmar";
+  #           repo   = "easy-hls-nix";
+  #           rev    = "6cb50f04e3a61b1ec258c6849df84dae9dfd763f";
+  #           sha256 = "1rvi6067nw64dka8kksl7f34pwkq7wx7pnhnz3y261fw9z5j4ndp";
+  #         };
+  #       in
+  #         super.callPackage easy-hls-src { ghcVersions = [ "8.8.4" ]; };
+  #     })
+  # ];
+  #fonts.fontconfig.enable = true;
+  home.packages =
+    let 
+      nerdFonts =
+        [ "FiraCode"
+          "DroidSansMono"
+          "Hack"
+          "RobotoMono"
+          "JetBrainsMono"
+          "Iosevka"
+        ];
+    in
+     with pkgs; [
+        emacs29
+        htop
+        starship
+        rofi
+        spotify
+        rnix-lsp
+        google-chrome-dev
+        direnv
+        lorri
+        pamixer
+        (pass.withExtensions (ext: with ext; [ pass-otp ]))
+        awscli2
+        playerctl
+        pavucontrol
+        pinentry
+        postgresql_12
+        okular
+        flameshot
+        fd
+        ripgrep
+        fzf
+        nodejs_18
+        nodePackages.typescript-language-server
+        #(pkgs.nerdfonts.override { fonts = nerdFonts; })
+        # # You can also create simple shell scripts directly inside your
+        # # configuration. For example, this adds a command 'my-hello' to your
+        # # environment:
+        # (pkgs.writeShellScriptBin "my-hello" ''
+        #   echo "Hello, ${config.home.username}!"
+        # '')
+    ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.

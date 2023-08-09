@@ -1,7 +1,3 @@
-(setq modus-themes-vivendi-color-overrides
-      '((bg-main . "#1d2021")
-        (fg-main . "#c2c2c2")))
-;; Don't show the splash screen
 (setq inhibit-startup-message t)
 
 ;; UI Tweaks
@@ -12,7 +8,7 @@
 (global-auto-revert-mode t)
 (set-fringe-mode 10)
 (display-time-mode t)
-(display-battery-mode t)
+;(display-battery-mode t)
 (toggle-truncate-lines)
 
 ;; Make ESC quit prompts
@@ -20,7 +16,7 @@
 
 ;; Fonts Settings
 (set-face-attribute
- 'default nil :family "FiraCode Nerd Font Mono" :height 120 :weight 'regular)
+ 'default nil :family "FiraCode Nerd Font" :height 120 :weight 'regular)
 
 ;; Custom Var Options
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -33,31 +29,19 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Char Ruler
-(setq-default display-fill-column-indicator-column 95)
-(setq-default display-fill-column-indicator-character "||")
+(setq-default display-fill-column-indicator-column 90)
+;(setq-default display-fill-column-indicator-character "||")
 (global-display-fill-column-indicator-mode t)
 
 (global-hl-line-mode t)
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; Comment/uncomment this line to enable MELPA Stable if desired.
-;; See `package-archive-priorities`
-;; and `package-pinned-packages`. Most users will not need or want to do this.
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(doom-modeline all-the-icons use-package doom-themes gruvbox-theme)))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  )
 
 (use-package exec-path-from-shell
@@ -75,44 +59,6 @@
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.3))
-
-;; Theme/Colors
-(use-package doom-themes
-  :ensure t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (set-face-attribute 'font-lock-constant-face nil :weight 'semi-bold)
-  (set-face-attribute 'font-lock-keyword-face nil :weight 'semi-bold)
-
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-  (set-cursor-color "#dfaf7a"))
-
-(use-package doom-modeline
-  :ensure t
-  :init
-  (setq doom-modeline-hud t)
-  (doom-modeline-mode 1)
-  (custom-set-faces
-  '(mode-line ((t (:family "Hack Nerd Font" :height 0.90))))
-  '(mode-line-active ((t (:family "Hack Nerd Font" :height 0.90)))) ; For 29+
-  '(mode-line-inactive ((t (:family "Hack Nerd Font" :height 0.90)))))
-  :custom
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-support-imenu t)
-  (doom-modeline-hud t)
-  (doom-modeline-enable-word-count t)
-  (doom-modeline-bar-width 10)
-  (doom-modeline-height 11))
 
 (use-package all-the-icons
   :if (display-graphic-p))
@@ -240,14 +186,16 @@
 (use-package jenkinsfile-mode :ensure t)
 (use-package fish-mode :ensure t)
 (use-package json-mode :ensure t)
+(use-package csv-mode :ensure t)
 
 (require 'setup-org)
+(require 'setup-modeline)
 (require 'setup-git)
 (require 'setup-vertico)
 (require 'setup-consult)
 ;(require 'setup-lsp)
 (require 'setup-dashboard)
-(require 'setup-company)
+;(require 'setup-company)
 (require 'setup-haskell)
 (require 'setup-purescript)
 (require 'setup-javascript)
@@ -260,11 +208,14 @@
 (require 'setup-magit)
 (require 'setup-theme)
 (require 'setup-corfu)
-(require 'setup-ligatures)
+;(require 'setup-ligatures)
 (require 'setup-nix)
 (require 'setup-rust)
 (require 'setup-direnv)
 (require 'setup-docker)
+(require 'setup-cape)
+(require 'setup-kind-icons)
+(require 'setup-project)
 ;(add-to-list 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
 (defun new-frame-setup (frame)
   (if (display-graphic-p frame)

@@ -14,7 +14,7 @@
   (setq dashboard-startup-banner 'logo))
 
 (add-hook 'server-after-make-frame-hook (lambda()
-    (set-cursor-color "#6c9ef8")
+    ;(set-cursor-color "#6c9ef8")
     (switch-to-buffer dashboard-buffer-name)
     (dashboard-mode)
     (dashboard-insert-startupify-lists)

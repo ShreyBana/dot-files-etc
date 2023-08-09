@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 {
   networking.enableIPv6 = false;
-  # networking.hostName="";
+  networking.hostName="sb-nixos";
   nix.extraOptions = ''
       keep-outputs = true
       keep-derivations = true
@@ -45,7 +45,7 @@
     enableDefaultFonts = true;
     fonts = with pkgs; [
       ubuntu_font_family
-  	  (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" "Hack" "RobotoMono" "JetBrainsMono" "Iosevka" ]; })
+  	  (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" "Hack" "RobotoMono" "JetBrainsMono" "Iosevka" "Noto" "Overpass" ]; })
     ];
     fontconfig = {
       defaultFonts = {
@@ -61,17 +61,22 @@
    services.xserver.xrandrHeads = [
    	{ 
 		output = "HDMI-1"; 
-		primary = true;
-	}
-   	{ 
-		output = "DP-1"; 
 		monitorConfig = ''
 			Option "Rotate" "left" 
 			Option "LeftOf" "HDMI-1" 
-		''; 
+		'';
+	}
+   	{ 
+		output = "DP-1"; 
+		primary = true;
+		# monitorConfig = ''
+		# 	Option "Rotate" "left" 
+		# 	Option "LeftOf" "HDMI-1" 
+		# ''; 
 	}
    ];
    services.xserver.xkbOptions = "ctrl:swapcaps";
+   services.xserver.desktopManager.plasma5.enable = true;
    services.xserver.windowManager.xmonad = {
 	enable = true;
         enableConfiguredRecompile = true;
@@ -105,7 +110,7 @@
    programs.fish.enable = true;
    users.users.shrey_bana = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "docker" "nixbld" ]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "wheel" "docker" "nixbld" "adbusers" ]; # Enable ‘sudo’ for the user.
      shell = pkgs.fish;
    };
    nix.settings.trusted-users = [ "root" "shrey_bana" ];
@@ -114,7 +119,6 @@
   # $ nix search wget
    environment.systemPackages = with pkgs; [
      	neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.  
-	emacs
      	wget
      	git
      	firefox-devedition
@@ -139,6 +143,10 @@
 	cachix
 	bintools
 	zlib
+	lsof
+	gnupg
+	pinentry-curses
+	android-studio
    ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -152,6 +160,12 @@
 
   # Enable the OpenSSH daemon.
    services.openssh.enable = true;
+   services.pcscd.enable = true;
+   programs.gnupg.agent = {
+	enable = true;
+	pinentryFlavor = "curses";
+	enableSSHSupport = true;
+   };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -172,6 +186,7 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
 
-   environment.shellInit = ''export  NIX_PATH="$NIX_PATH:/nix/var/nix/profiles/per-user/$USER/channels"'';
+  programs.adb.enable = true;
+  environment.shellInit = ''export  NIX_PATH="$NIX_PATH:/nix/var/nix/profiles/per-user/$USER/channels"'';
 }
 
