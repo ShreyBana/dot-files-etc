@@ -13,4 +13,14 @@
   :config
   (load-theme 'modus-vivendi :no-confirm))
 
+;; (use-package zenburn-theme :ensure t
+;;   :config
+;;   (load-theme 'zenburn :no-confirm))
+(use-package spacious-padding :ensure t
+  :config
+  (spacious-padding-mode 1))
+
+;; (use-package godlen-ratio :ensure t
+;;   :config)
+
 (provide 'setup-theme)

@@ -1,4 +1,17 @@
+(setq-default indent-tabs-mode nil)
 (setq inhibit-startup-message t)
+
+;; Perf Tuning
+(setq gc-cons-threshold (* 1024 1024 1024))
+(use-package gcmh :ensure t
+  :init
+  (setq gcmh-high-cons-threshold (* 1024 1024 1024))
+  (setq gcmh-idle-delay-factor 20)
+  :config
+  (gcmh-mode 1))
+(setq jit-lock-defer-time 0.05)
+(setq read-process-output-max (* 1024 1024))
+(setq package-native-compile t)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
@@ -11,12 +24,18 @@
 ;(display-battery-mode t)
 (toggle-truncate-lines)
 
+;; Auto-Pairs
+(electric-pair-mode)
+
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Fonts Settings
 (set-face-attribute
- 'default nil :family "FiraCode Nerd Font" :height 120 :weight 'regular)
+ 'default nil
+ :family "FiraCode Nerd Font Propo"
+ :height 170
+ :weight 'medium)
 
 ;; Custom Var Options
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -29,8 +48,12 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Char Ruler
-(setq-default display-fill-column-indicator-column 90)
+(setq-default display-fill-column-indicator-column 80)
 ;(setq-default display-fill-column-indicator-character "||")
+;; (set-face-attribute
+;;  'fill-column-indicator nil
+;;  :family "FiraCode Nerd Font Propo" :height 100 :weight 'bold)
+
 (global-display-fill-column-indicator-mode t)
 
 (global-hl-line-mode t)
@@ -63,6 +86,12 @@
 (use-package all-the-icons
   :if (display-graphic-p))
 
+(use-package all-the-icons-completion
+  :ensure t
+  :after all-the-icons
+  :hook
+  (server-after-make-frame-hook . (lambda () (all-the-icons-completion-mode))))
+
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -88,50 +117,6 @@
   :config
   (evil-collection-init))
 
-;(use-package highlight-indent-guides
-;  :init
-;  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-;  (setq highlight-indent-guides-method 'character))
-
-;(use-package rainbow-delimiters
-;  :ensure t
-;  :hook (prog-mode . rainbow-delimiters-mode))
-
-; (use-package ivy
-;   :ensure t
-;   :diminish
-;   :bind (("C-s" . swiper)
-;          :map ivy-minibuffer-map
-;          ("TAB" . ivy-alt-done)	
-;          ("C-l" . ivy-alt-done)
-;          ("C-j" . ivy-next-line)
-;          ("C-k" . ivy-previous-line)
-;          :map ivy-switch-buffer-map
-;          ("C-k" . ivy-previous-line)
-;          ("C-l" . ivy-done)
-;          ("C-d" . ivy-switch-buffer-kill)
-;          :map ivy-reverse-i-search-map
-;          ("C-k" . ivy-previous-line)
-;          ("C-d" . ivy-reverse-i-search-kill))
-;   :config
-;   (ivy-mode 1))
-; 
-; ;; More Help On Cmds
-; (use-package ivy-rich
-;   :ensure t
-;   :init
-;   (ivy-rich-mode 1))
-; 
-; ;; More Features For Builtins
-; (use-package counsel
-;   :ensure t
-;   :bind (("M-x" . counsel-M-x)
-; 	 ("C-x b" . counsel-ibuffer)
-; 	 ("C-x C-f" . counsel-find-file)
-; 	 :map minibuffer-local-map
-; 	 ("C-r" . 'counsel-minibuffer-history)))
-
-
 ;; Better Doc & Help Pages
 (use-package helpful
   :ensure t
@@ -143,39 +128,7 @@
   ([remap describe-command] . helpful-command)
   ;([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
-;  
-;(use-package general
-;  :ensure t
-;  :config
-;
-;  (general-define-key "C-M-j" 'counsel-switch-buffer)
-;  
-;  (general-create-definer rune/leader-keys
-;    :keymaps '(normal insert visual emacs)
-;    :perfix "SPC"
-;    :global-prefix "C-SPC"))
-;
-;(use-package projectile
-;  :ensure t
-;  :diminish projectile-mode
-;  :config (projectile-mode)
-;  :custom ((projectile-completion-system 'ivy))
-;  :bind-keymap
-;  ("C-c p" . projectile-command-map)
-;  :init
-;  (when (file-directory-p "~/sdk")
-;    (setq projectile-project-search-path '("~/sdk" "~/euler")))
-;  (setq projectile-switch-project-action #'projectile-dired))
 
-; (use-package counsel-projectile
-;   :ensure t
-;   :config (counsel-projectile-mode))
-
-(use-package rainbow-delimiters
-  :ensure t
-  :config
-  (setq rainbow-delimiters-max-face-count 1)
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 (use-package highlight-numbers
   :ensure t
   :hook (prog-mode . highlight-numbers-mode)
@@ -187,35 +140,42 @@
 (use-package fish-mode :ensure t)
 (use-package json-mode :ensure t)
 (use-package csv-mode :ensure t)
+(use-package origami :ensure t
+  :config
+  (global-origami-mode))
+;; (use-package yasnippet :ensure t)
 
-(require 'setup-org)
+(require 'setup-theme)
 (require 'setup-modeline)
-(require 'setup-git)
 (require 'setup-vertico)
 (require 'setup-consult)
-;(require 'setup-lsp)
 (require 'setup-dashboard)
-;(require 'setup-company)
+(require 'setup-corfu)
+(require 'setup-git)
+(require 'setup-org)
+(require 'setup-eglot)
 (require 'setup-haskell)
 (require 'setup-purescript)
 (require 'setup-javascript)
 (require 'setup-tree-sitter)
 (require 'setup-page-break-lines)
 (require 'setup-dired)
-(require 'setup-eglot)
 (require 'setup-elisp)
 (require 'setup-eshell)
-(require 'setup-magit)
-(require 'setup-theme)
-(require 'setup-corfu)
-;(require 'setup-ligatures)
 (require 'setup-nix)
 (require 'setup-rust)
 (require 'setup-direnv)
 (require 'setup-docker)
 (require 'setup-cape)
-(require 'setup-kind-icons)
 (require 'setup-project)
+(require 'setup-clojure)
+(require 'setup-rainbow-delimiters)
+(require 'setup-just)
+(require 'setup-editorconfig)
+(require 'setup-orderless)
+(require 'setup-dirvish)
+(require 'setup-hl-todo)
+
 ;(add-to-list 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
 (defun new-frame-setup (frame)
   (if (display-graphic-p frame)
@@ -225,3 +185,5 @@
 ;; Run when a new frame is created (For emacs in client/server mode)
 (add-hook 'after-make-frame-functions 'new-frame-setup)
 ;(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#49cf66")))
+
+(put 'downcase-region 'disabled nil)

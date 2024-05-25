@@ -25,10 +25,18 @@
   :init
   (marginalia-mode))
 
-(use-package orderless
-  :ensure t
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+;; (use-package vertico-posframe :ensure t
+;;   :config
+;;   (vertico-posframe-mode 1))
+;;   ;; :custom
+  ;; (vertico-posframe-parameters
+  ;;  '((left-fringe . 8)
+  ;;    (right-fringe . 8))))
+
+;; (use-package orderless
+;;   :ensure t
+;;   :custom
+;;   (completion-styles '(orderless basic))
+;;   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (provide 'setup-vertico)

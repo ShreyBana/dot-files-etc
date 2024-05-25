@@ -10,6 +10,7 @@
   (js2-include-node-externs t)
   (js2-highlight-level 3)
   (js-indent-align-list-continuation t)
+  (js-indent-level 4)
   :config
   (set-face-attribute 'js2-object-property nil :foreground "#83a598")
   (js2-mode-hide-warnings-and-errors)
