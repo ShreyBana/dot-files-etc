@@ -1,2 +1,2 @@
 
-(use-package json-mode :ensure t)
+(use-package json-mode)

@@ -1,7 +1,6 @@
-(use-package nerd-icons-corfu :ensure t)
+(use-package nerd-icons-corfu)
 
 (use-package corfu
-  :ensure t
   ;; TAB-and-Go customizations
   :custom
   (corfu-auto t)
@@ -26,7 +25,6 @@
         corfu-popupinfo-mode t
         completion-styles '(orderless)))
 ;; Extensions
-(use-package pcmpl-args
-  :ensure t) ;; Extends eshell pcomplete to give completion from MAN pages
+(use-package pcmpl-args) ;; Extends eshell pcomplete to give completion from MAN pages
 
 (provide 'setup-corfu)

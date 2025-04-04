@@ -1,4 +1,4 @@
-(use-package cape :ensure t
+(use-package cape
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   ;:bind (("C-c p p" . completion-at-point) ;; capf

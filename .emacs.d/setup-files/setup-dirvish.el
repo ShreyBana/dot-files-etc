@@ -1,4 +1,4 @@
-(use-package dirvish :ensure t
+(use-package dirvish
   :config
   (dirvish-override-dired-mode))
 

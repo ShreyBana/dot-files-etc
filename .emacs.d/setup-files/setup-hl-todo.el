@@ -1,5 +1,4 @@
 (use-package hl-todo
-  :ensure t
   :hook (prog-mode . hl-todo-mode)
   :config
   (setq hl-todo-highlight-punctuation ":"

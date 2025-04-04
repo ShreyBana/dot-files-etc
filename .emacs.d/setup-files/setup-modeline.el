@@ -1,13 +1,13 @@
 (use-package emacs
+  :straight (:type built-in)
   :config
   (column-number-mode t)
   :custom-face
-  (mode-line ((t (:family "UbuntuMono Nerd Font Propo" :height 0.96))))
-  (mode-line-active ((t (:family "UbuntuMono Nerd Font Propo" :height 0.96))))
-  (mode-line-inactive ((t (:family "UbuntuMono Nerd Font Propo" :height 0.96)))))
+  (mode-line ((t (:family "UbuntuMono Nerd Font Propo" :height 0.98))))
+  (mode-line-active ((t (:family "UbuntuMono Nerd Font Propo" :height 0.98))))
+  (mode-line-inactive ((t (:family "UbuntuMono Nerd Font Propo" :height 0.98)))))
 
 (use-package doom-modeline
-  :ensure t
   :init
   (doom-modeline-mode 1)
   :custom

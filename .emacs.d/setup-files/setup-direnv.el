@@ -1,7 +1,13 @@
 
-(use-package direnv
+;; (use-package direnv
+;;   :ensure t
+;;   :config
+;;   (setq direnv-always-show-summary nil)
+;;   (setq direnv-use-faces-in-summary nil)
+;;   (direnv-mode))
+
+(use-package envrc
   :ensure t
-  :config
-  (direnv-mode))
+  :hook (after-init . envrc-global-mode))
 
 (provide 'setup-direnv)

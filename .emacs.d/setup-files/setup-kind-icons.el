@@ -1,10 +1,8 @@
 (use-package nerd-icons
-  :ensure t
   :config
   (setq nerd-icons-scale-factor 1.1))
 
 (use-package kind-icon
-  :ensure t
   :after corfu
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly

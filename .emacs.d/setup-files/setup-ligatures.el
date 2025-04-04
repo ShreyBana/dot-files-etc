@@ -1,5 +1,4 @@
 (use-package ligature
-  :ensure t
   :config
   ;; Enable the "www" ligature in every possible major mode
   (ligature-set-ligatures 't '("www"))

@@ -2,7 +2,6 @@
 ;  :ensure t)
 
 (use-package haskell-mode
-  :ensure t
   ;:after lsp-mode
   ;:after lsp-haskell
   :hook

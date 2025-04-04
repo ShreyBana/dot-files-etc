@@ -1,5 +1,4 @@
 
-(use-package dockerfile-mode
-  :ensure t)
+(use-package dockerfile-mode)
 
 (provide 'setup-docker)

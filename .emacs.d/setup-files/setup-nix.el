@@ -1,8 +1,7 @@
-
-(use-package nix-mode
-  :ensure t
-  :hook ((nix-mode . eglot-ensure)
-	 (nix-mode . company-mode)))
+(use-package nix-ts-mode
+  :hook (nix-ts-mode . eglot-ensure)
+  :config
+  (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode)))
 
 (provide 'setup-nix)
 

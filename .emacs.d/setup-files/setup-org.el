@@ -7,11 +7,11 @@
 
 ;; Needed for auto-wrapping text.
 (use-package visual-fill-column
-  :ensure t
   :config
   (setq-default fill-column 100))
 
 (use-package org
+  :straight (:type built-in)
   :hook
   (org-mode . efs/org-mode-setup)
   :config
@@ -28,21 +28,22 @@
   (setq org-agenda-files '("~/sdk"))
   (setq org-todo-keywords
       '((sequence "TODO(t)"
-                  "DEVELOPMENT(d)"
+                  "DEV(d)"
                   "IN-REVIEW(r)"
                   "|"
                   "DONE(d)"
                   "DELEGATED(D)"
                   "CANCELLED(c)")
-        (sequence "REPORT(r)" "|" "REPORTED")))
+        (sequence "REPORT(r)" "|" "REPORTED")
+        (sequence "DISCUSS" "|" "DONE")))
   (setq org-todo-keyword-faces
-        '(("TODO" . org-warning)
-          ("DEVELOPMENT" . "pink")
-          ("IN-REVIEW" . "#47dfea")
+        '(("TODO" . "#ff9070")
+          ("DEV" . "pink")
+          ("IN-REVIEW" . "#d8af7a")
+          ("DISCUSS" . "#ff5f5f")
           ("CANCELLED" . "#00c06f"))))
 
 (use-package org-bullets
-  :ensure t
   :after org
   :hook (org-mode . org-bullets-mode)
   :custom

@@ -1,6 +1,5 @@
 (setq-default indent-tabs-mode nil)
 (setq inhibit-startup-message t)
-
 ;; Perf Tuning
 (setq gc-cons-threshold (* 1024 1024 1024))
 (use-package gcmh :ensure t
@@ -23,6 +22,7 @@
 (display-time-mode t)
 ;(display-battery-mode t)
 (toggle-truncate-lines)
+(pixel-scroll-precision-mode t)
 
 ;; Auto-Pairs
 (electric-pair-mode)
@@ -33,9 +33,9 @@
 ;; Fonts Settings
 (set-face-attribute
  'default nil
- :family "FiraCode Nerd Font Propo"
- :height 170
- :weight 'medium)
+ :family "Hack Nerd Font Propo"
+ :height 160
+ :weight 'regular)
 
 ;; Custom Var Options
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -50,103 +50,89 @@
 ;; Char Ruler
 (setq-default display-fill-column-indicator-column 80)
 ;(setq-default display-fill-column-indicator-character "||")
-;; (set-face-attribute
-;;  'fill-column-indicator nil
-;;  :family "FiraCode Nerd Font Propo" :height 100 :weight 'bold)
+(set-face-attribute
+ 'fill-column-indicator nil
+ :family "FiraCode Nerd Font Propo" :height 70 :weight 'bold)
 
 (global-display-fill-column-indicator-mode t)
 
 (global-hl-line-mode t)
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-(custom-set-variables
- '(package-selected-packages
-   '(doom-modeline all-the-icons use-package doom-themes gruvbox-theme)))
-(custom-set-faces
- )
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
-(use-package exec-path-from-shell
-  :ensure t)
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+;; (require 'package)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; (package-initialize)
+;; (custom-set-variables
+;;  '(package-selected-packages
+;;    '(doom-modeline all-the-icons use-package doom-themes gruvbox-theme)))
+;; (custom-set-faces
+;;  )
+(setq package-enable-at-startup nil)
+;; (use-package exec-path-from-shell)
+;; (when (memq window-system '(mac ns x))
+  ;; (exec-path-from-shell-initialize))
 
-;(setq use-package-always-ensure t)
+;; (setq use-package-always-ensure t)
 (add-to-list 'load-path "~/.emacs.d/setup-files/")
 
 
 (use-package which-key
-  :ensure t
   :init (which-key-mode)
-  :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.3))
 
-(use-package all-the-icons
-  :if (display-graphic-p))
-
-(use-package all-the-icons-completion
-  :ensure t
-  :after all-the-icons
-  :hook
-  (server-after-make-frame-hook . (lambda () (all-the-icons-completion-mode))))
-
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-  (evil-set-undo-system 'undo-redo)
-
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
-
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
-
 ;; Better Doc & Help Pages
-(use-package helpful
-  :ensure t
-  ;:custom
-  ;(counsel-describe-function-function #'helpful-callable)
-  ;(counsel-describe-varaible-function #'helpful-variable)
-  :bind
-  ;([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ;([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
+ (use-package helpful
+   ;:custom
+   ;(counsel-describe-function-function #'helpful-callable)
+   ;(counsel-describe-varaible-function #'helpful-variable)
+   :bind
+   ;([remap describe-function] . counsel-describe-function)
+   ([remap describe-command] . helpful-command)
+   ;([remap describe-variable] . counsel-describe-variable)
+   ([remap describe-key] . helpful-key))
+ 
+ (use-package highlight-numbers
+   :hook (prog-mode . highlight-numbers-mode)
+   :config
+   (set-face-attribute 'highlight-numbers-number nil :weight 'semi-bold))
+ 
+ (global-set-key (kbd "M-b") 'switch-to-buffer)
+; 
+(use-package jenkinsfile-mode)
+(use-package fish-mode)
+(use-package json-mode)
+(use-package csv-mode)
+(use-package smithy-mode)
+;; (use-package origami :ensure t
+;;   :config
+;;   (global-origami-mode))
+;; ;; (use-package highlight-indent-guides :ensure t
+;;   :config 
+;;   (highlight-indent-guides-mode t))
+;; ;; (use-package yasnippet :ensure t)
 
-(use-package highlight-numbers
-  :ensure t
-  :hook (prog-mode . highlight-numbers-mode)
-  :config
-  (set-face-attribute 'highlight-numbers-number nil :weight 'semi-bold))
-
-
-(use-package jenkinsfile-mode :ensure t)
-(use-package fish-mode :ensure t)
-(use-package json-mode :ensure t)
-(use-package csv-mode :ensure t)
-(use-package origami :ensure t
-  :config
-  (global-origami-mode))
-;; (use-package yasnippet :ensure t)
-
+(require 'setup-evil)
 (require 'setup-theme)
 (require 'setup-modeline)
+(require 'setup-orderless)
 (require 'setup-vertico)
 (require 'setup-consult)
 (require 'setup-dashboard)
@@ -154,9 +140,12 @@
 (require 'setup-git)
 (require 'setup-org)
 (require 'setup-eglot)
+(require 'setup-copilot)
 (require 'setup-haskell)
 (require 'setup-purescript)
 (require 'setup-javascript)
+(require 'setup-markdown)
+(require 'setup-kotlin)
 (require 'setup-tree-sitter)
 (require 'setup-page-break-lines)
 (require 'setup-dired)
@@ -172,9 +161,10 @@
 (require 'setup-rainbow-delimiters)
 (require 'setup-just)
 (require 'setup-editorconfig)
-(require 'setup-orderless)
 (require 'setup-dirvish)
 (require 'setup-hl-todo)
+(require 'setup-yasnippet)
+(require 'setup-nerd-icons)
 
 ;(add-to-list 'after-make-frame-functions (lambda (frame) (set-cursor-color "#6c9ef8")))
 (defun new-frame-setup (frame)
@@ -185,5 +175,10 @@
 ;; Run when a new frame is created (For emacs in client/server mode)
 (add-hook 'after-make-frame-functions 'new-frame-setup)
 ;(add-hook 'after-make-frame-functions (lambda (frame) (set-cursor-color "#49cf66")))
+(setq frame-inhibit-implied-resize t)
+(setq x-gtk-use-system-tooltips nil)
 
 (put 'downcase-region 'disabled nil)
+(defun my-minibuffer-setup-hook ()
+  (setq-local face-remapping-alist '((default (:height 1.1)))))
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)

@@ -9,7 +9,6 @@
   (company-idle-delay 0.3))
 
 (use-package company-box
-  :ensure t
   :hook (company-mode . company-box-mode))
 
 (provide 'setup-company)
