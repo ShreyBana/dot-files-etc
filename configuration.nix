@@ -2,28 +2,54 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  imports = [
+    # Include the results of the hardware scan.
+    /etc/nixos/hardware-configuration.nix
+  ];
+
+  nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nix.nixPath = [
     "nixos-config=/home/shrey_bana/configuration.nix"
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
   ];
 
-  imports = [ # Include the results of the hardware scan.
-    /etc/nixos/hardware-configuration.nix
-  ];
-
   # Use the systemd-boot EFI boot loader.
+  boot.loader.timeout = 10;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  services.udisks2.enable = true;
+  services.devmon.enable = true;  # If using a desktop environment
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-
+  networking.hosts = {
+    "127.0.0.1" = [
+      "localhost"
+      "testsaml.app"
+    ];
+  };
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.keyboard.qmk.enable = true;
+  hardware.bluetooth.settings = {
+    General = {
+      Enable = "Source,Sink,Media,Socket";
+    };
+  };
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  services.blueman.enable = true;
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
 
@@ -38,9 +64,6 @@
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
-
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
 
   # Configure keymap in X11
   services.xserver.enable = true;
@@ -58,15 +81,80 @@
     config = builtins.readFile /home/shrey_bana/.xmonad.hs;
   };
   services.picom = {
+    settings = {
+      ## Causing hughe slow down.
+      # blur =
+      #   { method = "box";
+      #     size = 5;
+      #     deviation = 2.0;
+      #   };
+    };
     enable = true;
     fadeDelta = 3;
     opacityRules = [
-      "95:class_g = 'Alacritty'"
+      "90:class_g = 'Alacritty'"
+      "90:class_g = 'Spotify'"
     ];
+  };
+  # Enable common container config files in /etc/containers
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+    };
   };
   programs.xss-lock.enable = true;
   programs.xss-lock.lockerCommand = "${pkgs.xsecurelock}/bin/xsecurelock";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config = {
+        common = {
+          default = ["gtk"];
+        };
+        "org.freedesktop.portal.OpenURI" = {
+          default = ["firefox.desktop"];
+          preferred = ["firefox.desktop"];
+        };
+      };
+  };
+  xdg.mime = {
+    enable = true;
+    defaultApplications = {
+      "default-web-browser" = [ "firefox.desktop" ];
+      "text/html" = [ "firefox.desktop" ];
+      "x-scheme-handler/http" = [ "firefox.desktop" ];
+      "x-scheme-handler/https" = [ "firefox.desktop" ];
+      "x-scheme-handler/about" = [ "firefox.desktop" ];
+      "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+    };
+  };
+
+  ## FONTS
+  fonts = {
+    fontconfig = {
+      enable = true;
+      defaultFonts.monospace = [ "Hack" ];
+    };
+    enableDefaultPackages = true;
+    packages = with pkgs.nerd-fonts; [
+      fira-mono
+      roboto-mono
+      jetbrains-mono
+      iosevka
+      hack
+      pkgs.ubuntu-sans-mono
+      pkgs.hackgen-nf-font
+      pkgs.iosevka-comfy.comfy-wide-motion-fixed
+      pkgs.iosevka-comfy.comfy-duo
+    ];
+  };
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -77,29 +165,58 @@
   services.pipewire = {
     enable = true;
     pulse.enable = true;
+    wireplumber.enable = true;
   };
-
+  services.hardware.openrgb.enable = true;
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
-  programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  programs.fish.enable = true;
+  programs.adb.enable = true;
+  users.defaultUserShell = pkgs.fish;
   users.users.shrey_bana = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [ neovim ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "adbusers"
+      "nginx"
+      "systemd-journal"
+    ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+      git
+      tree
+      alacritty
+      xmobar
+      rofi
+    ];
   };
-  services.emacs = { enable = true; };
+  services.emacs = {
+    enable = true;
+    package = pkgs.emacs30;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    dive # look into docker image layers
+    podman-tui # status of containers in the terminal
+    podman-compose
     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    curl
-    xmobar
+    bc
+    unixtools.xxd
+    via
+    qmk
   ];
+  services.udev.packages = [ pkgs.via ];
+  environment.sessionVariables = {
+    BROWSER = "firefox";
+  };
+  programs.firefox.enable = true;
+  # programs.firefox.package = pkgs.
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -112,10 +229,20 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+    };
+  };
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [
+    22
+    80
+    443
+  ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -124,6 +251,37 @@
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
+
+  services.nginx = {
+    enable = false;
+    virtualHosts."testsaml.app" = {
+      forceSSL = true;
+      sslCertificate = "/etc/nginx/ssl/nginx.crt";
+      sslCertificateKey = "/etc/nginx/ssl/nginx.key";
+      locations."/" = {
+        # Proxy to your actual service running on a higher port
+        proxyPass = "http://localhost:8080";
+      };
+    };
+    virtualHosts."test.devspaceworks.net" = {
+      forceSSL = false;
+      # sslCertificate = "/etc/nginx/ssl/nginx.crt";
+      # sslCertificateKey = "/etc/nginx/ssl/nginx.key";
+      locations."/" = {
+        # Proxy to your actual service running on a higher port
+        proxyPass = "http://localhost:8080";
+      };
+    };
+    virtualHosts."localhost" = {
+      forceSSL = true;
+      sslCertificate = "/etc/nginx/ssl/nginx.crt";
+      sslCertificateKey = "/etc/nginx/ssl/nginx.key";
+      locations."/" = {
+        # Proxy to your actual service running on a higher port
+        proxyPass = "http://localhost:8080";
+      };
+    };
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
@@ -145,4 +303,3 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-
