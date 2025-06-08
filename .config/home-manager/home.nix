@@ -30,6 +30,20 @@
   };
 
   home.packages = with pkgs; [
+    ocamlPackages.cpdf
+    qpdf
+    ghostscript
+    ## Emacs 3rd party deps
+    libtool
+    gnumake
+    cmake
+    ##
+    jetbrains.idea-community
+    aider-chat-full
+    tcpdump
+    copilot-language-server-fhs
+    jdt-language-server
+    kotlin-language-server
     protonvpn-cli
     gitu
     gcc
@@ -48,14 +62,12 @@
     nil
     xmobar
     htop
-    rofi
     spotify
     direnv
     (pass.withExtensions (ext: with ext; [ pass-otp ]))
     awscli2
     kdePackages.okular
     flameshot
-    nodejs_18
     nodePackages.typescript-language-server
     htop
     feh
@@ -102,6 +114,14 @@
     # '';
   };
 
+  programs.rofi = {
+    enable = true;
+    cycle =  true;
+    pass.enable = true;
+    theme = "purple";
+    plugins = with pkgs; [ rofi-emoji rofi-calc rofi-top ];
+    font = "JetBrainsMono Nerd Font 15";
+  };
   programs.librewolf.enable = true;
   programs.firefox = {
     enable = true;
@@ -178,7 +198,11 @@
   programs.fish = {
     enable = true;
     shellAliases = {
-      ls = "eza";
+      ls = "eza --sort type";
+      ll = "eza --sort type --long";
+      la = "eza --sort type --long --all";
+      sd = "cd ~ && cd (fd --type d | fzf)";
+      fcd = "cd (fd --type d | fzf)";
       hm-switch = "home-manager switch";
       xcp = "xclip -selection clipboard";
       xpaste = "xclip -selection clipboard -o";
@@ -198,7 +222,7 @@
       };
     };
   };
-  programs.tmux.enable = true;
+  programs.kickoff.enable = true;
   programs.starship.enable = false;
   programs.eza.enable = true;
   programs.fzf.enable = true;
@@ -206,8 +230,8 @@
   programs.ripgrep.enable = true;
   programs.zellij = {
     enable = true;
+    enableFishIntegration = false;
     settings = {
-      default_mode = "locked";
       default_layout = "compact";
       theme = "solarized-dark";
     };
@@ -226,28 +250,28 @@
 
       # Appearance
       font = "Hack Nerd Font 15"; # Font for the interface
-      default-bg = "#222222"; # Background color
-      default-fg = "#dddddd"; # Foreground color
+      default-bg = "#161417"; # Background color
+      default-fg = "#efd5c5"; # Foreground color
 
       # Interface colors
-      statusbar-bg = "#222222"; # Status bar background
-      statusbar-fg = "#dddddd"; # Status bar foreground
-      inputbar-bg = "#222222"; # Input bar background
-      inputbar-fg = "#dddddd"; # Input bar foreground
+      statusbar-bg = "#675072"; # Status bar background
+      statusbar-fg = "#fedeff"; # Status bar foreground
+      inputbar-bg = "#675072"; # Input bar background
+      inputbar-fg = "#fedeff"; # Input bar foreground
 
       # Highlighting colors
       # highlight-color = "#5294e2";       # Search highlighting color
       # highlight-active-color = "#ff5555"; # Current search result
 
       # Highlighting colors
-      highlight-color = "#5294e280"; # Search highlighting color with alpha (80 = 50% opacity)
-      highlight-active-color = "#ff555580"; # Current search result with alpha
+      highlight-color = "#d0995080"; # Search highlighting color with alpha (80 = 50% opacity)
+      highlight-active-color = "#c0b24f80"; # Current search result with alpha
       highlight-transparency = 0.5; # Set transparency for highlights
 
       # Recolor settings (optional dark mode)
-      recolor = false; # Set to true to enable dark mode by default
-      recolor-darkcolor = "#dddddd"; # Dark mode text color
-      recolor-lightcolor = "#222222"; # Dark mode background color
+      recolor = true; # Set to true to enable dark mode by default
+      recolor-darkcolor = "#efd5c5"; # Dark mode text color
+      recolor-lightcolor = "#232025"; # Dark mode background color
 
       # Additional settings
       page-padding = 1; # Padding between pages
@@ -303,6 +327,7 @@
   home.sessionVariables = {
     EDITOR = "zeditor";
     BROWSER = "firefox";
+    OPENROUTER_API_KEY = "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";
     CC = "${pkgs.stdenv.cc}";
     cc = "${pkgs.stdenv.cc}";
   };

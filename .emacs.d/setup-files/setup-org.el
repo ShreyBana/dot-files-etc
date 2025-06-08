@@ -3,7 +3,8 @@
   (org-indent-mode t)
   (visual-line-mode)
   (visual-fill-column-mode)
-  (setq-local display-fill-column-indicator-column 100))
+  (setq-local display-fill-column-indicator-column 100)
+  (setq-local prettify-symbols-alist '(("~" . "◦"))))
 
 ;; Needed for auto-wrapping text.
 (use-package visual-fill-column
@@ -16,11 +17,11 @@
   (org-mode . efs/org-mode-setup)
   :config
   (org-indent-mode t)
-  (setq org-ellipsis " ▾"
-	org-hide-emphasis-markers t
-        org-fold-catch-invisible-edits t
-        org-hide-block-startup t)
-  ;; (efs/org-mode-setup)
+  (setq org-ellipsis " ▾")
+	;; org-hide-emphasis-markers t
+        ;; org-fold-catch-invisible-edits t
+        ;; org-hide-block-startup t)
+  (efs/org-mode-setup)
   (font-lock-add-keywords
      'org-mode
      '(("^ *\\([-]\\) "

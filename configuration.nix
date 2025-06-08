@@ -68,7 +68,7 @@
   # Configure keymap in X11
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
-  services.xserver.xkb.options = "ctrl:swapcaps";
+  # services.xserver.xkb.options = "ctrl:swapcaps";
   services.xserver.windowManager.xmonad = {
     enable = true;
     enableConfiguredRecompile = true;
@@ -185,6 +185,7 @@
       "systemd-journal"
     ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
+      via
       git
       tree
       alacritty
@@ -200,6 +201,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    pinentry-all
     dive # look into docker image layers
     podman-tui # status of containers in the terminal
     podman-compose
@@ -209,6 +211,13 @@
     unixtools.xxd
     via
     qmk
+    (pass.withExtensions (ext: with ext; [ pass-otp ]))
+    (aspellWithDicts (dicts: with dicts; [
+      fr
+      en
+      en-computers
+      en-science
+    ]))
   ];
   services.udev.packages = [ pkgs.via ];
   environment.sessionVariables = {
@@ -221,10 +230,11 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = lib.mkForce pkgs.pinentry-rofi;
+    enableSSHSupport = true;
+  };
 
   # List services that you want to enable:
 

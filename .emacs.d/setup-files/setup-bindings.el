@@ -22,8 +22,16 @@
   (evil-set-initial-state 'dashboard-mode 'normal)
   (evil-set-leader 'normal (kbd ";"))
   (evil-define-key 'normal 'global
+    ;; Help
+    (kbd "C-h v") 'helpful-variable
+    (kbd "C-h f") 'helpful-callable
+    (kbd "C-h s") 'helpful-symbol
+    (kbd "C-h x") 'helpful-command
+    (kbd "C-h k") 'helpful-key
+
     ;; General
     (kbd "<leader>x") 'kill-current-buffer
+    (kbd "<leader>y") 'consult-yank-from-kill-ring
 
     ;; Project
     (kbd "<leader>f") 'project-find-file
@@ -32,7 +40,10 @@
     (kbd "<leader>g") 'consult-ripgrep
     (kbd "<leader>s") 'switch-to-buffer
     (kbd "<leader>ws") 'consult-eglot-symbols
-    (kbd "<leader>bs") 'consult-outline
+    (kbd "<leader>bi") 'consult-imenu
+    (kbd "<leader>bo") 'consult-outline
+    (kbd "<leader>di") 'project-dired
+    (kbd "<leader>tt") 'project-vterm
 
     ;; Paredit
     (kbd "<leader>l") 'paredit-forward-slurp-sexp
@@ -46,7 +57,9 @@
     (kbd "<leader>ca") 'eglot-code-actions
 
     ;; Magit
-    (kbd "<leader>m") 'magit-status))
+    (kbd "<leader>m") 'magit-project-status)
+  (evil-define-key 'insert 'global
+    (kbd "M-TAB") 'copilot-accept-completion))
 
 (use-package evil-collection :after evil :ensure t
   :config

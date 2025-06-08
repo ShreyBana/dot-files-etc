@@ -19,12 +19,6 @@
 (use-package savehist
   :init
   (savehist-mode))
-(defun truncate-file-path (path)
-  "Truncate the file path to show only the last two directories and the filename."
-  (let* ((components (split-string path "/"))
-         (filename (car (last components)))
-         (dirs (nthcdr (max 0 (- (length components) 3)) (butlast components))))
-    (concat (mapconcat 'identity dirs "/") "/" filename)))
 (use-package marginalia :after vertico
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle))
@@ -33,10 +27,11 @@
    '(marginalia-annotators-heavy marginalia-annotators-light nil))
   (marginalia-align 'right)
   :init
-  (marginalia-mode)
+  (marginalia-mode))
+;; TODO Figure out how to load it in setup-ui.el
+(use-package nerd-icons-completion
   :config
-  (add-to-list 'marginalia-annotator-registry
-               '(file marginalia-annotate-file my-truncate-file-path)))
+  (nerd-icons-completion-mode t))
 
 ;;; -- CONSULT --
 (use-package consult
@@ -59,6 +54,7 @@
   (corfu-cycle t)           ;; Enable cycling for `corfu-next/previous'
   (corfu-preselect 'prompt) ;; Always preselect the prompt
   (corfu-popupinfo-delay 0.2)
+  (text-mode-ispell-word-completion t)
   :bind
   (:map corfu-map
         ("TAB" . corfu-next)
@@ -81,13 +77,36 @@
 ;; Fish completions in eshell.
 (use-package fish-completion
   :config (when (executable-find "fish") (global-fish-completion-mode)))
+(use-package cape
+  :ensure t
+  :init
+  ;; Add Cape completion sources to `completion-at-point-functions'
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dict)
+  :custom
+  (ispell-program-name "aspell") ;; Use "aspell" or "hunspell" if preferred
+  (ispell-dictionary "en_US") ;; Set the default dictionary
+  (ispell-alternate-dictionary "/home/shrey_bana/.dict-english")
+  :config
+  ;; Configure Ispell for spell-checking
+  ;; (setq ispell-alternate-dictionary "/usr/share/dict/words") ;; Path to word list
+  ;; Optional: Keybindings for Cape sources
+  (global-set-key (kbd "M-d") #'cape-dabbrev) ;; Dynamic abbreviations
+  (global-set-key (kbd "M-f") #'cape-file)    ;; File completion
+  )
 
 ;;; -- EGLOT --
 (use-package eglot
   :custom
   (eglot-ignored-server-capabilities '(:inlayHintProvider :signatureHelpProvider))
+  (eglot-extend-to-xref t)
   :init
   (setq eglot-inlay-hints-mode nil)
+  :hook ((kotlin-ts-mode . eglot-ensure)
+         (nix-ts-mode . eglot-ensure)
+         (c-ts-mode . eglot-ensure)
+         (java-ts-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs
                '(smithy-mode . ("smithy-language-server" "0")))
@@ -104,8 +123,28 @@
 
 (use-package eldoc-box)
 
-;;; -- MISC --
+;;; -- LLM --
 (use-package copilot)
+  ;;:config (global-copilot-mode t))
+(use-package copilot-chat
+  :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
+  :after (request org markdown-mode))
+(use-package aidermacs
+  :bind (("C-c a" . aidermacs-transient-menu))
+  :init
+  (setenv
+   "OPENROUTER_API_KEY"
+   (string-trim (shell-command-to-string "pass show openrouter/api-key")))
+  (setenv "AIDER_DARK_MODE" "true")
+  (setq aidermacs-backend 'vterm)
+  :custom
+  ; See the Configuration section below
+  (aidermacs-use-architect-mode nil)
+  ;; Enable/disable showing diffs after changes (default: t)
+  (aidermacs-show-diff-after-change nil)
+  (aidermacs-default-model "openrouter/anthropic/claude-3.7-sonnet"))
+
+;;; -- MISC --
 (use-package which-key
   :init (which-key-mode)
   :config

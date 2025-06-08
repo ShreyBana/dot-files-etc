@@ -45,6 +45,7 @@
 (use-package project
   :straight (:type built-in)
   :config
-  (add-to-list 'project-switch-commands '(magit-project-status "Magit" ?m)))
+  (add-to-list 'project-switch-commands '(magit-project-status "Magit" ?m))
+  (add-to-list 'project-switch-commands '(project-vterm "VTerm" ?t)))
 
 (provide 'setup-vc)

@@ -20,24 +20,55 @@
 (set-face-attribute
  'fill-column-indicator nil
  :family "FiraCode Nerd Font Propo" :height 70 :weight 'bold)
-(global-hl-line-mode t)
+;; (global-hl-line-mode t)
 
 ;;; -- FONT & THEME --
 (set-face-attribute
  'default nil
  :family "Hack Nerd Font Propo"
- :height 160
+ :height 170
  :weight 'regular)
 
 (use-package ef-themes
+  :custom
+  (ef-dream-palette-overrides 
+   '((bg-main "#161417")
+     (bg-mode-line "#5C4866")
+     (builtin magenta-warmer)
+     (variable magenta-warmer)
+     (type green-cooler)
+     (fnname cyan)
+     (string red)
+     (cursor yellow-cooler)
+     (rainbow-1 magenta-warmer)))
   :config
   (load-theme 'ef-dream :no-confirm))
 (use-package spacious-padding
-  :config
-  (spacious-padding-mode 1))
+  :hook
+  (server-after-make-frame . spacious-padding-mode)
+  :custom
+  (spacious-padding-width
+   '(:internal-border-width 10
+     :header-line-width 4
+     :mode-line-width 4
+     :tab-width 4
+     :right-divider-width 30
+     :scroll-bar-width 8
+     :fringe-width 8)))
+(setq treesit-font-lock-level 4)
 
-;; -- ICONS --
-(use-package nerd-icons)
+(use-package lin
+  :config
+  (lin-global-mode 1))
+
+(use-package pulsar
+  :config
+  (pulsar-global-mode 1))
+
+;;; -- ICONS --
+(use-package nerd-icons
+  :custom
+  (nerd-icons-font-family "Hack Nerd Font Propo"))
 (use-package nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 (use-package nerd-icons-completion
@@ -46,6 +77,7 @@
 (use-package nerd-icons-dired
   :hook
   (dired-mode . nerd-icons-dired-mode))
+(use-package nerd-icons-corfu)
 
 ;;; -- MODELINE --
 (use-package emacs
@@ -69,31 +101,32 @@
 
 ;; -- DASHBOARD --
 (use-package dashboard
-  :config
-  (dashboard-setup-startup-hook)
-  (setq initial-buffer-choice (lambda () (get-buffer-create dashboard-buffer-name)))
-  (setq dashboard-projects-switch-project-action 'magit-status)
+  :hook
+  (server-after-make-frame . (lambda ()
+			       (dashboard-open)
+                               ;; Have to call this otherwise the content
+                               ;; doesn't center correctly.
+                               (dashboard-refresh-buffer)
+                               (dashboard-refresh-buffer)))
   :init
-  (setq dashboard-banner-logo-title "Welcome to Emacs 🦬!")
+  (setq dashboard-banner-logo-title "* E M A C S *")
   (setq dashboard-display-icons-p t)
   (setq dashboard-icon-type 'nerd-icons)
   (setq dashboard-projects-backend 'project-el)
-  (setq dashboard-items '((projects . 8)
-			  (bookmarks . 8)
-			  (recents  . 8)
-                          (agenda . 8)))
+  (setq dashboard-items '((projects . 4)
+			  (bookmarks . 4)
+			  (recents  . 4)
+                          (agenda . 4)))
   (setq dashboard-set-heading-icons t)
   (setq dashboard-startup-banner 'logo)
   (setq dashboard-set-file-icons t)
   (setq dashboard-center-content t)
-  ;; vertically center content
+  (setq dashboard-startup-banner "/home/shrey_bana/pictures/adafruit-svgrepo-com.svg")
   (setq dashboard-vertically-center-content t))
-;; (setq dashboard-startup-banner "/home/shrey_bana/doom-emacs-logo.svg"))
 
-(add-hook 'server-after-make-frame-hook (lambda()
-;;     ;(set-cursor-color "#6c9ef8")
-    (dashboard-open)
-    (dashboard-mode)))
+;;; EDIFF
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function 'split-window-horizontally)
 
 ;;; -- ESHELL --
 (use-package eshell
@@ -104,6 +137,60 @@
   :config
   (setq eshell-highlight-prompt nil
         eshell-prompt-function 'epe-theme-multiline-with-status))
+
+;;; VTerm
+(use-package vterm
+  :straight t
+  :bind (("C-c t" . vterm)
+         ("C-c <escape>" . vterm-send-escape)
+         :map vterm-mode-map
+         ("C-c C-t" . vterm-copy-mode)
+         ("C-c C-y" . vterm-yank))
+  :custom
+  ;; UI settings
+  (vterm-max-scrollback 10000)
+  (vterm-always-compile-module t)
+  ;; Cursor type (box gives terminal-like feel)
+  ;; (vterm-cursor-type 'box)
+  ;; Enable undercurl and other term features
+  (vterm-term-environment-variable "xterm-256color")
+  :hook
+  (vterm-mode . (lambda ()
+                  (display-fill-column-indicator-mode 0)
+                  ;; Disable line numbers which can cause display issues
+                  (display-line-numbers-mode -1)
+                  ;; Disable hl-line which can cause display issues
+                  (when (bound-and-true-p global-hl-line-mode)
+                    (setq-local global-hl-line-mode nil))
+                  ;; Disable cursor blinking for better performance
+                  (setq-local blink-cursor-mode nil)
+                  ;; Smoother scrolling in vterm
+                  (setq-local scroll-margin 0)
+                  (setq-local scroll-conservatively 101)
+                  ;; Match terminal background with theme (optional)
+                  ;; Uncomment and modify based on your theme
+                  ;; (setq-local vterm-color-black (face-background 'default))
+                  ))
+  :config
+  ;; Make the terminal more responsive
+  (setq vterm-timer-delay 0.01)
+  
+  ;; Integrate vterm with directory tracking
+  (setq vterm-eval-cmds '(("find-file" find-file)
+                          ("message" message)
+                          ("vterm-clear-scrollback" vterm-clear-scrollback)
+                          ("dired" dired)))
+
+  ;; Help with copying and pasting
+  (setq vterm-copy-exclude-prompt t))
+(defun project-vterm ()
+  "Open vterm at the root of the current project."
+  (interactive)
+  (let* ((default-directory (project-root (project-current)))
+         (name (format "*vterm: %s*" (project-name (project-current))))
+         (buffer (get-buffer name)))
+    (if buffer (switch-to-buffer buffer)
+      (vterm name))))
 
 ;;; -- DIRED --
 (use-package dired
@@ -151,5 +238,34 @@
 (use-package page-break-lines)
 ;; REVIEW Should this be here?
 (use-package paredit)
+
+(use-package lin
+  :config
+  (setq lin-mode-hooks
+      '(bongo-mode-hook
+        dired-mode-hook
+        elfeed-search-mode-hook
+        git-rebase-mode-hook
+        grep-mode-hook
+        ibuffer-mode-hook
+        ilist-mode-hook
+        ledger-report-mode-hook
+        log-view-mode-hook
+        magit-log-mode-hook
+        mu4e-headers-mode-hook
+        notmuch-search-mode-hook
+        notmuch-tree-mode-hook
+        occur-mode-hook
+        org-agenda-mode-hook
+        pdf-outline-buffer-mode-hook
+        proced-mode-hook
+        tabulated-list-mode-hook))
+  (lin-global-mode 1))
+
+(use-package denote)
+
+(use-package password-store)
+(use-package pass)
+(use-package bluetooth)
 
 (provide 'setup-ui)

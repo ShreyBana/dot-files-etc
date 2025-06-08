@@ -41,12 +41,13 @@
 ;; (when (memq window-system '(mac ns x))
   ;; (exec-path-from-shell-initialize))
 
+(straight-use-package 'xref)
 (require 'setup-bindings)
+(require 'setup-vc)
+(require 'setup-org)
 (require 'setup-ui)
 (require 'setup-completion)
-(require 'setup-vc)
 (require 'setup-prog-modes)
-(require 'setup-org)
 
 (defun new-frame-setup (frame)
   (if (display-graphic-p frame)
