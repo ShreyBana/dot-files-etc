@@ -28,7 +28,14 @@
       };
     };
   };
-
+  home.pointerCursor = {
+    name = "Numix-Cursor";
+    package = pkgs.numix-cursor-theme;
+    size = 26;
+    x11.enable = true;
+    gtk.enable = true;
+  };
+  
   home.packages = with pkgs; [
     ocamlPackages.cpdf
     qpdf
