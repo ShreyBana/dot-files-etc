@@ -41,12 +41,20 @@
 ;; (when (memq window-system '(mac ns x))
   ;; (exec-path-from-shell-initialize))
 
-(straight-use-package 'xref)
+(use-package project
+  :straight (:type built-in))
+
+(use-package xref
+  :straight (:type built-in))
+
+(use-package treesit
+  :straight (:type built-in))
+
 (require 'setup-bindings)
-(require 'setup-vc)
-(require 'setup-org)
 (require 'setup-ui)
+(require 'setup-org)
 (require 'setup-completion)
+(require 'setup-vc)
 (require 'setup-prog-modes)
 
 (defun new-frame-setup (frame)

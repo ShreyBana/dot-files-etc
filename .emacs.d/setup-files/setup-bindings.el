@@ -2,6 +2,8 @@
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+(use-package avy)
+
 (use-package evil :ensure t
   :init
   (setq evil-want-integration t)
@@ -22,28 +24,25 @@
   (evil-set-initial-state 'dashboard-mode 'normal)
   (evil-set-leader 'normal (kbd ";"))
   (evil-define-key 'normal 'global
-    ;; Help
-    (kbd "C-h v") 'helpful-variable
-    (kbd "C-h f") 'helpful-callable
-    (kbd "C-h s") 'helpful-symbol
-    (kbd "C-h x") 'helpful-command
-    (kbd "C-h k") 'helpful-key
-
     ;; General
     (kbd "<leader>x") 'kill-current-buffer
-    (kbd "<leader>y") 'consult-yank-from-kill-ring
-
+    (kbd "<leader>y") 'yank-from-kill-ring
+    (kbd "<leader>j") 'avy-goto-symbol-1
+ 
     ;; Project
-    (kbd "<leader>f") 'project-find-file
+    (kbd "<leader>f") 'consult-fd
+    (kbd "<leader>di") 'project-find-dir
     (kbd "<leader>k") 'eldoc-box-help-at-point
     (kbd "<leader>p") 'project-switch-project
     (kbd "<leader>g") 'consult-ripgrep
-    (kbd "<leader>s") 'switch-to-buffer
+    (kbd "<leader>s") 'consult-project-buffer
+    (kbd "<leader>as") 'consult-buffer
     (kbd "<leader>ws") 'consult-eglot-symbols
-    (kbd "<leader>bi") 'consult-imenu
+    (kbd "<leader>bs") 'consult-imenu
     (kbd "<leader>bo") 'consult-outline
-    (kbd "<leader>di") 'project-dired
     (kbd "<leader>tt") 'project-vterm
+    (kbd "<leader>te") 'project-eshell
+    (kbd "<leader>bm") 'consult-bookmark
 
     ;; Paredit
     (kbd "<leader>l") 'paredit-forward-slurp-sexp
@@ -61,7 +60,7 @@
   (evil-define-key 'insert 'global
     (kbd "M-TAB") 'copilot-accept-completion))
 
-(use-package evil-collection :after evil :ensure t
+(use-package evil-collection :after evil
   :config
   (evil-collection-init))
 

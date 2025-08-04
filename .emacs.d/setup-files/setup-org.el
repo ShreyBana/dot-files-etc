@@ -3,8 +3,7 @@
   (org-indent-mode t)
   (visual-line-mode)
   (visual-fill-column-mode)
-  (setq-local display-fill-column-indicator-column 100)
-  (setq-local prettify-symbols-alist '(("~" . "◦"))))
+  (setq-local display-fill-column-indicator-column 100))
 
 ;; Needed for auto-wrapping text.
 (use-package visual-fill-column
@@ -17,16 +16,16 @@
   (org-mode . efs/org-mode-setup)
   :config
   (org-indent-mode t)
-  (setq org-ellipsis " ▾")
-	;; org-hide-emphasis-markers t
-        ;; org-fold-catch-invisible-edits t
-        ;; org-hide-block-startup t)
-  (efs/org-mode-setup)
-  (font-lock-add-keywords
-     'org-mode
-     '(("^ *\\([-]\\) "
-	(0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-  ;; (setq org-agenda-files '("~/sdk"))
+  ;; (setq org-ellipsis " ▾"
+  ;;       org-hide-emphasis-markers t
+  ;;       org-fold-catch-invisible-edits t
+  ;;       org-hide-block-startup t)
+  ;; ;; (efs/org-mode-setup)
+  ;; (font-lock-add-keywords
+  ;;    'org-mode
+  ;;    '(("^ *\\([-]\\) "
+  ;;       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  ;; ;; (setq org-agenda-files '("~/sdk"))
   (setq org-todo-keywords
       '((sequence "TODO(t)"
                   "DEV(d)"

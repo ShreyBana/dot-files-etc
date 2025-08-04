@@ -1,4 +1,4 @@
-;;; -- MAGIT & FRIENDS --
+;; -- MAGIT & FRIENDS --
 (use-package diff-hl
   :config
   (global-diff-hl-mode))
@@ -42,10 +42,43 @@
 (use-package git-modes)
 
 ;;; -- PROJECT --
+(defun project-vterm ()
+  "Start a vterm session in the current project's root directory."
+  (interactive)
+  (require 'vterm)
+  (require 'project)
+  (let* ((project (project-current))
+         (buffer-name (format "*vterm: %s*" (project-name project)))
+         (buffer (get-buffer buffer-name))
+         (default-directory (or (project-root project)
+                                default-directory)))
+    (if buffer
+        (switch-to-buffer buffer)
+      (vterm buffer-name))))
+
 (use-package project
   :straight (:type built-in)
   :config
-  (add-to-list 'project-switch-commands '(magit-project-status "Magit" ?m))
-  (add-to-list 'project-switch-commands '(project-vterm "VTerm" ?t)))
+  (setq project-switch-commands
+        '((magit-project-status "magit" ?m)
+          (project-vterm "term" ?t)
+          (consult-project-buffer "switch-buffer" ?s)
+          (consult-fd "find-file" ?f)
+          (consult-ripgrep "(rg)grep" ?g)
+          (project-query-replace-regexp "replace" ?r))))
+
+;; MISC
+(use-package blamer
+  :bind (("s-i" . blamer-show-commit-info)
+         ("C-c i" . blamer-show-posframe-commit-info))
+  :defer 20
+  :custom
+  (blamer-idle-time 0.3)
+  ;; (blamer-min-offset 70)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                    :background nil
+                    :height 140
+                    :italic t))))
 
 (provide 'setup-vc)

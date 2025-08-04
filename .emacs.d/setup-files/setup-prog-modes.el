@@ -1,23 +1,25 @@
+(use-package format-all)
 ;;; -- BASIC --
 (use-package jenkinsfile-mode)
 (use-package fish-mode)
 (use-package json-mode)
 (use-package csv-mode)
-(use-package smithy-mode)
+;; (use-package smithy-mode)
+(use-package smithy-ts-mode
+  :straight (:type git :local-repo "/home/shrey_bana/sdk/smithy-ts-mode")
+  :mode "\\.smithy\\'")
 (use-package markdown-mode)
-(use-package kotlin-mode)
+;; (use-package kotlin-mode)
+(use-package yaml-mode)
 (use-package kotlin-ts-mode
-  :straight (:type git :host github :repo "shreybana/kotlin-ts-mode")
+  :straight (:type git :repo "shreybana/kotlin-ts-mode" :host github)
   :mode ("\\.kt\\'" "\\.kts\\'")
   :hook (kotlin-ts-mode . (lambda ()
-                           (setq-local display-fill-column-indicator-column 100)
-                           (display-fill-column-indicator-mode 1))))
+                            (setq-local display-fill-column-indicator-column 90))))
 (use-package java-ts-mode
   :straight (:type built-in)
-  :mode ("\\.java\\'")
   :hook (java-ts-mode . (lambda ()
-                           (setq-local display-fill-column-indicator-column 100)
-                           (display-fill-column-indicator-mode 1))))
+                            (setq-local display-fill-column-indicator-column 90))))
 (use-package dockerfile-mode)
 (use-package emacs-lisp-mod
   :straight (:type built-in)
@@ -32,49 +34,23 @@
 (use-package editorconfig
   :config
   (editorconfig-mode 1))
-(use-package c-ts-mode
-  :straight (:type built-in)
-  :mode ("\\.c\\'" "\\.C\\'"))
-(use-package yaml-ts-mode
-  :mode "\\.yml\\'")
 
 ;;; -- CLOJURE --
-(use-package clojure-ts-mode
-  :hook (clojure-ts-mode . paredit-mode))
+(use-package clojure-mode
+  :hook (clojure-mode . paredit-mode))
 (use-package cider)
 
 ;;; -- HASKELL --
 (use-package haskell-ts-mode
-  :mode "\\.hs\\'" 
-  :hook
-  (haskell-mode . eglot-ensure)
-         ;(haskell-mode . company-mode))
-  ; :hook (haskell-mode . ((lambda ()
-  ; 			  (set (make-local-variable 'company-backends)
-  ; 			       (append '((company-capf company-dabbrev-code))
-  ; 				       company-backends)))))
+  :mode "\\.hs\\'"
+  :custom
+  (haskell-ts-font-lock-level 4)
+  (haskell-ts-use-indent t)
+  (haskell-ts-ghci "ghci")
+  (haskell-ts-use-indent t)
   :config
-  ; (set-face-attribute 'haskell-pragma-face nil :foreground "#fb4934")
-  (set-face-attribute 'haskell-keyword-face nil :weight 'medium)
-  (set-face-attribute 'haskell-operator-face nil :weight 'medium)
-  ; (set-face-attribute 'font-lock-doc-face nil :foreground "#98971a" :slant 'oblique)
-  (set-face-attribute 'haskell-definition-face nil :weight 'medium))
-(use-package haskell-mode
-  ;:after lsp-mode
-  ;:after lsp-haskell
-  :hook
-  (haskell-mode . eglot-ensure)
-         ;(haskell-mode . company-mode))
-  ; :hook (haskell-mode . ((lambda ()
-  ; 			  (set (make-local-variable 'company-backends)
-  ; 			       (append '((company-capf company-dabbrev-code))
-  ; 				       company-backends)))))
-  :config
-  ; (set-face-attribute 'haskell-pragma-face nil :foreground "#fb4934")
-  (set-face-attribute 'haskell-keyword-face nil :weight 'medium)
-  (set-face-attribute 'haskell-operator-face nil :weight 'medium)
-  ; (set-face-attribute 'font-lock-doc-face nil :foreground "#98971a" :slant 'oblique)
-  (set-face-attribute 'haskell-definition-face nil :weight 'medium))
+  (add-to-list 'treesit-language-source-alist
+   '(haskell . ("https://github.com/tree-sitter/tree-sitter-haskell" "v0.23.1"))))
 
 ;;; -- PURESCRIPT --
 (use-package purescript-mode
@@ -83,8 +59,11 @@
 	 (purescript-mode . turn-on-purescript-indentation)))
 
 ;;; -- NIX --
+(use-package nixpkgs-fmt)
+(use-package nix-mode)
 (use-package nix-ts-mode
-  :hook (nix-ts-mode . eglot-ensure)
+  :hook ((nix-ts-mode . eglot-ensure)
+         (nix-ts-mode . format-all-mode))
   :mode "\\.nix\\'")
 (use-package envrc
   :ensure t

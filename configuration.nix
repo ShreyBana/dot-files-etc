@@ -190,7 +190,6 @@
       tree
       alacritty
       xmobar
-      rofi
     ];
   };
   services.emacs = {

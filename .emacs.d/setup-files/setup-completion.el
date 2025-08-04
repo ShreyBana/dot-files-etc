@@ -13,12 +13,23 @@
               :map minibuffer-local-map
               ("M-h" . backward-kill-word))
   :custom
+  (vertico-count 15)
   (vertico-cycle t)
   :init
   (vertico-mode))
+(use-package vertico-truncate
+  :straight (:type git :host github :repo "jdtsmith/vertico-truncate")
+  :config
+  (vertico-truncate-mode 1))
 (use-package savehist
   :init
   (savehist-mode))
+(defun truncate-file-path (path)
+  "Truncate the file path to show only the last two directories and the filename."
+  (let* ((components (split-string path "/"))
+         (filename (car (last components)))
+         (dirs (nthcdr (max 0 (- (length components) 3)) (butlast components))))
+    (concat (mapconcat 'identity dirs "/") "/" filename)))
 (use-package marginalia :after vertico
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle))
@@ -27,11 +38,10 @@
    '(marginalia-annotators-heavy marginalia-annotators-light nil))
   (marginalia-align 'right)
   :init
-  (marginalia-mode))
-;; TODO Figure out how to load it in setup-ui.el
-(use-package nerd-icons-completion
+  (marginalia-mode)
   :config
-  (nerd-icons-completion-mode t))
+  (add-to-list 'marginalia-annotator-registry
+               '(file marginalia-annotate-file my-truncate-file-path)))
 
 ;;; -- CONSULT --
 (use-package consult
@@ -41,6 +51,8 @@
          :map minibuffer-local-map
          ("C-r" . consult-history))
   :custom
+  (consult-async-input-debounce 0.1)
+  (consult-async-input-throttle 0.1)
   (completion-in-region-function #'consult-completion-in-region))
   ;:config ;(consult-preview-mode))
 (use-package consult-eglot
@@ -54,7 +66,7 @@
   (corfu-cycle t)           ;; Enable cycling for `corfu-next/previous'
   (corfu-preselect 'prompt) ;; Always preselect the prompt
   (corfu-popupinfo-delay 0.2)
-  (text-mode-ispell-word-completion t)
+  (text-mode-ispell-word-completion nil)
   :bind
   (:map corfu-map
         ("TAB" . corfu-next)
@@ -72,29 +84,18 @@
         corfu-quit-no-match 'separator
         corfu-popupinfo-mode t
         completion-styles '(orderless)))
+(use-package cape
+  :init
+  ;; Add ispell to completion-at-point-functions
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  (add-to-list 'completion-at-point-functions #'cape-dict))
 ;; Extends eshell pcomplete to give completion from MAN pages.
 (use-package pcmpl-args)
 ;; Fish completions in eshell.
 (use-package fish-completion
   :config (when (executable-find "fish") (global-fish-completion-mode)))
-(use-package cape
-  :ensure t
-  :init
-  ;; Add Cape completion sources to `completion-at-point-functions'
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-dict)
-  :custom
-  (ispell-program-name "aspell") ;; Use "aspell" or "hunspell" if preferred
-  (ispell-dictionary "en_US") ;; Set the default dictionary
-  (ispell-alternate-dictionary "/home/shrey_bana/.dict-english")
-  :config
-  ;; Configure Ispell for spell-checking
-  ;; (setq ispell-alternate-dictionary "/usr/share/dict/words") ;; Path to word list
-  ;; Optional: Keybindings for Cape sources
-  (global-set-key (kbd "M-d") #'cape-dabbrev) ;; Dynamic abbreviations
-  (global-set-key (kbd "M-f") #'cape-file)    ;; File completion
-  )
 
 ;;; -- EGLOT --
 (use-package eglot
@@ -103,10 +104,6 @@
   (eglot-extend-to-xref t)
   :init
   (setq eglot-inlay-hints-mode nil)
-  :hook ((kotlin-ts-mode . eglot-ensure)
-         (nix-ts-mode . eglot-ensure)
-         (c-ts-mode . eglot-ensure)
-         (java-ts-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs
                '(smithy-mode . ("smithy-language-server" "0")))
@@ -123,28 +120,53 @@
 
 (use-package eldoc-box)
 
-;;; -- LLM --
-(use-package copilot)
-  ;;:config (global-copilot-mode t))
+;;; Ispell
+(use-package ispell
+  :straight (:type built-in)
+  :custom
+  (ispell-program-name "aspell")
+  (ispell-dictionary "en_US")
+  ;; Configure aspell to replace ispell
+  (ispell-extra-args '("--sug-mode=ultra" "--lang=en_US")))
+
+;;; -- MISC --
+(use-package copilot
+  :bind (("M-TAB" . copilot-accept-completion)))
 (use-package copilot-chat
-  :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
-  :after (request org markdown-mode))
+  ;; :bind (("C-c a" . copilot-chat-transient))
+  :custom
+  (copilot-chat-default-model "claude-3.7-sonnet"))
 (use-package aidermacs
   :bind (("C-c a" . aidermacs-transient-menu))
   :init
+  (setenv "AIDER_DARK_MODE" "true")
   (setenv
    "OPENROUTER_API_KEY"
    (string-trim (shell-command-to-string "pass show openrouter/api-key")))
-  (setenv "AIDER_DARK_MODE" "true")
-  (setq aidermacs-backend 'vterm)
   :custom
+  (aidermacs-backend 'vterm)
   ; See the Configuration section below
   (aidermacs-use-architect-mode nil)
   ;; Enable/disable showing diffs after changes (default: t)
-  (aidermacs-show-diff-after-change nil)
-  (aidermacs-default-model "openrouter/anthropic/claude-3.7-sonnet"))
-
-;;; -- MISC --
+  ;; (setq aidermacs-show-diff-after-change t)
+  (aidermacs-default-model "openrouter/anthropic/claude-sonnet-4"))
+(use-package llm)
+(use-package ellama
+  :bind (("C-c e" . ellama))
+  :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
+  :init
+  :custom
+  ;; language you want ellama to translate to
+  (ellama-language "English")
+  (require 'llm-openai)
+  (ellama-provider
+   (make-llm-openai-compatible
+    :key (getenv "OPENROUTER_API_KEY")
+    :url "https://openrouter.ai/api/v1"
+    :chat-model "anthropic/claude-sonnet-4"))
+  :config
+  (ellama-context-header-line-global-mode +1)
+  (ellama-session-header-line-global-mode +1))
 (use-package which-key
   :init (which-key-mode)
   :config
