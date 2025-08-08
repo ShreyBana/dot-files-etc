@@ -30,13 +30,13 @@
     (kbd "<leader>j") 'avy-goto-symbol-1
  
     ;; Project
-    (kbd "<leader>f") 'consult-fd
+    (kbd "<leader>f") 'affe-find
     (kbd "<leader>di") 'project-find-dir
     (kbd "<leader>k") 'eldoc-box-help-at-point
     (kbd "<leader>p") 'project-switch-project
     (kbd "<leader>g") 'consult-ripgrep
-    (kbd "<leader>s") 'consult-project-buffer
-    (kbd "<leader>as") 'consult-buffer
+    (kbd "<leader>s") 'consult-buffer
+    (kbd "C-c s") 'consult-project-buffer
     (kbd "<leader>ws") 'consult-eglot-symbols
     (kbd "<leader>bs") 'consult-imenu
     (kbd "<leader>bo") 'consult-outline

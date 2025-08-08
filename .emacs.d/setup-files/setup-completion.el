@@ -17,6 +17,9 @@
   (vertico-cycle t)
   :init
   (vertico-mode))
+;; (use-package vertico-prescient
+;;   Error?
+;;   :mode (vertico-mode . vertico-prescient-mode))
 (use-package vertico-truncate
   :straight (:type git :host github :repo "jdtsmith/vertico-truncate")
   :config
@@ -57,6 +60,7 @@
   ;:config ;(consult-preview-mode))
 (use-package consult-eglot
   :after consult)
+(use-package affe)
 
 ;;; -- CORFU & FRIENDS --
 (use-package corfu
@@ -91,6 +95,8 @@
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-elisp-block)
   (add-to-list 'completion-at-point-functions #'cape-dict))
+(use-package corfu-prescient
+  :hook (corfu-mode . corfu-prescient-mode))
 ;; Extends eshell pcomplete to give completion from MAN pages.
 (use-package pcmpl-args)
 ;; Fish completions in eshell.

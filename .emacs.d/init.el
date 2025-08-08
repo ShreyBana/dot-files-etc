@@ -49,6 +49,7 @@
 
 (use-package treesit
   :straight (:type built-in))
+(use-package async)
 
 (require 'setup-bindings)
 (require 'setup-ui)

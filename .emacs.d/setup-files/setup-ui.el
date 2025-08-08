@@ -100,7 +100,7 @@
   (setq dashboard-center-content t)
   ;; vertically center content
   (setq dashboard-vertically-center-content t)
-  (setq dashboard-startup-banner "/home/shrey_bana/Downloads/adafruit-svgrepo-com(1).svg"))
+  (setq dashboard-startup-banner 'logo))
 
 ;;; ESHELL
 (use-package eshell
@@ -153,7 +153,8 @@
   ;; Mouse support
   (vterm-enable-manipulate-selection-data-by-osc52 t)
   
-  :bind (:map vterm-mode-map
+  :bind (("C-c t" . vterm)
+         :map vterm-mode-map
          ("C-c C-j" . vterm-copy-mode)
          ("C-c C-k" . vterm-copy-mode-done)
          ("C-c C-e" . vterm-send-escape)  ;; Add keybinding for sending escape

@@ -6,7 +6,7 @@
 (use-package csv-mode)
 ;; (use-package smithy-mode)
 (use-package smithy-ts-mode
-  :straight (:type git :local-repo "/home/shrey_bana/sdk/smithy-ts-mode")
+  :straight (:type git :local-repo "/home/shrey_bana/desktop/smithy-ts-mode")
   :mode "\\.smithy\\'")
 (use-package markdown-mode)
 ;; (use-package kotlin-mode)

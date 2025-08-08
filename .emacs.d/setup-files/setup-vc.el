@@ -18,8 +18,7 @@
   (if (magit-get-current-branch)
       (let ((branch-name (magit-get-current-branch)))
         (if (string-match "\\([A-Z]+-[0-9]+\\)" branch-name)
-            (match-string 1 branch-name)
-          (message "No Jira ticket ID found in the current branch name.")))
+            (match-string 1 branch-name)))
     (message "Not in a Git repository or no current branch.")))
 (defun private/insert-jira-ticket ()
   "Inserts Jira ticket ID if not already present in commit."
@@ -61,20 +60,22 @@
   :config
   (setq project-switch-commands
         '((magit-project-status "magit" ?m)
+          (ellama "ellama" ?e)
           (project-vterm "term" ?t)
           (consult-project-buffer "switch-buffer" ?s)
-          (consult-fd "find-file" ?f)
+          (affe-find "find-file" ?f)
           (consult-ripgrep "(rg)grep" ?g)
           (project-query-replace-regexp "replace" ?r))))
 
 ;; MISC
+;; Needed by `blamer'
+(use-package posframe)
 (use-package blamer
-  :bind (("s-i" . blamer-show-commit-info)
-         ("C-c i" . blamer-show-posframe-commit-info))
-  :defer 20
+  :straight (:host github :repo "artawower/blamer.el")
+  :bind (("C-c C-s" . blamer-show-commit-info))
   :custom
   (blamer-idle-time 0.3)
-  ;; (blamer-min-offset 70)
+  (blamer-min-offset 70)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
                     :background nil
