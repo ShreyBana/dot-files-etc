@@ -57,7 +57,7 @@
   (consult-async-input-debounce 0.1)
   (consult-async-input-throttle 0.1)
   (completion-in-region-function #'consult-completion-in-region))
-  ;:config ;(consult-preview-mode))
+                                        ;:config ;(consult-preview-mode))
 (use-package consult-eglot
   :after consult)
 (use-package affe)
@@ -106,15 +106,21 @@
 ;;; -- EGLOT --
 (use-package eglot
   :custom
-  (eglot-ignored-server-capabilities '(:inlayHintProvider :signatureHelpProvider))
+  ;; (eglot-ignored-server-capabilities '(:inlayHintProvider :signatureHelpProvider))
   (eglot-extend-to-xref t)
   :init
   (setq eglot-inlay-hints-mode nil)
+  (setq-default
+   eglot-workspace-configuration
+   '(:nil (:formatting
+           (:command ["nixfmt"]))
+          :nixd (:nixpkgs (:expr "import <nixpkgs> { }"))))
   :config
-  (add-to-list 'eglot-server-programs
-               '(smithy-mode . ("smithy-language-server" "0")))
-  (setq eglot-report-progress 'messages)
-  (add-to-list 'eglot-stay-out-of 'flymake))
+  (dolist (server '((smithy-ts-mode . ("smithy-language-server" "0"))
+                    (nix-ts-mode . ("nixd"))))
+           (add-to-list 'eglot-server-programs server))
+  ;; (add-to-list 'eglot-stay-out-of 'flymake)
+  (setq eglot-report-progress 'messages))
 (use-package eldoc
   :straight (:type built-in)
   :config
@@ -151,7 +157,7 @@
    (string-trim (shell-command-to-string "pass show openrouter/api-key")))
   :custom
   (aidermacs-backend 'vterm)
-  ; See the Configuration section below
+                                        ; See the Configuration section below
   (aidermacs-use-architect-mode nil)
   ;; Enable/disable showing diffs after changes (default: t)
   ;; (setq aidermacs-show-diff-after-change t)
@@ -178,14 +184,14 @@
   :config
   (setq which-key-idle-delay 0.3))
 ;; Better Doc & Help Pages
- (use-package helpful
-   ;:custom
-   ;(counsel-describe-function-function #'helpful-callable)
-   ;(counsel-describe-varaible-function #'helpful-variable)
-   :bind
-   ;([remap describe-function] . counsel-describe-function)
-   ([remap describe-command] . helpful-command)
-   ;([remap describe-variable] . counsel-describe-variable)
-   ([remap describe-key] . helpful-key))
+(use-package helpful
+                                        ;:custom
+                                        ;(counsel-describe-function-function #'helpful-callable)
+                                        ;(counsel-describe-varaible-function #'helpful-variable)
+  :bind
+                                        ;([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+                                        ;([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
 
 (provide 'setup-completion)
