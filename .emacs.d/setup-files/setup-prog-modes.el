@@ -26,8 +26,10 @@
   :hook (emacs-lisp-mode . paredit-mode))
 (use-package typescript-ts-mode
   :mode "\\.ts\\'")
-(use-package rust-mode
-  :hook ((rust-mode . eglot-ensure)))
+(use-package rust-ts-mode
+  :straight (:type built-in)
+  :mode "\\.rs\\'"
+  :hook ((rust-ts-mode . eglot-ensure)))
 (use-package justl
   :custom
   (justl-executable "/nix/store/j2lvlwr1cya4j7x6n4w6c1mrwrsfihyq-just-1.13.0/bin/just"))
@@ -41,16 +43,17 @@
 (use-package cider)
 
 ;;; -- HASKELL --
-(use-package haskell-ts-mode
-  :mode "\\.hs\\'"
-  :custom
-  (haskell-ts-font-lock-level 4)
-  (haskell-ts-use-indent t)
-  (haskell-ts-ghci "ghci")
-  (haskell-ts-use-indent t)
-  :config
-  (add-to-list 'treesit-language-source-alist
-   '(haskell . ("https://github.com/tree-sitter/tree-sitter-haskell" "v0.23.1"))))
+(use-package haskell-mode)
+;; (use-package haskell-ts-mode
+;;   :mode "\\.hs\\'"
+;;   :custom
+;;   (haskell-ts-font-lock-level 3)
+;;   (haskell-ts-use-indent t)
+;;   (haskell-ts-ghci "ghci")
+;;   (haskell-ts-use-indent t)
+;;   :config
+;;   (add-to-list 'treesit-language-source-alist
+;;    '(haskell . ("https://github.com/tree-sitter/tree-sitter-haskell" "v0.23.1"))))
 
 ;;; -- PURESCRIPT --
 (use-package purescript-mode

@@ -63,7 +63,7 @@
           (ellama "ellama" ?e)
           (project-vterm "term" ?t)
           (consult-project-buffer "switch-buffer" ?s)
-          (affe-find "find-file" ?f)
+          (project-find-file "find-file" ?f)
           (consult-ripgrep "(rg)grep" ?g)
           (project-query-replace-regexp "replace" ?r))))
 

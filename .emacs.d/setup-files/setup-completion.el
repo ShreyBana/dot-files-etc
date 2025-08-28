@@ -16,10 +16,13 @@
   (vertico-count 15)
   (vertico-cycle t)
   :init
-  (vertico-mode))
-;; (use-package vertico-prescient
-;;   Error?
-;;   :mode (vertico-mode . vertico-prescient-mode))
+  (vertico-mode t))
+(use-package prescient
+  :init
+  (prescient-persist-mode t))
+(use-package vertico-prescient
+  :init
+  (vertico-prescient-mode t))
 (use-package vertico-truncate
   :straight (:type git :host github :repo "jdtsmith/vertico-truncate")
   :config
@@ -96,7 +99,8 @@
   (add-hook 'completion-at-point-functions #'cape-elisp-block)
   (add-to-list 'completion-at-point-functions #'cape-dict))
 (use-package corfu-prescient
-  :hook (corfu-mode . corfu-prescient-mode))
+  :init
+  (corfu-prescient-mode t))
 ;; Extends eshell pcomplete to give completion from MAN pages.
 (use-package pcmpl-args)
 ;; Fish completions in eshell.
@@ -108,8 +112,12 @@
   :custom
   ;; (eglot-ignored-server-capabilities '(:inlayHintProvider :signatureHelpProvider))
   (eglot-extend-to-xref t)
+  :custom-face
+  (eglot-inlay-hint-face ((t (:foreground "#7c7c7c"
+                                          :height 0.9
+                                          :family "Iosevka NF"
+                                          :weight bold))))
   :init
-  (setq eglot-inlay-hints-mode nil)
   (setq-default
    eglot-workspace-configuration
    '(:nil (:formatting
@@ -120,6 +128,9 @@
                     (nix-ts-mode . ("nixd"))))
            (add-to-list 'eglot-server-programs server))
   ;; (add-to-list 'eglot-stay-out-of 'flymake)
+  (add-hook 'eglot-managed-mode-hook (lambda ()
+                                       (eglot-inlay-hints-mode -1)
+                                       (flymake-mode -1)))
   (setq eglot-report-progress 'messages))
 (use-package eldoc
   :straight (:type built-in)
@@ -164,21 +175,22 @@
   (aidermacs-default-model "openrouter/anthropic/claude-sonnet-4"))
 (use-package llm)
 (use-package ellama
+  :demand t
   :bind (("C-c e" . ellama))
   :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
   :init
+  (require 'llm-openai)
+  :config
+  (ellama-context-header-line-global-mode +1)
+  (ellama-session-header-line-global-mode +1)
   :custom
   ;; language you want ellama to translate to
   (ellama-language "English")
-  (require 'llm-openai)
   (ellama-provider
    (make-llm-openai-compatible
     :key (getenv "OPENROUTER_API_KEY")
     :url "https://openrouter.ai/api/v1"
-    :chat-model "anthropic/claude-sonnet-4"))
-  :config
-  (ellama-context-header-line-global-mode +1)
-  (ellama-session-header-line-global-mode +1))
+    :chat-model "anthropic/claude-sonnet-4")))
 (use-package which-key
   :init (which-key-mode)
   :config

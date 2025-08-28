@@ -19,7 +19,7 @@
 (setq-default display-fill-column-indicator-column 80)
 (set-face-attribute
  'fill-column-indicator nil
- :family "FiraCode Nerd Font Propo" :height 60 :weight 'bold)
+ :family "Iosevka Comfy" :height 60 :weight 'regular)
 (global-hl-line-mode 0)
 
 ;;; FONT & THEME
@@ -30,9 +30,11 @@
  :weight 'regular)
 
 (use-package ef-themes
+  :custom-face
+  (ef-themes-underline-info ((t (:style dotted))))
   :config
   (setq ef-dream-palette-overrides
-        '((bg-main "#161417")
+        '((bg-main "#0f0e10")
           (builtin magenta-warmer)
           (type green-cooler)
           (fnname cyan)
@@ -40,10 +42,20 @@
           (variable magenta-warmer)
           (cursor yellow-warmer)
           (rainbow-1 magenta-warmer)))
-  (load-theme 'ef-dream :no-confirm))
+  (setq ef-symbiosis-palette-overrides
+        '((bg-main "#0D060B")
+          (keyword "#aba731")
+          (underline-info blue)
+          (info blue)))
+  (load-theme 'ef-symbiosis :no-confirm))
 (use-package spacious-padding
   :hook
   (server-after-make-frame . spacious-padding-mode))
+(use-package standard-themes)
+(use-package treesit
+  :straight (:type built-in)
+  :init
+  (setq treesit-font-lock-level 3))
 
 ;;; NERD/ICONS
 (defun init/setup-icons ()

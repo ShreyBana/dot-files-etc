@@ -28,9 +28,8 @@
     (kbd "<leader>x") 'kill-current-buffer
     (kbd "<leader>y") 'yank-from-kill-ring
     (kbd "<leader>j") 'avy-goto-symbol-1
- 
     ;; Project
-    (kbd "<leader>f") 'affe-find
+    (kbd "<leader>f") 'project-find-file
     (kbd "<leader>di") 'project-find-dir
     (kbd "<leader>k") 'eldoc-box-help-at-point
     (kbd "<leader>p") 'project-switch-project
@@ -43,22 +42,26 @@
     (kbd "<leader>tt") 'project-vterm
     (kbd "<leader>te") 'project-eshell
     (kbd "<leader>bm") 'consult-bookmark
-
     ;; Paredit
     (kbd "<leader>l") 'paredit-forward-slurp-sexp
     (kbd "<leader>L") 'paredit-forward-barf-sexp
     (kbd "<leader>h") 'paredit-backward-slurp-sexp
     (kbd "<leader>H") 'paredit-backward-barf-sexp
-
     ;; Eglot
     (kbd "<leader>r") 'eglot-rename
     (kbd "<leader>F") 'eglot-format-buffer
     (kbd "<leader>ca") 'eglot-code-actions
-
+    ;; Flymake
+    (kbd "<leader>e") 'flymake-goto-next-error
+    (kbd "<leader>E") 'flymake-goto-prev-error
     ;; Magit
-    (kbd "<leader>m") 'magit-project-status)
+    (kbd "<leader>m") 'magit-project-status
+    ;; Misc
+    (kbd "C-c C-d") 'denote-dired
+    (kbd "C-c C-o") 'copilot-mode)
   (evil-define-key 'insert 'global
-    (kbd "M-TAB") 'copilot-accept-completion))
+    (kbd "M-TAB") 'copilot-accept-completion
+    (kbd "C-c C-o") 'copilot-mode))
 
 (use-package evil-collection :after evil
   :config
