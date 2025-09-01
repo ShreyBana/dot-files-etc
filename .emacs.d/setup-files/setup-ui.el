@@ -1,4 +1,4 @@
-;;; EMACS UI TWEAKS
+;;; EMACS UI TWEAK
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -233,5 +233,35 @@
   (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
                                               ; 'line to show errors on the current line
   (setq sideline-backends-right '(sideline-flymake)))
-
+(use-package xterm-color
+  :config
+  (advice-add 'shell-command :after 
+              (lambda (&rest _)
+                (when-let ((buffer (get-buffer "*Shell Command Output*")))
+                  (with-current-buffer buffer
+                    ;; Apply xterm colors
+                    (xterm-color-colorize-buffer)
+                    ;; Make read-only
+                    (read-only-mode 1)
+                    (display-fill-column-indicator-mode 0)
+                    (pop-to-buffer buffer))))))
+(defun shell-command-dedicated (command)
+  "Run shell command and switch to a dedicated output buffer."
+  (interactive "sShell command: ")
+  (let* ((output-buffer-name (format "Shell Output: %s" command))
+         (existing-buffer (get-buffer output-buffer-name)))
+    
+    ;; Kill existing buffer with same name if it exists
+    (when existing-buffer
+      (kill-buffer existing-buffer))
+    
+    ;; Run the shell command
+    (shell-command command)
+    
+    ;; Get the output buffer and rename it
+    (when-let ((buffer (get-buffer "*Shell Command Output*")))
+      (with-current-buffer buffer
+        (rename-buffer output-buffer-name))
+      ;; Switch to the renamed buffer
+      (switch-to-buffer output-buffer-name))))
 (provide 'setup-ui)

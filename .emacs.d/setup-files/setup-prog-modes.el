@@ -1,5 +1,6 @@
 (use-package format-all)
 ;;; -- BASIC --
+(use-package cmake-ts-mode)
 (use-package jenkinsfile-mode)
 (use-package fish-mode)
 (use-package json-mode)

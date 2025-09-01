@@ -37,6 +37,7 @@
   };
   
   home.packages = with pkgs; [
+    libva-utils
     ocamlPackages.cpdf
     qpdf
     ghostscript
@@ -59,6 +60,7 @@
     ispell
     btop
     spotify-cli-linux
+    mesa-demos
     nemo
     pulsemixer
     tldr
@@ -67,6 +69,7 @@
     libgcc
     nixfmt-rfc-style
     nil
+    nixd
     xmobar
     htop
     spotify
@@ -201,6 +204,12 @@
       	panelview.cui-widget-panelview > vbox { flex: 1; min-height: 50vh; }
       }
     '';
+    profiles."default".userContent = ''
+      :root {
+          --tridactyl-cmplt-font-size: 13px !important;
+          --tridactyl-cmdl-font-size: 13px !important;
+      }
+    '';
   };
   programs.fish = {
     enable = true;
@@ -213,7 +222,13 @@
       hm-switch = "home-manager switch";
       xcp = "xclip -selection clipboard";
       xpaste = "xclip -selection clipboard -o";
+      envr = "direnv reload";
+      homesw = "home-manager switch";
+      ossw = "sudo nixos-rebuild switch";
+      nixgc = "sudo nix-collect-garbage -d";
     };
+    interactiveShellInit = ''
+    '';
   };
   programs.alacritty = {
     enable = true;

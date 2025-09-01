@@ -4,6 +4,9 @@
 
 (use-package avy)
 
+;; (use-package evil-surround
+;;   :config
+;;   (global-evil-surround-mode 1))
 (use-package evil :ensure t
   :init
   (setq evil-want-integration t)
