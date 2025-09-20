@@ -18,10 +18,10 @@
   :init
   (vertico-mode t))
 (use-package prescient
-  :init
+  :config
   (prescient-persist-mode t))
 (use-package vertico-prescient
-  :init
+  :config
   (vertico-prescient-mode t))
 (use-package vertico-truncate
   :straight (:type git :host github :repo "jdtsmith/vertico-truncate")
@@ -62,6 +62,8 @@
   (completion-in-region-function #'consult-completion-in-region))
                                         ;:config ;(consult-preview-mode))
 (use-package consult-eglot
+  :after consult)
+(use-package consult-hoogle
   :after consult)
 (use-package affe)
 
@@ -110,7 +112,7 @@
 ;;; -- EGLOT --
 (use-package eglot
   :custom
-  ;; (eglot-ignored-server-capabilities '(:inlayHintProvider :signatureHelpProvider))
+  (eglot-ignored-server-capabilities '(:signatureHelpProvider))
   (eglot-extend-to-xref t)
   :custom-face
   (eglot-inlay-hint-face ((t (:foreground "#7c7c7c"
@@ -125,7 +127,8 @@
           :nixd (:nixpkgs (:expr "import <nixpkgs> { }"))))
   :config
   (dolist (server '((smithy-ts-mode . ("smithy-language-server" "0"))
-                    (nix-ts-mode . ("nixd"))))
+                    (nix-ts-mode . ("nixd"))
+                    (cmake-ts-mode . ("neocmakelsp" "--stdio"))))
            (add-to-list 'eglot-server-programs server))
   ;; (add-to-list 'eglot-stay-out-of 'flymake)
   (add-hook 'eglot-managed-mode-hook (lambda ()
@@ -153,6 +156,12 @@
   (ispell-extra-args '("--sug-mode=ultra" "--lang=en_US")))
 
 ;;; -- MISC --
+(setenv
+   "OPENROUTER_API_KEY"
+   (string-trim (shell-command-to-string "pass show openrouter/api-key")))
+(setenv
+   "GITHUB_COPILOT_TOKEN"
+   (string-trim (shell-command-to-string "pass show github/copilot-token-home")))
 (use-package copilot
   :bind (("M-TAB" . copilot-accept-completion)))
 (use-package copilot-chat
@@ -179,18 +188,25 @@
   :bind (("C-c e" . ellama))
   :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
   :init
+  (require 'llm-github)
   (require 'llm-openai)
-  :config
-  (ellama-context-header-line-global-mode +1)
-  (ellama-session-header-line-global-mode +1)
   :custom
   ;; language you want ellama to translate to
   (ellama-language "English")
+  ;; (ellama-provider
+  ;;  (make-llm-openai-compatible
+  ;;   :key (getenv "OPENROUTER_API_KEY")
+  ;;   :url "https://openrouter.ai/api/v1"
+  ;;   :chat-model "anthropic/claude-sonnet-4"))
   (ellama-provider
-   (make-llm-openai-compatible
-    :key (getenv "OPENROUTER_API_KEY")
-    :url "https://openrouter.ai/api/v1"
-    :chat-model "anthropic/claude-sonnet-4")))
+   (make-llm-github
+    :key (getenv "GITHUB_COPILOT_TOKEN")
+    :chat-model "gpt-4.1"))
+  :config
+  ;; (ellama-context-header-line-global-mode +1)
+  ;; (ellama-session-mode-line-global-mode 1)
+  ;; (ellama-context-mode-line-global-mode 1)
+  )
 (use-package which-key
   :init (which-key-mode)
   :config

@@ -39,6 +39,8 @@
   :custom
   (git-commit-summary-max-length 90))
 (use-package git-modes)
+(use-package forge
+  :after magit)
 
 ;;; -- PROJECT --
 (defun project-vterm ()

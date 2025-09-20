@@ -1,14 +1,22 @@
 
 (defun efs/org-mode-setup ()
   (org-indent-mode t)
-  (visual-line-mode)
-  (visual-fill-column-mode)
-  (setq-local display-fill-column-indicator-column 100))
+  ;; (visual-line-mode)
+  ;; (visual-fill-column-mode)
+  (display-fill-column-indicator-mode -1)
+  (text-scale-set 0.3)
+  ;; (setq-local display-fill-column-indicator-column 100)
+  )
 
 ;; Needed for auto-wrapping text.
-(use-package visual-fill-column
+;; (use-package visual-fill-column
+;;   :config
+;;   (setq-default fill-column 100))
+
+(use-package olivetti
+  :hook (org-mode . olivetti-mode)
   :config
-  (setq-default fill-column 100))
+  (setq olivetti-body-width 100))
 
 (use-package org
   :straight (:type built-in)
@@ -26,16 +34,16 @@
   ;;    '(("^ *\\([-]\\) "
   ;;       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
   ;; ;; (setq org-agenda-files '("~/sdk"))
-  (setq org-todo-keywords
-      '((sequence "TODO(t)"
-                  "DEV(d)"
-                  "IN-REVIEW(r)"
-                  "|"
-                  "DONE(d)"
-                  "DELEGATED(D)"
-                  "CANCELLED(c)")
-        (sequence "REPORT(r)" "|" "REPORTED")
-        (sequence "DISCUSS" "|" "DONE")))
+  ;; (setq org-todo-keywords
+  ;;       '((sequence "TODO(t)"
+  ;;                   "DEV(d)"
+  ;;                   "IN-REVIEW(r)"
+  ;;                   "|"
+  ;;                   "DONE(d)"
+  ;;                   "DELEGATED(D)"
+  ;;                   "CANCELLED(c)")
+  ;;         (sequence "REPORT(r)" "|" "REPORTED")
+          ;; (sequence "DISCUSS" "|" "DONE")))
   (setq org-todo-keyword-faces
         '(("TODO" . "#ff9070")
           ("DEV" . "pink")

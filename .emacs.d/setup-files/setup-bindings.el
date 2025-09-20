@@ -60,11 +60,14 @@
     ;; Magit
     (kbd "<leader>m") 'magit-project-status
     ;; Misc
-    (kbd "C-c C-d") 'denote-dired
-    (kbd "C-c C-o") 'copilot-mode)
+    (kbd "C-; d") 'denote-dired
+    (kbd "M-b") 'bluetooth-list-devices
+    (kbd "C-; f") 'flymake-mode
+    (kbd "C-; o") 'copilot-mode)
   (evil-define-key 'insert 'global
     (kbd "M-TAB") 'copilot-accept-completion
-    (kbd "C-c C-o") 'copilot-mode))
+    (kbd "C-; f") 'flymake-mode
+    (kbd "C-; o") 'copilot-mode))
 
 (use-package evil-collection :after evil
   :config

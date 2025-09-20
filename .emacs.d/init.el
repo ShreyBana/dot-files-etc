@@ -35,6 +35,9 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 (setq package-enable-at-startup nil)
+(use-package no-littering
+  :config
+  (no-littering-theme-backups))
 ;; Load setup-files.
 (add-to-list 'load-path "~/.emacs.d/setup-files/")
 ;; (use-package exec-path-from-shell)
@@ -52,6 +55,7 @@
 (use-package async)
 
 (require 'setup-bindings)
+(require 'setup-modeline)
 (require 'setup-ui)
 (require 'setup-org)
 (require 'setup-completion)
