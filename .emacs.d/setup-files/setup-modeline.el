@@ -7,6 +7,7 @@
   (mode-line-active ((t (:family "UbuntuMono Nerd Font Propo" :height 0.98))))
   (mode-line-inactive ((t (:family "UbuntuMono Nerd Font Propo" :height 0.98)))))
 
+
 ;; (use-package doom-modeline
 ;;   :init
 ;;   (doom-modeline-mode 1)
@@ -19,7 +20,12 @@
 ;;   (doom-modeline-enable-word-count 0))
 
 (defun setup/modeline--buffer-name ()
-  (format " %s " (buffer-name)))
+  (format " %s%s " 
+          (cond
+           (buffer-read-only "󰌾 ")           ; Read-only
+           ((buffer-modified-p) " ")       ; Unsaved/modified  
+           (t ""))
+          (buffer-name)))
 
 (defface setup/modeline-background
   '((t :background "#3355bb" :foreground "white" :inherit bold))
@@ -48,6 +54,7 @@
                   (branch (or (vc-git--symbolic-ref file)
                           (substring rev 0 7))))
         (propertize (format " %s" branch) ))))
+
 
 (defun setup/evil-state-string ()
   "Return formatted evil state string."
@@ -87,20 +94,32 @@
                      setup/modeline-narrow))
   (put construct 'risky-local-variable t))
 
+(defun setup/modeline--file-status ()
+  "Return file status symbol: unsaved, saved, or read-only."
+  (cond
+   (buffer-read-only "󰈡")           ; Read-only
+   ((buffer-modified-p) "")        ; Unsaved/modified
+   (t "󰈙")))                        ; Saved
 
 (kill-local-variable 'mode-line-format)
+
 (setq-default mode-line-format
-              '("%e"
-                (:eval (format "*%s*" (setup/evil-state-string)))
+              '((:eval (format "*%s*" (setup/evil-state-string)))
                 " "
                 setup/modeline-buffer-name
                 " "
                 setup/modeline-branch
                 " "
-                setup/modeline-narrow
-                mode-line-format-right-align
                 setup/modeline-major-mode-name
-                " "))
+                " "
+                setup/modeline-narrow
+                " "
+                mode-line-format-right-align))
 (force-mode-line-update)
+(use-package keycast
+  :custom
+  (keycast-mode-line-insert-after 'mode-line-format-right-align)
+  :config
+  (keycast-mode-line-mode t))
 
 (provide 'setup-modeline)
