@@ -12,7 +12,7 @@
 {
   imports = [
     # Include the results of the hardware scan.
-    /etc/nixos/hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
   hardware.i2c.enable = true;
   nixpkgs.config.allowUnfree = true;
@@ -114,7 +114,7 @@
   services.xserver.xkb.layout = "us";
   system.activationScripts.userAvatar = ''
     mkdir -p /var/lib/AccountsService/icons
-    cp ${/home/shrey_bana/.face} /var/lib/AccountsService/icons/shrey_bana
+    cp ${./.face} /var/lib/AccountsService/icons/shrey_bana
   '';
   programs.dconf.enable = true;
   services.xserver.displayManager.lightdm = {
@@ -142,7 +142,7 @@
       haskellPackages.xmobar
       haskellPackages.xmonad-dbus
     ];
-    config = builtins.readFile /home/shrey_bana/.xmonad.hs;
+    config = builtins.readFile ./.xmonad.hs;
   };
   services.picom = {
     backend = "glx";

@@ -280,8 +280,7 @@ in
       xcp = "xclip -selection clipboard";
       xpaste = "xclip -selection clipboard -o";
       envr = "direnv reload";
-      hsw = "home-manager switch";
-      ossw = "sudo nixos-rebuild switch";
+      ossw = "sudo nixos-rebuild switch --flake ~/dot-files-etc#section_pc";
       nixgc = "sudo nix-collect-garbage -d";
     };
     functions = {
