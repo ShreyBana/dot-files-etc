@@ -1,44 +1,75 @@
 { config, pkgs, ... }:
 
+let
+  claude-code-acp = pkgs.buildNpmPackage rec {
+    pname = "claude-code-acp";
+    version = "0.12.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "zed-industries";
+      repo = "${pname}";
+      tag = "v${version}";
+      hash = "sha256-ul8XHj+P48IPgdRAZ5Rh2tjPRcSdKVnMCQWBdwy1Syg=";
+    };
+    npmDepsHash = "sha256-BePDV+3bMyCilEcNiUgY9kJIvttbL0MKMYh3tbhW76Q=";
+  };
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "shrey_bana";
-  home.homeDirectory = "/home/shrey_bana";
+  # home.username = "shrey_bana";
+  # home.homeDirectory = "/home/shrey_bana";
 
   programs.git = {
     enable = true;
-    userName = "Shrey Bana";
-    userEmail = "shreybana26@gmail.com";
-    aliases = {
-      c = "commit";
-      fa = "fetch --all";
-      Fu = "fetch upstream HEAD";
-      Fum = "fetch upstream main";
-      Fo = "fetch origin HEAD";
-      Fom = "fetch origin main";
-      pu = "push upstream HEAD";
-      po = "push origin HEAD";
-      co = "checkout";
-      s = "status";
-    };
-    extraConfig = {
-      push = {
-        autoSetupRemote = true;
+    settings = {
+      user = {
+        name = "Shrey Bana";
+        email = "shreybana26@gmail.com";
+      };
+      aliases = {
+        c = "commit";
+        fa = "fetch --all";
+        Fu = "fetch upstream HEAD";
+        Fum = "fetch upstream main";
+        Fo = "fetch origin HEAD";
+        Fom = "fetch origin main";
+        pu = "push upstream HEAD";
+        po = "push origin HEAD";
+        co = "checkout";
+        s = "status";
+      };
+      extraConfig = {
+        push = {
+          autoSetupRemote = true;
+        };
       };
     };
   };
+
   home.pointerCursor = {
+    enable = true;
     name = "Numix-Cursor";
     package = pkgs.numix-cursor-theme;
     size = 26;
     x11.enable = true;
     gtk.enable = true;
   };
-  
+
   home.packages = with pkgs; [
+    ipe
+    jupyter
+    vips
+    realesrgan-ncnn-vulkan
+    claude-code
+    claude-code-acp
+    pciutils
+    dmidecode
+    lm_sensors
+    texliveMedium
+    clang-tools
+    qgroundcontrol
+    neocmakelsp
     libva-utils
-    ocamlPackages.cpdf
     qpdf
     ghostscript
     ## Emacs 3rd party deps
@@ -46,13 +77,12 @@
     gnumake
     cmake
     ##
-    jetbrains.idea-community
-    aider-chat-full
+    # jetbrains.idea-community
+    # aider-chat-full
     tcpdump
-    copilot-language-server-fhs
+    copilot-language-server
     jdt-language-server
     kotlin-language-server
-    protonvpn-cli
     gitu
     gcc
     rust-analyzer
@@ -64,13 +94,12 @@
     nemo
     pulsemixer
     tldr
-    zed-editor
+    # zed-editor
     unzip
     libgcc
-    nixfmt-rfc-style
+    nixfmt
     nil
     nixd
-    xmobar
     htop
     spotify
     direnv
@@ -78,7 +107,7 @@
     awscli2
     kdePackages.okular
     flameshot
-    nodePackages.typescript-language-server
+    typescript-language-server
     htop
     feh
     vlc
@@ -87,8 +116,14 @@
     ffmpeg-full
     simplescreenrecorder
     discord
+    (writeShellScriptBin "screenshot" ''
+      mkdir -p ~/screenshots
+      filename="screenshot-$(date +%Y%m%d-%H%M%S).png"
+      ${pkgs.scrot}/bin/scrot ~/screenshots/"$filename"
+      ${pkgs.libnotify}/bin/notify-send "Screenshot" "Saved as $filename"
+    '')
     (writeShellScriptBin "record-gif" ''
-      RESOLUTION=$(${pkgs.xorg.xrandr}/bin/xrandr --current | grep '\*' | awk '{print $1}')
+      RESOLUTION=$(${pkgs.xrandr}/bin/xrandr --current | grep '\*' | awk '{print $1}')
       TMP_VIDEO=$(mktemp --suffix=.mp4)
       OUTPUT_GIF=$(mktemp --suffix=.gif)
 
@@ -108,10 +143,11 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+  # ;
   ];
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
-  home.file = {
+  # home.file = {
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
@@ -122,98 +158,119 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+  # };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk3";
+    style.package = pkgs.adwaita-qt;
   };
 
+  programs.sioyek = {
+    enable = true;
+    bindings = {
+      "screen_down" = [ "d" "<C-d>" ];
+      "screen_up" = [ "u" "<C-u>" ];
+      "move_left" = "h";
+      "move_right" = "l";
+      "copy" = "y";
+    };
+    config = {
+      "background_color" = "1.0 1.0 1.0";
+    #   "text_highlight_color" = "1.0 0.0 0.0";
+      startup_commands = ["toggle_dark_mode" "toggle_visual_scroll"];
+    };
+  };
+
+  programs.xmobar = {
+    enable = true;
+    extraConfig = ''
+    Config
+        { overrideRedirect = False
+        , font     = "IosevkaTermSlab NFP Medium 13"
+        , additionalFonts = [ "JetBrainsMono NF Bold 12"
+                            , "JetBrainsMono NF 18"
+                            ]
+        , bgColor  = "#001b22"
+        , fgColor  = "#93a1a1"
+        , alpha    = 250
+        , position = TopH 23
+        , commands = [ Run Weather "EGPF"
+                         [ "--template", "<weather> <tempC>°C"
+                         , "-L", "0"
+                         , "-H", "25"
+                         , "--low"   , "#268bd2"
+                         , "--normal", "#93a1a1"
+                         , "--high"  , "#dc322f"
+                         ] 36000
+                     , Run Network "protonvpn" ["-t", "<dev> 󰯄"] 10
+                     , Run Network "enp9s0"
+                       [ "--template" , "<fn=1><fc=#6b7d00>󰈁</fc></fn> U:<tx> D:<rx>"
+                       , "--Low"      , "1000"     
+                       , "--High"     , "20971520"
+                       , "--low"      , "#6b7d00"
+                       , "--high"     , "#dc322f"
+                       , "-S", "True"
+                       ] 10
+                     , Run Wireless "wlp8s0"
+                       [ "-t", "<fn=1>󰀂</fn> :<essid>"
+                       ] 10
+                     , Run Com "sh" ["-c", "hostname -i | awk '{ print $1 }'"] "ip" 10
+                     , Run Com "sh" ["-c", "spotifycli --status || true"] "track-info" 3
+                     , Run Com "sh" ["-c", "spotifycli --playbackstatus || true"] "track-status" 3
+                     , Run Battery
+                       [ "--template" , "<acstatus>"
+                       , "--Low"      , "10"
+                       , "--High"     , "80"
+                       , "--low"      , "#dc322f"
+                       , "--"
+                                 , "-o"	, "<fn=1>󱟞</fn> <left>%"
+                                 , "-O"	, "<fn=1><fc=#9c7500>󰂄</fc></fn> <left>%"
+                       ] 10
+                     , Run Cpu
+                         [ "-L", "3"
+                         , "-H", "50"
+                         , "--high"  , "#dc322f"
+                         , "--template", "<fn=1><fc=#a53c12>CPU:</fc></fn> <total>%"
+                         ] 10
+                     , Run DynNetwork
+                         [ "--template" , "<dev>: U<tx>|D<rx>"
+                         , "--Low"      , "1000"     
+                         , "--High"     , "20971520"
+                         , "--low"      , "#6b7d00"
+                         , "--high"     , "#dc322f"
+                         , "-S", "True"
+                         ] 10
+                     , Run DiskU [("/", "<fn=1><fc=#1f8076>Disk /:</fc></fn> <used>")] [] 20
+                     , Run Memory ["-t", "<fn=1><fc=#565aa0>Mem:</fc></fn> <usedratio>%"] 10
+                     , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
+                     , Run Date "󰃶 %a, %d-%m-%Y 󱑂 %H:%M:%S" "date" 10
+                     , Run Volume "default" "Master" [ "-t", "<fn=1><fc=#9c7500>Vol:</fc></fn> <volume>%" ] 10
+                     , Run XMonadLog
+                     ]
+        , sepChar  = "%"
+        , alignSep = "}{"
+        , template = "%XMonadLog%} %track-status% %track-info% { VPN: %protonvpn% :: %default:Master% || %enp9s0% | %disku% | %cpu% | %memory% =<< %date% "
+        }
+    '';
+  };
   programs.rofi = {
     enable = true;
-    cycle =  true;
+    cycle = true;
     pass.enable = true;
     theme = "purple";
-    plugins = with pkgs; [ rofi-emoji rofi-calc rofi-top ];
+    plugins = with pkgs; [
+      rofi-emoji
+      rofi-calc
+      rofi-top
+    ];
     font = "JetBrainsMono Nerd Font 15";
   };
-  programs.librewolf.enable = true;
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox;
-    profiles."default".userChrome = ''
-      @-moz-document url(chrome://browser/content/browser.xhtml) {
-      	/* tabs on bottom of window */
-      	/* requires that you set
-      	 * toolkit.legacyUserProfileCustomizations.stylesheets = true
-      	 * in about:config
-      	 * figure out current firefox's profile folder in about:support
-      	 */
-      	#main-window body { flex-direction: column-reverse !important; }
-      	#navigator-toolbox { flex-direction: column-reverse !important; }
-      	#urlbar {
-      		top: unset !important;
-      		bottom: calc(var(--urlbar-container-height) + 2 * var(--urlbar-padding-block)) !important;
-      		box-shadow: none !important;
-      		display: flex !important;
-      		flex-direction: column !important;
-      	}
-      		#urlbar > * {
-      			flex: none;
-      		}
-      	#urlbar .urlbar-input-container {
-      		order: 2;
-      	}
-      	#urlbar > .urlbarView {
-      		order: 1;
-      		border-bottom: 1px solid #666;
-      	}
-      	#urlbar-results {
-      		display: flex;
-      		flex-direction: column-reverse;
-      	}
-      	.search-one-offs { display: none !important; }
-      	.tab-background { border-top: none !important; }
-      	#navigator-toolbox::after { border: none; }
-      	#TabsToolbar .tabbrowser-arrowscrollbox,
-      	#tabbrowser-tabs, .tab-stack { min-height: 28px !important; }
-      	.tabbrowser-tab { font-size: 80%; }
-      	.tab-content { padding: 0 5px; }
-      	.tab-close-button .toolbarbutton-icon { width: 12px !important; height: 12px !important; }
-      	toolbox[inFullscreen=true] { display: none; }
-      	/*
-      	 * the following makes it so that the on-click panels in the nav-bar
-      	 * extend upwards, not downwards. some of them are in the #mainPopupSet
-      	 * (hamburger + unified extensions), and the rest are in
-      	 * #navigator-toolbox. They all end up with an incorrectly-measured
-      	 * max-height (based on the distance to the _bottom_ of the screen), so
-      	 * we correct that. The ones in #navigator-toolbox then adjust their
-      	 * positioning automatically, so we can just set max-height. The ones
-      	 * in #mainPopupSet do _not_, and so we need to give them a
-      	 * negative margin-top to offset them *and* a fixed height so their
-      	 * bottoms align with the nav-bar. We also calc to ensure they don't
-      	 * end up overlapping with the nav-bar itself. The last bit around
-      	 * cui-widget-panelview is needed because "new"-style panels (those
-      	 * using "unified" panels) don't get flex by default, which results in
-      	 * them being the wrong height.
-      	 *
-      	 * Oh, yeah, and the popup-notification-panel (like biometrics prompts)
-      	 * of course follows different rules again, and needs its own special
-      	 * rule.
-      	 */
-      	#mainPopupSet panel.panel-no-padding { margin-top: calc(-50vh + 40px) !important; }
-      	#mainPopupSet .panel-viewstack, #mainPopupSet popupnotification { max-height: 50vh !important; height: 50vh; }
-      	#mainPopupSet panel.panel-no-padding.popup-notification-panel { margin-top: calc(-50vh - 35px) !important; }
-      	#navigator-toolbox .panel-viewstack { max-height: 75vh !important; }
-      	panelview.cui-widget-panelview { flex: 1; }
-      	panelview.cui-widget-panelview > vbox { flex: 1; min-height: 50vh; }
-      }
-    '';
-    profiles."default".userContent = ''
-      :root {
-          --tridactyl-cmplt-font-size: 13px !important;
-          --tridactyl-cmdl-font-size: 13px !important;
-      }
-    '';
-  };
+  # programs.librewolf.enable = true;
   programs.fish = {
     enable = true;
     shellAliases = {
+      l = "less";
       ls = "eza --sort type";
       ll = "eza --sort type --long";
       la = "eza --sort type --long --all";
@@ -223,12 +280,14 @@
       xcp = "xclip -selection clipboard";
       xpaste = "xclip -selection clipboard -o";
       envr = "direnv reload";
-      homesw = "home-manager switch";
+      hsw = "home-manager switch";
       ossw = "sudo nixos-rebuild switch";
       nixgc = "sudo nix-collect-garbage -d";
     };
-    interactiveShellInit = ''
-    '';
+    functions = {
+      fish_prompt.body = builtins.readFile ./fish-prompt.fish;
+    };
+    interactiveShellInit = "";
   };
   programs.alacritty = {
     enable = true;
@@ -349,21 +408,25 @@
   home.sessionVariables = {
     EDITOR = "zeditor";
     BROWSER = "firefox";
-    OPENROUTER_API_KEY = "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";
     CC = "${pkgs.stdenv.cc}";
     cc = "${pkgs.stdenv.cc}";
   };
 
   gtk = {
     enable = true;
+    font = {
+      package = pkgs.inter;
+      name = "Inter";
+      size = 17;
+    };
     gtk3.extraConfig = {
       gtk-xft-dpi = 1;
-      gtk-font-name = "Sans 14";
+      # gtk-font-name = "Sans 14";
       gtk-application-prefer-dark-theme = true;
     };
     gtk4.extraConfig = {
       gtk-xft-dpi = 1;
-      gtk-font-name = "Sans 14";
+      # gtk-font-name = "Sans 14";
       gtk-application-prefer-dark-theme = true;
     };
   };
@@ -380,6 +443,92 @@
   #       "x-scheme-handler/https" = ["firefox.desktop"];
   #     };
   #   };
+
+  programs.firefox = {
+    enable = true;
+    # configPath = "~/.mozilla/firefox";
+    configPath = "/home/shrey_bana/.mozilla/firefox";
+    profiles."default" = {
+      settings = {
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        "permissions.default.shortcuts" = 0; # # `2` to disallow re-bidning of shortcuts
+      };
+    };
+    profiles."default".userChrome = ''
+      @-moz-document url(chrome://browser/content/browser.xhtml) {
+      	/* tabs on bottom of window */
+      	/* requires that you set
+      	 * toolkit.legacyUserProfileCustomizations.stylesheets = true
+      	 * in about:config
+      	 * figure out current firefox's profile folder in about:support
+      	 */
+      	#main-window body { flex-direction: column-reverse !important; }
+      	#navigator-toolbox { flex-direction: column-reverse !important; }
+      	#urlbar {
+      		top: unset !important;
+      		bottom: calc(var(--urlbar-container-height) + 2 * var(--urlbar-padding-block)) !important;
+      		box-shadow: none !important;
+      		display: flex !important;
+      		flex-direction: column !important;
+      	}
+      		#urlbar > * {
+      			flex: none;
+      		}
+      	#urlbar .urlbar-input-container {
+      		order: 2;
+      	}
+      	#urlbar > .urlbarView {
+      		order: 1;
+      		border-bottom: 1px solid #666;
+      	}
+      	#urlbar-results {
+      		display: flex;
+      		flex-direction: column-reverse;
+      	}
+      	.search-one-offs { display: none !important; }
+      	.tab-background { border-top: none !important; }
+      	#navigator-toolbox::after { border: none; }
+      	#TabsToolbar .tabbrowser-arrowscrollbox,
+      	#tabbrowser-tabs, .tab-stack { min-height: 28px !important; }
+      	.tabbrowser-tab { font-size: 80%; }
+      	.tab-content { padding: 0 5px; }
+      	.tab-close-button .toolbarbutton-icon { width: 12px !important; height: 12px !important; }
+      	toolbox[inFullscreen=true] { display: none; }
+      	/*
+      	 * the following makes it so that the on-click panels in the nav-bar
+      	 * extend upwards, not downwards. some of them are in the #mainPopupSet
+      	 * (hamburger + unified extensions), and the rest are in
+      	 * #navigator-toolbox. They all end up with an incorrectly-measured
+      	 * max-height (based on the distance to the _bottom_ of the screen), so
+      	 * we correct that. The ones in #navigator-toolbox then adjust their
+      	 * positioning automatically, so we can just set max-height. The ones
+      	 * in #mainPopupSet do _not_, and so we need to give them a
+      	 * negative margin-top to offset them *and* a fixed height so their
+      	 * bottoms align with the nav-bar. We also calc to ensure they don't
+      	 * end up overlapping with the nav-bar itself. The last bit around
+      	 * cui-widget-panelview is needed because "new"-style panels (those
+      	 * using "unified" panels) don't get flex by default, which results in
+      	 * them being the wrong height.
+      	 *
+      	 * Oh, yeah, and the popup-notification-panel (like biometrics prompts)
+      	 * of course follows different rules again, and needs its own special
+      	 * rule.
+      	 */
+      	#mainPopupSet panel.panel-no-padding { margin-top: calc(-50vh + 40px) !important; }
+      	#mainPopupSet .panel-viewstack, #mainPopupSet popupnotification { max-height: 50vh !important; height: 50vh; }
+      	#mainPopupSet panel.panel-no-padding.popup-notification-panel { margin-top: calc(-50vh - 35px) !important; }
+      	#navigator-toolbox .panel-viewstack { max-height: 75vh !important; }
+      	panelview.cui-widget-panelview { flex: 1; }
+      	panelview.cui-widget-panelview > vbox { flex: 1; min-height: 50vh; }
+      }
+    '';
+    profiles."default".userContent = ''
+      :root {
+          --tridactyl-cmplt-font-size: 14px !important;
+          --tridactyl-cmdl-font-size: 14px !important;
+      }
+    '';
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
