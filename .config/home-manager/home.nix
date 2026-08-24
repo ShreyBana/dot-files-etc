@@ -18,7 +18,8 @@ in
   # manage.
   # home.username = "shrey_bana";
   # home.homeDirectory = "/home/shrey_bana";
-
+  # in home.nix
+  # xdg.configFile."rijan/init.janet".source = ./rijan-init.janet;
   programs.git = {
     enable = true;
     settings = {
@@ -55,7 +56,20 @@ in
     gtk.enable = true;
   };
 
+  services.wpaperd = {
+    enable = true;
+    settings = {
+      default = {
+        path = "/home/shrey_bana/dot-files-etc/pictures/wallpapers";
+        duration = "45m";
+        sorting = "random";
+      };
+    };
+  };
+
   home.packages = with pkgs; [
+    libnotify
+    swaybg
     ipe
     jupyter
     vips
@@ -143,21 +157,21 @@ in
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-  # ;
+    # ;
   ];
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   # home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
+  # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+  # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+  # # symlink to the Nix store copy.
+  # ".screenrc".source = dotfiles/screenrc;
 
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
+  # # You can also set the file content immediately.
+  # ".gradle/gradle.properties".text = ''
+  #   org.gradle.console=verbose
+  #   org.gradle.daemon.idletimeout=3600000
+  # '';
   # };
 
   qt = {
@@ -169,89 +183,260 @@ in
   programs.sioyek = {
     enable = true;
     bindings = {
-      "screen_down" = [ "d" "<C-d>" ];
-      "screen_up" = [ "u" "<C-u>" ];
+      "screen_down" = [
+        "d"
+        "<C-d>"
+      ];
+      "screen_up" = [
+        "u"
+        "<C-u>"
+      ];
       "move_left" = "h";
       "move_right" = "l";
       "copy" = "y";
     };
     config = {
       "background_color" = "1.0 1.0 1.0";
-    #   "text_highlight_color" = "1.0 0.0 0.0";
-      startup_commands = ["toggle_dark_mode" "toggle_visual_scroll"];
+      #   "text_highlight_color" = "1.0 0.0 0.0";
+      startup_commands = [
+        "toggle_dark_mode"
+        "toggle_visual_scroll"
+      ];
     };
   };
+  programs.waybar = {
+    systemd.enable = false;
+    enable = true;
+    settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        height = 23;
 
+        modules-left = [
+          "custom/rijan"
+        ];
+        modules-center = [ "mpris" ];
+        modules-right = [
+          "network"
+          "disk"
+          "cpu"
+          "memory"
+          # "battery"
+          "pulseaudio"
+          "clock"
+        ];
+
+        "custom/rijan" = {
+          exec = "cat $XDG_RUNTIME_DIR/rijan/status.json";
+          interval = 0.1;
+          return-type = "json";
+        };
+
+        mpris = {
+          format = "{status_icon} {dynamic}"; # play/pause/stop icon via status-icons, already set
+          status-icons = {
+            playing = "";
+            paused = "󰏤";
+            stopped = "";
+          };
+        };
+
+        network = {
+          format-wifi = "󰀂 {essid}"; # wifi icon
+          format-ethernet = "  U:{bandwidthUpBytes} D:{bandwidthDownBytes}"; # ethernet icon
+          format-disconnected = " disconnected";
+          interval = 2;
+          tooltip = false;
+        };
+
+        disk = {
+          path = "/";
+          format = " {used}"; # disk/hdd icon
+          interval = 5;
+        };
+
+        cpu = {
+          format = "CPU: {usage}%"; # chip icon
+          interval = 3;
+        };
+
+        memory = {
+          format = "MEM: {used:0.1f}G/{total:0.1f}G"; # memory icon
+          interval = 3;
+        };
+
+        battery = {
+          format = "{icon} {capacity}%"; # icon cycles by charge level automatically
+          format-icons = [
+            ""
+            ""
+            ""
+            ""
+            ""
+          ]; # empty -> full
+          format-charging = " {capacity}%"; # bolt icon while charging
+          interval = 10;
+        };
+
+        pulseaudio = {
+          format = "󰕾 {volume}%"; # speaker icon
+          format-muted = "󰝟 muted"; # muted-speaker icon
+          on-click = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
+        };
+
+        clock = {
+          format = "  {:%a, %d-%m-%Y  %H:%M:%S}"; # clock icon
+          interval = 1;
+        };
+      };
+    };
+
+    style = ''
+      * {
+        font-family: monospace;
+        font-size: 13px;
+        min-height: 0;
+      }
+
+      window#waybar {
+        background: #1a1a1a;
+        color: #ffffff;
+      }
+
+      #custom-rijan {
+        color: #ffffff;
+        font-weight: bold;
+        padding: 0 10px;
+      }
+
+      #mpris {
+        color: #a6e3a1;
+        padding: 0 10px;
+      }
+
+      #network {
+        color: #89b4fa;
+        padding: 0 10px;
+      }
+
+      #disk {
+        color: #f9e2af;
+        padding: 0 10px;
+      }
+
+      #cpu {
+        color: #fab387;
+        padding: 0 10px;
+      }
+
+      #memory {
+        color: #cba6f7;
+        padding: 0 10px;
+      }
+
+      #battery {
+        color: #a6e3a1;
+        padding: 0 10px;
+      }
+
+      #battery.warning {
+        color: #f9e2af;
+      }
+
+      #battery.critical {
+        color: #f38ba8;
+      }
+
+      #battery.charging {
+        color: #89dceb;
+      }
+
+      #pulseaudio {
+        color: #f5c2e7;
+        padding: 0 10px;
+      }
+
+      #pulseaudio.muted {
+        color: #6c7086;
+      }
+
+      #clock {
+        color: #ffffff;
+        padding: 0 10px;
+      }
+    '';
+  };
   programs.xmobar = {
     enable = true;
     extraConfig = ''
-    Config
-        { overrideRedirect = False
-        , font     = "IosevkaTermSlab NFP Medium 13"
-        , additionalFonts = [ "JetBrainsMono NF Bold 12"
-                            , "JetBrainsMono NF 18"
-                            ]
-        , bgColor  = "#001b22"
-        , fgColor  = "#93a1a1"
-        , alpha    = 250
-        , position = TopH 23
-        , commands = [ Run Weather "EGPF"
-                         [ "--template", "<weather> <tempC>°C"
-                         , "-L", "0"
-                         , "-H", "25"
-                         , "--low"   , "#268bd2"
-                         , "--normal", "#93a1a1"
-                         , "--high"  , "#dc322f"
-                         ] 36000
-                     , Run Network "protonvpn" ["-t", "<dev> 󰯄"] 10
-                     , Run Network "enp9s0"
-                       [ "--template" , "<fn=1><fc=#6b7d00>󰈁</fc></fn> U:<tx> D:<rx>"
-                       , "--Low"      , "1000"     
-                       , "--High"     , "20971520"
-                       , "--low"      , "#6b7d00"
-                       , "--high"     , "#dc322f"
-                       , "-S", "True"
-                       ] 10
-                     , Run Wireless "wlp8s0"
-                       [ "-t", "<fn=1>󰀂</fn> :<essid>"
-                       ] 10
-                     , Run Com "sh" ["-c", "hostname -i | awk '{ print $1 }'"] "ip" 10
-                     , Run Com "sh" ["-c", "spotifycli --status || true"] "track-info" 3
-                     , Run Com "sh" ["-c", "spotifycli --playbackstatus || true"] "track-status" 3
-                     , Run Battery
-                       [ "--template" , "<acstatus>"
-                       , "--Low"      , "10"
-                       , "--High"     , "80"
-                       , "--low"      , "#dc322f"
-                       , "--"
-                                 , "-o"	, "<fn=1>󱟞</fn> <left>%"
-                                 , "-O"	, "<fn=1><fc=#9c7500>󰂄</fc></fn> <left>%"
-                       ] 10
-                     , Run Cpu
-                         [ "-L", "3"
-                         , "-H", "50"
-                         , "--high"  , "#dc322f"
-                         , "--template", "<fn=1><fc=#a53c12>CPU:</fc></fn> <total>%"
-                         ] 10
-                     , Run DynNetwork
-                         [ "--template" , "<dev>: U<tx>|D<rx>"
+      Config
+          { overrideRedirect = False
+          , font     = "IosevkaTermSlab NFP Medium 13"
+          , additionalFonts = [ "JetBrainsMono NF Bold 12"
+                              , "JetBrainsMono NF 18"
+                              ]
+          , bgColor  = "#001b22"
+          , fgColor  = "#93a1a1"
+          , alpha    = 250
+          , position = TopH 23
+          , commands = [ Run Weather "EGPF"
+                           [ "--template", "<weather> <tempC>°C"
+                           , "-L", "0"
+                           , "-H", "25"
+                           , "--low"   , "#268bd2"
+                           , "--normal", "#93a1a1"
+                           , "--high"  , "#dc322f"
+                           ] 36000
+                       , Run Network "protonvpn" ["-t", "<dev> 󰯄"] 10
+                       , Run Network "enp9s0"
+                         [ "--template" , "<fn=1><fc=#6b7d00>󰈁</fc></fn> U:<tx> D:<rx>"
                          , "--Low"      , "1000"     
                          , "--High"     , "20971520"
                          , "--low"      , "#6b7d00"
                          , "--high"     , "#dc322f"
                          , "-S", "True"
                          ] 10
-                     , Run DiskU [("/", "<fn=1><fc=#1f8076>Disk /:</fc></fn> <used>")] [] 20
-                     , Run Memory ["-t", "<fn=1><fc=#565aa0>Mem:</fc></fn> <usedratio>%"] 10
-                     , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
-                     , Run Date "󰃶 %a, %d-%m-%Y 󱑂 %H:%M:%S" "date" 10
-                     , Run Volume "default" "Master" [ "-t", "<fn=1><fc=#9c7500>Vol:</fc></fn> <volume>%" ] 10
-                     , Run XMonadLog
-                     ]
-        , sepChar  = "%"
-        , alignSep = "}{"
-        , template = "%XMonadLog%} %track-status% %track-info% { VPN: %protonvpn% :: %default:Master% || %enp9s0% | %disku% | %cpu% | %memory% =<< %date% "
-        }
+                       , Run Wireless "wlp8s0"
+                         [ "-t", "<fn=1>󰀂</fn> :<essid>"
+                         ] 10
+                       , Run Com "sh" ["-c", "hostname -i | awk '{ print $1 }'"] "ip" 10
+                       , Run Com "sh" ["-c", "spotifycli --status || true"] "track-info" 3
+                       , Run Com "sh" ["-c", "spotifycli --playbackstatus || true"] "track-status" 3
+                       , Run Battery
+                         [ "--template" , "<acstatus>"
+                         , "--Low"      , "10"
+                         , "--High"     , "80"
+                         , "--low"      , "#dc322f"
+                         , "--"
+                                   , "-o"	, "<fn=1>󱟞</fn> <left>%"
+                                   , "-O"	, "<fn=1><fc=#9c7500>󰂄</fc></fn> <left>%"
+                         ] 10
+                       , Run Cpu
+                           [ "-L", "3"
+                           , "-H", "50"
+                           , "--high"  , "#dc322f"
+                           , "--template", "<fn=1><fc=#a53c12>CPU:</fc></fn> <total>%"
+                           ] 10
+                       , Run DynNetwork
+                           [ "--template" , "<dev>: U<tx>|D<rx>"
+                           , "--Low"      , "1000"     
+                           , "--High"     , "20971520"
+                           , "--low"      , "#6b7d00"
+                           , "--high"     , "#dc322f"
+                           , "-S", "True"
+                           ] 10
+                       , Run DiskU [("/", "<fn=1><fc=#1f8076>Disk /:</fc></fn> <used>")] [] 20
+                       , Run Memory ["-t", "<fn=1><fc=#565aa0>Mem:</fc></fn> <usedratio>%"] 10
+                       , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
+                       , Run Date "󰃶 %a, %d-%m-%Y 󱑂 %H:%M:%S" "date" 10
+                       , Run Volume "default" "Master" [ "-t", "<fn=1><fc=#9c7500>Vol:</fc></fn> <volume>%" ] 10
+                       , Run XMonadLog
+                       ]
+          , sepChar  = "%"
+          , alignSep = "}{"
+          , template = "%XMonadLog%} %track-status% %track-info% { VPN: %protonvpn% :: %default:Master% || %enp9s0% | %disku% | %cpu% | %memory% =<< %date% "
+          }
     '';
   };
   programs.rofi = {

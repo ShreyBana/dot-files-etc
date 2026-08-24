@@ -7,7 +7,7 @@
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    river-next.url = "github:dmkhitaryan/river-next-nix-module";
+    river-next.url = "github:shreybana/river-next-nix-module/c0eb9e5680cab3eab0ddefc0fa9a4e5dc8778370";
     river-next.flake = false;
   };
 
@@ -25,7 +25,7 @@
         specialArgs = { inherit river-next; };
         modules = [
           ./configuration.nix
-          # "${river-next}/river-module.nix"
+          "${river-next}/river-module.nix"
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

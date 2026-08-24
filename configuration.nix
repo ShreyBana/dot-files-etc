@@ -117,8 +117,21 @@
     cp ${./.face} /var/lib/AccountsService/icons/shrey_bana
   '';
   programs.dconf.enable = true;
-  services.xserver.displayManager.lightdm = {
+  services.displayManager.ly = {
     enable = true;
+    settings = {
+      animation = "doom"; # or "doom", "colormix", "none"
+      animation_frame_delay = 30;
+      bg = 0; # background color (0-8, ANSI palette)
+      fg = 4; # foreground/text color
+      border_fg = 4; # login box border color
+      clock = "%c"; # show a clock, strftime format; empty string disables it
+      hide_key_hints = false;
+      asterisk = "*"; # character shown for password input
+    };
+  };
+  services.xserver.displayManager.lightdm = {
+    enable = false;
     greeters.slick = {
       enable = true;
       extraConfig = ''
@@ -143,6 +156,13 @@
       haskellPackages.xmonad-dbus
     ];
     config = builtins.readFile ./.xmonad.hs;
+  };
+  programs.river-next = {
+    enable = true;
+    localWindowManager = ./vendor/rijan-fork.nix;
+    windowManagers = [ ];
+    xwayland.enable = true;
+    kanshi.enable = true;
   };
   services.picom = {
     backend = "glx";
@@ -312,8 +332,8 @@
     ];
   };
   services.emacs = {
-    enable = true;
-    package = pkgs.emacs30;
+    enable = lib.mkForce true;
+    package = pkgs.emacs-pgtk;
   };
 
   # List packages installed in system profile. To search, run:

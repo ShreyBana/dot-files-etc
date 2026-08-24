@@ -40,16 +40,17 @@
     "river-next": {
       "flake": false,
       "locked": {
-        "lastModified": 1786863436,
-        "narHash": "sha256-Xu6qBiYiF2lUhfiGspyb6+KlRHSPqy66UdjmfEVJ978=",
-        "owner": "dmkhitaryan",
+        "lastModified": 1787501047,
+        "narHash": "sha256-VINTJ4CRqG4cSp53L/YyL5geyjLuliB6DRcHtEm1vP8=",
+        "owner": "shreybana",
         "repo": "river-next-nix-module",
-        "rev": "51258acb08e6e01c3157edebd66981ec4ce62ab8",
+        "rev": "c0eb9e5680cab3eab0ddefc0fa9a4e5dc8778370",
         "type": "github"
       },
       "original": {
-        "owner": "dmkhitaryan",
+        "owner": "shreybana",
         "repo": "river-next-nix-module",
+        "rev": "c0eb9e5680cab3eab0ddefc0fa9a4e5dc8778370",
         "type": "github"
       }
     },
