@@ -28,8 +28,8 @@
              :border-focused 0x000000})
 
 (def dark @{:background 0x000000
-            :border-normal 0x646464
-            :border-focused 0xffffff})
+            :border-normal 0x1B1D1E 
+            :border-focused 0xA9AEB1})
 
 (def config @{:border-width 2
               :outer-padding 4
@@ -55,38 +55,6 @@
    (* (band 0xff rgb) (/ 0xffff_ffff 0xff))
    0xffff_ffff])
 
-(defn bg/manage [bg output]
-  (:sync-next-commit (bg :shell-surface))
-  (:place-bottom (bg :node))
-  (:set-position (bg :node) (output :x) (output :y))
-  (def buffer (:create-u32-rgba-buffer
-                (registry "wp_single_pixel_buffer_manager_v1")
-                # ;(rgb-to-u32-rgba ((wm :config) :background))
-                0 0 0 0))
-  (:attach (bg :surface) buffer 0 0)
-  (:damage-buffer (bg :surface) 0 0 0x7fff_ffff 0x7fff_ffff)
-  (:set-destination (bg :viewport) (output :w) (output :h))
-  (:commit (bg :surface))
-  (:destroy buffer))
-
-(defn bg/destroy [bg]
-  (:destroy (bg :viewport))
-  (:destroy (bg :shell-surface))
-  (:destroy (bg :surface))
-  (:destroy (bg :node)))
-
-(defn bg/create []
-  (def surface (:create-surface (registry "wl_compositor")))
-  (def input-region (:create-region (registry "wl_compositor")))
-  (:set-input-region surface input-region)
-  (:destroy input-region)
-  (def viewport (:get-viewport (registry "wp_viewporter") surface))
-  (def shell-surface (:get-shell-surface (registry "river_window_manager_v1") surface))
-  @{:surface surface
-    :viewport viewport
-    :shell-surface shell-surface
-    :node (:get-node shell-surface)})
-
 (defn output/visible [output windows]
   (let [tags (output :tags)]
     (filter |(tags ($ :tag)) windows)))
@@ -99,12 +67,10 @@
 (defn output/manage-start [output]
   (if (output :removed)
     (do
-      (:destroy (output :obj))
-      (bg/destroy (output :bg)))
+      (:destroy (output :obj)))
     output))
 
 (defn output/manage [output]
-  # (bg/manage (output :bg) output)
   (when (output :new)
     (let [unused (find (fn [tag] (not (find |(($ :tags) tag) (wm :outputs)))) (range 1 10))]
       (put (output :tags) unused true))))
@@ -114,7 +80,6 @@
 
 (defn output/create [obj]
   (def output @{:obj obj
-                :bg (bg/create)
                 :layer-shell (:get-output (registry "river_layer_shell_v1") obj)
                 :new true
                 :tags @{}})
@@ -772,9 +737,6 @@
                       (string (os/getenv "HOME") "/.config")))
   (set init-path (string config-dir "/rijan/init.janet"))
   ((action/reload-config))
-
-  (ev/spawn (os/proc-wait (os/spawn ["wpaperd"] :p)))
-  (ev/spawn (os/proc-wait (os/spawn ["waybar"] :p)))
 
   (put registry :obj (:get-registry display))
   (:set-handler (registry :obj) registry/handle-event)

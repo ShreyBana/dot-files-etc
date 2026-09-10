@@ -1,0 +1,67 @@
+Config
+    { overrideRedirect = False
+    , font     = "IosevkaTermSlab NFP Medium 13"
+    , additionalFonts = [ "JetBrainsMono NF Bold 12"
+                        , "JetBrainsMono NF 18"
+                        ]
+    , bgColor  = "#001b22"
+    , fgColor  = "#93a1a1"
+    , alpha    = 250
+    , position = TopH 23
+    , commands = [ Run Weather "EGPF"
+                     [ "--template", "<weather> <tempC>°C"
+                     , "-L", "0"
+                     , "-H", "25"
+                     , "--low"   , "#268bd2"
+                     , "--normal", "#93a1a1"
+                     , "--high"  , "#dc322f"
+                     ] 36000
+                 , Run Network "protonvpn" ["-t", "<dev> 󰯄"] 10
+                 , Run Network "enp9s0"
+                   [ "--template" , "<fn=1><fc=#6b7d00>󰈁</fc></fn> U:<tx> D:<rx>"
+                   , "--Low"      , "1000"     
+                   , "--High"     , "20971520"
+                   , "--low"      , "#6b7d00"
+                   , "--high"     , "#dc322f"
+                   , "-S", "True"
+                   ] 10
+                 , Run Wireless "wlp8s0"
+                   [ "-t", "<fn=1>󰀂</fn> :<essid>"
+                   ] 10
+                 , Run Com "sh" ["-c", "hostname -i | awk '{ print $1 }'"] "ip" 10
+                 , Run Com "sh" ["-c", "spotifycli --status || true"] "track-info" 3
+                 , Run Com "sh" ["-c", "spotifycli --playbackstatus || true"] "track-status" 3
+                 , Run Battery
+                   [ "--template" , "<acstatus>"
+                   , "--Low"      , "10"
+                   , "--High"     , "80"
+                   , "--low"      , "#dc322f"
+                   , "--"
+                             , "-o"	, "<fn=1>󱟞</fn> <left>%"
+                             , "-O"	, "<fn=1><fc=#9c7500>󰂄</fc></fn> <left>%"
+                   ] 10
+                 , Run Cpu
+                     [ "-L", "3"
+                     , "-H", "50"
+                     , "--high"  , "#dc322f"
+                     , "--template", "<fn=1><fc=#a53c12>CPU:</fc></fn> <total>%"
+                     ] 10
+                 , Run DynNetwork
+                     [ "--template" , "<dev>: U<tx>|D<rx>"
+                     , "--Low"      , "1000"     
+                     , "--High"     , "20971520"
+                     , "--low"      , "#6b7d00"
+                     , "--high"     , "#dc322f"
+                     , "-S", "True"
+                     ] 10
+                 , Run DiskU [("/", "<fn=1><fc=#1f8076>Disk /:</fc></fn> <used>")] [] 20
+                 , Run Memory ["-t", "<fn=1><fc=#565aa0>Mem:</fc></fn> <usedratio>%"] 10
+                 , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
+                 , Run Date "󰃶 %a, %d-%m-%Y 󱑂 %H:%M:%S" "date" 10
+                 , Run Volume "default" "Master" [ "-t", "<fn=1><fc=#9c7500>Vol:</fc></fn> <volume>%" ] 10
+                 , Run XMonadLog
+                 ]
+    , sepChar  = "%"
+    , alignSep = "}{"
+    , template = "%XMonadLog%} %track-status% %track-info% { VPN: %protonvpn% :: %default:Master% || %enp9s0% | %disku% | %cpu% | %memory% =<< %date% "
+    }

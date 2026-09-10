@@ -91,7 +91,7 @@
     ];
   };
   # Enable Specialized Video-Drivers
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  # services.xserver.videoDrivers = [ "amdgpu" ];
   ##
   services.blueman.enable = true;
   # Set your time zone.
@@ -104,59 +104,61 @@
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
-  #   font = "Lat2-Terminus16";
+  #   font = "${pkgs.tamzen}/share/consolefonts/Tamzen8x16r.psf.gz";
+  #   packages = [ pkgs.tamzen ];
   #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
   # Configure keymap in X11
-  services.xserver.enable = true;
-  services.xserver.xkb.layout = "us";
-  system.activationScripts.userAvatar = ''
-    mkdir -p /var/lib/AccountsService/icons
-    cp ${./.face} /var/lib/AccountsService/icons/shrey_bana
-  '';
+  # services.xserver.enable = true;
+  # services.xserver.xkb.layout = "us";
+  # system.activationScripts.userAvatar = ''
+  #   mkdir -p /var/lib/AccountsService/icons
+  #   cp ${./.face} /var/lib/AccountsService/icons/shrey_bana
+  # '';
   programs.dconf.enable = true;
   services.displayManager.ly = {
     enable = true;
     settings = {
-      animation = "doom"; # or "doom", "colormix", "none"
-      animation_frame_delay = 30;
+      animation = "none";
+      # dur_file_path = "/home/shrey_bana/dot-files-etc/blackhole-smooth-240x67.dur";
+      animation_frame_delay = 40;
       bg = 0; # background color (0-8, ANSI palette)
-      fg = 4; # foreground/text color
-      border_fg = 4; # login box border color
+      fg = 8; # foreground/text color
+      # hide_borders = true;
+      # border_fg = 4; # login box border color
       clock = "%c"; # show a clock, strftime format; empty string disables it
       hide_key_hints = false;
       asterisk = "*"; # character shown for password input
     };
   };
-  services.xserver.displayManager.lightdm = {
-    enable = false;
-    greeters.slick = {
-      enable = true;
-      extraConfig = ''
-        draw-grid=true
-        show-hostname=true
-        background=#4b495c
-        content-align=center
-        font-name=Ubuntu 16
-        screen-reader=true
-        xft-dpi=120
-      '';
-    };
-  };
+  # services.xserver.displayManager.lightdm = {
+  #   enable = false;
+  #   greeters.slick = {
+  #     enable = true;
+  #     extraConfig = ''
+  #       draw-grid=true
+  #       show-hostname=true
+  #       background=#4b495c
+  #       content-align=center
+  #       font-name=Ubuntu 16
+  #       screen-reader=true
+  #       xft-dpi=120
+  #     '';
+  #   };
+  # };
   # services.xserver.xkb.options = "ctrl:swapcaps";
-  services.xserver.windowManager.xmonad = {
-    enable = true;
-    enableConfiguredRecompile = true;
-    enableContribAndExtras = true;
-    extraPackages = haskellPackages: [
-      haskellPackages.dbus
-      haskellPackages.xmobar
-      haskellPackages.xmonad-dbus
-    ];
-    config = builtins.readFile ./.xmonad.hs;
-  };
+  # services.xserver.windowManager.xmonad = {
+  #   enable = false;
+  #   enableConfiguredRecompile = true;
+  #   enableContribAndExtras = true;
+  #   extraPackages = haskellPackages: [
+  #     haskellPackages.dbus
+  #     haskellPackages.xmobar
+  #     haskellPackages.xmonad-dbus
+  #   ];
+  #   config = builtins.readFile ./.xmonad.hs;
+  # };
   programs.river-next = {
     enable = true;
     localWindowManager = ./vendor/rijan-fork.nix;
@@ -164,23 +166,23 @@
     xwayland.enable = true;
     kanshi.enable = true;
   };
-  services.picom = {
-    backend = "glx";
-    settings = {
-      blur = {
-        method = "dual_kawase";
-        # size = 5;
-        strength = 2;
-        # deviation = 5.0;
-      };
-    };
-    enable = true;
-    fadeDelta = 3;
-    opacityRules = [
-      "90:class_g = 'Alacritty'"
-      "90:class_g = 'Spotify'"
-    ];
-  };
+  # services.picom = {
+  #   backend = "glx";
+  #   settings = {
+  #     blur = {
+  #       method = "dual_kawase";
+  #       # size = 5;
+  #       strength = 2;
+  #       # deviation = 5.0;
+  #     };
+  #   };
+  #   enable = true;
+  #   fadeDelta = 3;
+  #   opacityRules = [
+  #     "90:class_g = 'Alacritty'"
+  #     "90:class_g = 'Spotify'"
+  #   ];
+  # };
   # Enable common container config files in /etc/containers
   virtualisation.containers.enable = true;
   virtualisation = {
@@ -197,8 +199,7 @@
   programs.xss-lock.enable = true;
   programs.xss-lock.lockerCommand = "${pkgs.xsecurelock}/bin/xsecurelock";
   services.logind.settings.Login = {
-    IdleAction = "lock";
-    IdleActionSec = 300;
+    IdleAction = "ignore";
   };
   xdg.portal = {
     enable = true;
@@ -234,6 +235,7 @@
     enableDefaultPackages = true;
     packages = with pkgs.nerd-fonts; [
       pkgs.input-fonts
+      pkgs.tamzen
       pkgs.lora
       pkgs.inter
       pkgs.source-serif-pro
@@ -333,7 +335,7 @@
   };
   services.emacs = {
     enable = lib.mkForce true;
-    package = pkgs.emacs-pgtk;
+    package = pkgs.emacs31-pgtk;
   };
 
   # List packages installed in system profile. To search, run:
@@ -412,109 +414,6 @@
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
-
-  services.nginx = {
-    enable = false;
-    virtualHosts."testsaml.app" = {
-      forceSSL = true;
-      sslCertificate = "/etc/nginx/ssl/nginx.crt";
-      sslCertificateKey = "/etc/nginx/ssl/nginx.key";
-      locations."/" = {
-        # Proxy to your actual service running on a higher port
-        proxyPass = "http://localhost:8080";
-      };
-    };
-    virtualHosts."test.devspaceworks.net" = {
-      forceSSL = false;
-      # sslCertificate = "/etc/nginx/ssl/nginx.crt";
-      # sslCertificateKey = "/etc/nginx/ssl/nginx.key";
-      locations."/" = {
-        # Proxy to your actual service running on a higher port
-        proxyPass = "http://localhost:8080";
-      };
-    };
-    virtualHosts."localhost" = {
-      forceSSL = true;
-      sslCertificate = "/etc/nginx/ssl/nginx.crt";
-      sslCertificateKey = "/etc/nginx/ssl/nginx.key";
-      locations."/" = {
-        # Proxy to your actual service running on a higher port
-        proxyPass = "http://localhost:8080";
-      };
-    };
-  };
-  # services.hoogle = {
-  #   enable = true;
-  #   port = 7777;
-  #   haskellPackages = pkgs.haskell.packages.ghc964;
-  #   packages =
-  #     hpkgs: with hpkgs; [
-  #       # Core essentials (top 10 most used)
-  #       bytestring_0_12_2_0
-  #       containers_0_8
-  #       # transformer
-  #       mtl_2_3_1
-  #       text_2_1_2
-  #       monadIO
-  #       # deepseq
-  #       # array
-  #       # vector
-  #       # hashable
-  #       unordered-containers
-
-  #       #   # JSON & data processing
-  #       aeson
-  #       #   aeson-pretty
-  #       #   lens-aeson
-  #       attoparsec
-  #       #   megaparsec
-  #       #   yaml
-  #       #   binary
-
-  #       #   # Optics (choose one ecosystem)
-  #       lens # Full-featured (larger)
-  #       #   # microlens microlens-platform  # Lightweight alternative
-
-  #       #   # Web & HTTP
-  #       http-types
-  #       http-client
-  #       #   servant
-  #       #   warp
-  #       #   scotty
-
-  #       #   # Control & effects
-  #       #   exceptions
-  #       async
-  #       stm_2_5_3_1
-
-  #       #   # File & I/O
-  #       #   directory
-  #       #   filepath
-  #       #   temporary
-  #       #   conduit
-
-  #       #   # Development & testing
-  #       hspec
-  #       HUnit
-  #       #   tasty
-  #       #   QuickCheck
-  #       #   ghcid
-
-  #       #   # Utilities
-  #       time_1_14
-  #       #   random
-  #       #   scientific
-  #       #   string-conversions
-  #       network
-  #       network-uri
-  #       monad-logger
-
-  #       #   # Common extensions you might use
-  #       #   safe # Safe versions of partial functions
-  #       #   extra # Extra functions
-  #       #   split # String/list splitting utilities
-  #     ];
-  # };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

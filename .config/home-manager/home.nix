@@ -1,18 +1,5 @@
 { config, pkgs, ... }:
 
-let
-  claude-code-acp = pkgs.buildNpmPackage rec {
-    pname = "claude-code-acp";
-    version = "0.12.0";
-    src = pkgs.fetchFromGitHub {
-      owner = "zed-industries";
-      repo = "${pname}";
-      tag = "v${version}";
-      hash = "sha256-ul8XHj+P48IPgdRAZ5Rh2tjPRcSdKVnMCQWBdwy1Syg=";
-    };
-    npmDepsHash = "sha256-BePDV+3bMyCilEcNiUgY9kJIvttbL0MKMYh3tbhW76Q=";
-  };
-in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -20,6 +7,8 @@ in
   # home.homeDirectory = "/home/shrey_bana";
   # in home.nix
   # xdg.configFile."rijan/init.janet".source = ./rijan-init.janet;
+  wayland.systemd.target = "river-session.target";
+  systemd.user.sessionVariables.GDK_BACKEND = "wayland";
   programs.git = {
     enable = true;
     settings = {
@@ -56,18 +45,89 @@ in
     gtk.enable = true;
   };
 
-  services.wpaperd = {
+  services.swayidle = {
     enable = true;
+
+    events = {
+      before-sleep = "${pkgs.swaylock}/bin/swaylock -f";
+      lock = "${pkgs.swaylock}/bin/swaylock -f";
+    };
+
+    timeouts = [
+      {
+        timeout = 270;
+        command = "${pkgs.libnotify}/bin/notify-send -e 'Swayidle' 'Staging lock due to inactivity.'";
+      }
+      {
+        timeout = 300;
+        command = "${pkgs.swaylock}/bin/swaylock -f";
+      }
+      # {
+      #   timeout = 40;
+      #   command = "${pkgs.systemd}/bin/systemctl suspend";
+      # }
+    ];
+  };
+  programs.swaylock = {
+    enable = true;
+    package = pkgs.swaylock-effects;
     settings = {
-      default = {
-        path = "/home/shrey_bana/dot-files-etc/pictures/wallpapers";
-        duration = "45m";
-        sorting = "random";
-      };
+      ignore-empty-password = true;
+
+      color = "000000";
+      font = "JetBrains Mono";
+      font-size = 22;
+
+      # thin, big ring — the ly-style outline look
+      # indicator = true;
+      indicator-radius = 120;
+      indicator-thickness = 4;
+
+      # transparent fills so only the ring/line show, not a solid blob
+      inside-color = "00000000";
+      inside-clear-color = "00000000";
+      inside-ver-color = "00000000";
+      inside-wrong-color = "00000000";
+      inside-caps-lock-color = "00000000";
+
+      # ring stays monochrome across states, just brightness shifts
+      ring-color = "333333";
+      ring-clear-color = "555555";
+      ring-ver-color = "00ff00";
+      ring-wrong-color = "ff0000";
+      ring-caps-lock-color = "ffff00";
+
+      # line fully transparent so it doesn't break the ring visually
+      line-color = "00000000";
+      line-clear-color = "00000000";
+      line-ver-color = "00000000";
+      line-wrong-color = "00000000";
+      line-caps-lock-color = "00000000";
+
+      # text transparent by default, only shows meaningfully on state change
+      text-color = "00ff00";
+      text-clear-color = "00000000";
+      text-ver-color = "00ff00";
+      text-wrong-color = "ff0000";
+      text-caps-lock-color = "ffff00";
+
+      key-hl-color = "00ff00";
+      bs-hl-color = "ff0000";
+      caps-lock-key-hl-color = "ffff00";
+      caps-lock-bs-hl-color = "ff0000";
+
+      separator-color = "00000000";
+
+      layout-bg-color = "000000";
+      layout-text-color = "00ff00";
+
+      disable-caps-lock-text = false;
+      indicator-caps-lock = true;
     };
   };
 
   home.packages = with pkgs; [
+    wl-clipboard
     libnotify
     swaybg
     ipe
@@ -75,7 +135,7 @@ in
     vips
     realesrgan-ncnn-vulkan
     claude-code
-    claude-code-acp
+    claude-agent-acp
     pciutils
     dmidecode
     lm_sensors
@@ -196,6 +256,8 @@ in
       "copy" = "y";
     };
     config = {
+      "font_size" = "18";
+      "status_bar_font_size" = "18";
       "background_color" = "1.0 1.0 1.0";
       #   "text_highlight_color" = "1.0 0.0 0.0";
       startup_commands = [
@@ -204,8 +266,24 @@ in
       ];
     };
   };
+
+  services.wpaperd = {
+    enable = true;
+    settings = {
+      default = {
+        path = "/home/shrey_bana/dot-files-etc/pictures/wallpapers";
+        duration = "4h";
+        sorting = "random";
+        queue-size = 100;
+      };
+    };
+  };
+  systemd.user.services.wpaperd.Service.Environment = "RUST_LOG=debug";
+  systemd.user.services.waybar.Unit.StartLimitBurst = 10;
+  systemd.user.services.waybar.Unit.StartLimitIntervalSec = 5;
+  systemd.user.services.waybar.Service.RestartSec = 2;
   programs.waybar = {
-    systemd.enable = false;
+    systemd.enable = true;
     enable = true;
     settings = {
       mainBar = {
@@ -291,153 +369,11 @@ in
         };
       };
     };
-
-    style = ''
-      * {
-        font-family: monospace;
-        font-size: 13px;
-        min-height: 0;
-      }
-
-      window#waybar {
-        background: #1a1a1a;
-        color: #ffffff;
-      }
-
-      #custom-rijan {
-        color: #ffffff;
-        font-weight: bold;
-        padding: 0 10px;
-      }
-
-      #mpris {
-        color: #a6e3a1;
-        padding: 0 10px;
-      }
-
-      #network {
-        color: #89b4fa;
-        padding: 0 10px;
-      }
-
-      #disk {
-        color: #f9e2af;
-        padding: 0 10px;
-      }
-
-      #cpu {
-        color: #fab387;
-        padding: 0 10px;
-      }
-
-      #memory {
-        color: #cba6f7;
-        padding: 0 10px;
-      }
-
-      #battery {
-        color: #a6e3a1;
-        padding: 0 10px;
-      }
-
-      #battery.warning {
-        color: #f9e2af;
-      }
-
-      #battery.critical {
-        color: #f38ba8;
-      }
-
-      #battery.charging {
-        color: #89dceb;
-      }
-
-      #pulseaudio {
-        color: #f5c2e7;
-        padding: 0 10px;
-      }
-
-      #pulseaudio.muted {
-        color: #6c7086;
-      }
-
-      #clock {
-        color: #ffffff;
-        padding: 0 10px;
-      }
-    '';
+    style = builtins.readFile ./waybar.css;
   };
   programs.xmobar = {
     enable = true;
-    extraConfig = ''
-      Config
-          { overrideRedirect = False
-          , font     = "IosevkaTermSlab NFP Medium 13"
-          , additionalFonts = [ "JetBrainsMono NF Bold 12"
-                              , "JetBrainsMono NF 18"
-                              ]
-          , bgColor  = "#001b22"
-          , fgColor  = "#93a1a1"
-          , alpha    = 250
-          , position = TopH 23
-          , commands = [ Run Weather "EGPF"
-                           [ "--template", "<weather> <tempC>°C"
-                           , "-L", "0"
-                           , "-H", "25"
-                           , "--low"   , "#268bd2"
-                           , "--normal", "#93a1a1"
-                           , "--high"  , "#dc322f"
-                           ] 36000
-                       , Run Network "protonvpn" ["-t", "<dev> 󰯄"] 10
-                       , Run Network "enp9s0"
-                         [ "--template" , "<fn=1><fc=#6b7d00>󰈁</fc></fn> U:<tx> D:<rx>"
-                         , "--Low"      , "1000"     
-                         , "--High"     , "20971520"
-                         , "--low"      , "#6b7d00"
-                         , "--high"     , "#dc322f"
-                         , "-S", "True"
-                         ] 10
-                       , Run Wireless "wlp8s0"
-                         [ "-t", "<fn=1>󰀂</fn> :<essid>"
-                         ] 10
-                       , Run Com "sh" ["-c", "hostname -i | awk '{ print $1 }'"] "ip" 10
-                       , Run Com "sh" ["-c", "spotifycli --status || true"] "track-info" 3
-                       , Run Com "sh" ["-c", "spotifycli --playbackstatus || true"] "track-status" 3
-                       , Run Battery
-                         [ "--template" , "<acstatus>"
-                         , "--Low"      , "10"
-                         , "--High"     , "80"
-                         , "--low"      , "#dc322f"
-                         , "--"
-                                   , "-o"	, "<fn=1>󱟞</fn> <left>%"
-                                   , "-O"	, "<fn=1><fc=#9c7500>󰂄</fc></fn> <left>%"
-                         ] 10
-                       , Run Cpu
-                           [ "-L", "3"
-                           , "-H", "50"
-                           , "--high"  , "#dc322f"
-                           , "--template", "<fn=1><fc=#a53c12>CPU:</fc></fn> <total>%"
-                           ] 10
-                       , Run DynNetwork
-                           [ "--template" , "<dev>: U<tx>|D<rx>"
-                           , "--Low"      , "1000"     
-                           , "--High"     , "20971520"
-                           , "--low"      , "#6b7d00"
-                           , "--high"     , "#dc322f"
-                           , "-S", "True"
-                           ] 10
-                       , Run DiskU [("/", "<fn=1><fc=#1f8076>Disk /:</fc></fn> <used>")] [] 20
-                       , Run Memory ["-t", "<fn=1><fc=#565aa0>Mem:</fc></fn> <usedratio>%"] 10
-                       , Run Swap ["-t", "<fn=1>󰾴</fn> <usedratio>%"] 10
-                       , Run Date "󰃶 %a, %d-%m-%Y 󱑂 %H:%M:%S" "date" 10
-                       , Run Volume "default" "Master" [ "-t", "<fn=1><fc=#9c7500>Vol:</fc></fn> <volume>%" ] 10
-                       , Run XMonadLog
-                       ]
-          , sepChar  = "%"
-          , alignSep = "}{"
-          , template = "%XMonadLog%} %track-status% %track-info% { VPN: %protonvpn% :: %default:Master% || %enp9s0% | %disku% | %cpu% | %memory% =<< %date% "
-          }
-    '';
+    extraConfig = builtins.readFile ./xmobarrc;
   };
   programs.rofi = {
     enable = true;
@@ -601,7 +537,7 @@ in
     font = {
       package = pkgs.inter;
       name = "Inter";
-      size = 17;
+      size = 16;
     };
     gtk3.extraConfig = {
       gtk-xft-dpi = 1;
@@ -638,74 +574,7 @@ in
         "permissions.default.shortcuts" = 0; # # `2` to disallow re-bidning of shortcuts
       };
     };
-    profiles."default".userChrome = ''
-      @-moz-document url(chrome://browser/content/browser.xhtml) {
-      	/* tabs on bottom of window */
-      	/* requires that you set
-      	 * toolkit.legacyUserProfileCustomizations.stylesheets = true
-      	 * in about:config
-      	 * figure out current firefox's profile folder in about:support
-      	 */
-      	#main-window body { flex-direction: column-reverse !important; }
-      	#navigator-toolbox { flex-direction: column-reverse !important; }
-      	#urlbar {
-      		top: unset !important;
-      		bottom: calc(var(--urlbar-container-height) + 2 * var(--urlbar-padding-block)) !important;
-      		box-shadow: none !important;
-      		display: flex !important;
-      		flex-direction: column !important;
-      	}
-      		#urlbar > * {
-      			flex: none;
-      		}
-      	#urlbar .urlbar-input-container {
-      		order: 2;
-      	}
-      	#urlbar > .urlbarView {
-      		order: 1;
-      		border-bottom: 1px solid #666;
-      	}
-      	#urlbar-results {
-      		display: flex;
-      		flex-direction: column-reverse;
-      	}
-      	.search-one-offs { display: none !important; }
-      	.tab-background { border-top: none !important; }
-      	#navigator-toolbox::after { border: none; }
-      	#TabsToolbar .tabbrowser-arrowscrollbox,
-      	#tabbrowser-tabs, .tab-stack { min-height: 28px !important; }
-      	.tabbrowser-tab { font-size: 80%; }
-      	.tab-content { padding: 0 5px; }
-      	.tab-close-button .toolbarbutton-icon { width: 12px !important; height: 12px !important; }
-      	toolbox[inFullscreen=true] { display: none; }
-      	/*
-      	 * the following makes it so that the on-click panels in the nav-bar
-      	 * extend upwards, not downwards. some of them are in the #mainPopupSet
-      	 * (hamburger + unified extensions), and the rest are in
-      	 * #navigator-toolbox. They all end up with an incorrectly-measured
-      	 * max-height (based on the distance to the _bottom_ of the screen), so
-      	 * we correct that. The ones in #navigator-toolbox then adjust their
-      	 * positioning automatically, so we can just set max-height. The ones
-      	 * in #mainPopupSet do _not_, and so we need to give them a
-      	 * negative margin-top to offset them *and* a fixed height so their
-      	 * bottoms align with the nav-bar. We also calc to ensure they don't
-      	 * end up overlapping with the nav-bar itself. The last bit around
-      	 * cui-widget-panelview is needed because "new"-style panels (those
-      	 * using "unified" panels) don't get flex by default, which results in
-      	 * them being the wrong height.
-      	 *
-      	 * Oh, yeah, and the popup-notification-panel (like biometrics prompts)
-      	 * of course follows different rules again, and needs its own special
-      	 * rule.
-      	 */
-      	#mainPopupSet panel.panel-no-padding { margin-top: calc(-50vh + 40px) !important; }
-      	#mainPopupSet .panel-viewstack, #mainPopupSet popupnotification { max-height: 50vh !important; height: 50vh; }
-      	#mainPopupSet panel.panel-no-padding.popup-notification-panel { margin-top: calc(-50vh - 35px) !important; }
-      	#navigator-toolbox .panel-viewstack { max-height: 75vh !important; }
-      	panelview.cui-widget-panelview { flex: 1; }
-      	panelview.cui-widget-panelview > vbox { flex: 1; min-height: 50vh; }
-      }
-    '';
+    profiles."default".userChrome = builtins.readFile ./userChrome.css;
     profiles."default".userContent = ''
       :root {
           --tridactyl-cmplt-font-size: 14px !important;

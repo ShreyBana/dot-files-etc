@@ -1,0 +1,72 @@
+* {
+  font-family: monospace;
+  font-size: 13px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+#custom-rijan {
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+#mpris {
+  color: #a6e3a1;
+  padding: 0 10px;
+}
+
+#network {
+  color: #89b4fa;
+  padding: 0 10px;
+}
+
+#disk {
+  color: #f9e2af;
+  padding: 0 10px;
+}
+
+#cpu {
+  color: #fab387;
+  padding: 0 10px;
+}
+
+#memory {
+  color: #cba6f7;
+  padding: 0 10px;
+}
+
+#battery {
+  color: #a6e3a1;
+  padding: 0 10px;
+}
+
+#battery.warning {
+  color: #f9e2af;
+}
+
+#battery.critical {
+  color: #f38ba8;
+}
+
+#battery.charging {
+  color: #89dceb;
+}
+
+#pulseaudio {
+  color: #f5c2e7;
+  padding: 0 10px;
+}
+
+#pulseaudio.muted {
+  color: #6c7086;
+}
+
+#clock {
+  color: #ffffff;
+  padding: 0 10px;
+}
