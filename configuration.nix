@@ -9,6 +9,9 @@
   ...
 }:
 
+let
+  rijan = pkgs.callPackage ./vendor/rijan-fork { };
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -120,18 +123,51 @@
   services.displayManager.ly = {
     enable = true;
     settings = {
-      animation = "none";
+      animation = "matrix";
       # dur_file_path = "/home/shrey_bana/dot-files-etc/blackhole-smooth-240x67.dur";
-      animation_frame_delay = 40;
-      bg = 0; # background color (0-8, ANSI palette)
-      fg = 8; # foreground/text color
+      # animation_frame_delay = 40;
+      # bg = 0; # background color (0-8, ANSI palette)
+      # fg = 8; # foreground/text color
       # hide_borders = true;
       # border_fg = 4; # login box border color
-      clock = "%c"; # show a clock, strftime format; empty string disables it
+      bigclock = "en";
+      bigclock_12hr = true;
+      # clock = "%c"; # show a clock, strftime format; empty string disables it
       hide_key_hints = false;
       asterisk = "*"; # character shown for password input
     };
   };
+  security = {
+    polkit.enable = true;
+  };
+
+  ## RIVER
+  programs.xwayland.enable = true;
+  systemd.user.targets.river-session = {
+    description = "River compositor session";
+    requires = [ "graphical-session-pre.target" ];
+    bindsTo = [ "graphical-session-pre.target" ];
+  };
+  systemd.user.services.river-portal-fixer = {
+    description = "Restart portals once River session environment is ready";
+    bindsTo = [ "river-session.target" ];
+    wantedBy = [ "river-session.target" ];
+    after = [ "river-session.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      # Env vars are already imported by the init script before river-session.target
+      # starts, so we just need to restart the portals/wireplumber against the
+      # now-populated environment.
+      ExecStart = pkgs.writeShellScript "river-portal-restart" ''
+        ${pkgs.systemd}/bin/systemctl --user stop wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
+        ${pkgs.systemd}/bin/systemctl --user start wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
+        ${pkgs.systemd}/bin/systemctl --user import-environment PATH
+        ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
+      '';
+    };
+  };
+  services.displayManager.sessionPackages = [ rijan.desktop-file ];
   # services.xserver.displayManager.lightdm = {
   #   enable = false;
   #   greeters.slick = {
@@ -159,13 +195,14 @@
   #   ];
   #   config = builtins.readFile ./.xmonad.hs;
   # };
-  programs.river-next = {
-    enable = true;
-    localWindowManager = ./vendor/rijan-fork.nix;
-    windowManagers = [ ];
-    xwayland.enable = true;
-    kanshi.enable = true;
-  };
+  # programs.river-next = {
+  #   enable = true;
+  #   # debug = true;
+  #   localWindowManager = ./vendor/rijan-fork.nix;
+  #   windowManagers = [ ];
+  #   xwayland.enable = true;
+  #   kanshi.enable = true;
+  # };
   # services.picom = {
   #   backend = "glx";
   #   settings = {
@@ -203,6 +240,7 @@
   };
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     config = {
       common = {
@@ -211,6 +249,19 @@
       "org.freedesktop.portal.OpenURI" = {
         default = [ "firefox.desktop" ];
         preferred = [ "firefox.desktop" ];
+      };
+      river.default = [
+        "gtk"
+        "wlr"
+      ];
+    };
+    wlr = {
+      enable = true;
+      settings = {
+        screencast = {
+          chooser_type = "simple";
+          chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o";
+        };
       };
     };
   };
@@ -234,6 +285,8 @@
     };
     enableDefaultPackages = true;
     packages = with pkgs.nerd-fonts; [
+      pkgs.merriweather-sans
+      pkgs.besley
       pkgs.input-fonts
       pkgs.tamzen
       pkgs.lora
@@ -342,7 +395,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # haskell.packages.ghc964.hoogle
-    xsecurelock
+    rijan.package
     pinentry-all
     dive # look into docker image layers
     podman-tui # status of containers in the terminal

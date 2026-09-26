@@ -5,8 +5,8 @@
 }
 
 window#waybar {
-  background: #1a1a1a;
-  color: #ffffff;
+  background: rgba(26, 26, 26, 0.5);
+  color: #8a8a8a;
 }
 
 #custom-rijan {
@@ -21,22 +21,21 @@ window#waybar {
 }
 
 #network {
-  color: #89b4fa;
   padding: 0 10px;
 }
 
 #disk {
-  color: #f9e2af;
+  /* color: #8a8a8a; */
   padding: 0 10px;
 }
 
 #cpu {
-  color: #fab387;
+  /* color: #fab387; */
   padding: 0 10px;
 }
 
 #memory {
-  color: #cba6f7;
+  /* color: #cba6f7; */
   padding: 0 10px;
 }
 
@@ -58,13 +57,13 @@ window#waybar {
 }
 
 #pulseaudio {
-  color: #f5c2e7;
+  color: #ffffff;
   padding: 0 10px;
 }
 
-#pulseaudio.muted {
-  color: #6c7086;
-}
+/* #pulseaudio.muted { */
+/*   color: #6c7086; */
+/* } */
 
 #clock {
   color: #ffffff;

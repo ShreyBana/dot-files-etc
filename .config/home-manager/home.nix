@@ -55,11 +55,11 @@
 
     timeouts = [
       {
-        timeout = 270;
+        timeout = 570;
         command = "${pkgs.libnotify}/bin/notify-send -e 'Swayidle' 'Staging lock due to inactivity.'";
       }
       {
-        timeout = 300;
+        timeout = 600;
         command = "${pkgs.swaylock}/bin/swaylock -f";
       }
       # {
@@ -127,6 +127,7 @@
   };
 
   home.packages = with pkgs; [
+    moreutils
     wl-clipboard
     libnotify
     swaybg
@@ -274,17 +275,14 @@
         path = "/home/shrey_bana/dot-files-etc/pictures/wallpapers";
         duration = "4h";
         sorting = "random";
-        queue-size = 100;
+        queue-size = 1000;
       };
     };
   };
-  systemd.user.services.wpaperd.Service.Environment = "RUST_LOG=debug";
-  systemd.user.services.waybar.Unit.StartLimitBurst = 10;
-  systemd.user.services.waybar.Unit.StartLimitIntervalSec = 5;
-  systemd.user.services.waybar.Service.RestartSec = 2;
+  # systemd.user.services.wpaperd.Service.Environment = "RUST_LOG=debug";
   programs.waybar = {
-    systemd.enable = true;
     enable = true;
+    systemd.enable = true;
     settings = {
       mainBar = {
         layer = "top";
@@ -364,21 +362,25 @@
         };
 
         clock = {
-          format = "  {:%a, %d-%m-%Y  %H:%M:%S}"; # clock icon
-          interval = 1;
+          format = "  {:%a, %d-%m-%Y  %H:%M}"; # clock icon
+          interval = 60;
         };
       };
     };
     style = builtins.readFile ./waybar.css;
   };
+  systemd.user.services.waybar.Unit.StartLimitBurst = 10;
+  systemd.user.services.waybar.Unit.After = [ "wpaperd.session" ];
+  systemd.user.services.waybar.Unit.StartLimitIntervalSec = 5;
+  systemd.user.services.waybar.Service.RestartSec = 2;
   programs.xmobar = {
-    enable = true;
+    enable = false;
     extraConfig = builtins.readFile ./xmobarrc;
   };
   programs.rofi = {
     enable = true;
     cycle = true;
-    pass.enable = true;
+    # pass.enable = true;
     theme = "purple";
     plugins = with pkgs; [
       rofi-emoji
